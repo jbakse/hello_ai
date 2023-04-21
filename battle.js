@@ -1,3 +1,12 @@
+/**
+ * This file implements a simple battle simulation between a fox and a cat
+ * using JavaScript basic imperative code. The outcome of each attack is
+ * described as a string.
+ * After the battle simulation completes, the program prompts the gpt to write
+ * a short story about the battle.
+ * It then feeds this story back into gpt to summarize it.
+ */
+
 import { ask, gpt, end } from "./shared.js";
 
 async function vs() {
@@ -38,15 +47,6 @@ async function vs() {
   const response = await gpt(prompt);
 
   console.log(`"""\n${response}\n"""`);
-
-  //   const prompt2 = `
-  //   Read the following story, then answer the questions.
-  //   Story:
-  //   ${response}
-  //   Questions:
-  //   Who was fighting?
-  //   Who won the fight?
-  //   `;
 
   const prompt2 = `
   Summarize following story in four sentences.

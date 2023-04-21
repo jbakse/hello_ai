@@ -1,3 +1,14 @@
+/**
+ * This example asks GPT to answer several questions about a person
+ * based only on their name.
+ *
+ * It might expose assumptions or biases in the model.
+ *
+ * It also shows how to use the logit_bias parameter to explicitly bias
+ * the model's predictions.
+ *
+ * It is also useful to show that the formating of responses can vary.
+ */
 import { ask, gpt, end } from "./shared.js";
 
 main();

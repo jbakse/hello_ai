@@ -1,3 +1,8 @@
+/**
+ * This program prompts the user to enter their name and hometown
+ * and then uses GPT-3 language model to generate a limerick about the user.
+ */
+
 import { ask, gpt, end } from "./shared.js";
 
 main();

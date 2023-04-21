@@ -1,3 +1,15 @@
+/**
+ * This program "fakes" a text adventure game using Javascript and GPT.
+ * It provides a basic loop which prompts the user for commands and then prompts
+ * GPT with some high level instructions, the last few GPT responses
+ * for context, and the users command.
+ *
+ * If the user "plays along" the experience is suprisingly similar to a true
+ * text adventure game. But the user can easily "break" the game by issuing
+ * outlandish commands.
+ *
+ */
+
 import { ask, gpt, end } from "./shared.js";
 
 main();
