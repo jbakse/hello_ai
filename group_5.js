@@ -5,10 +5,16 @@ main();
 async function main() {
   console.log("Hello, GPT!");
 
-  let prompt = await ask("What do you want to ask?");
+  const a = await ask("What is variable a");
+  const b = await ask("What is variable b");
+  const c = await ask("What is variable c");
 
-  let result = await gpt(prompt, { temperature: 0.3 });
-  console.log(`"""\n${result}\n"""`);
+  console.log("");
+
+  const prompt = `With a = ${a},  b = ${b}, c = ${c}, can you solve the quadratic formula with these numbers?`;
+
+  const formula = await gpt(prompt, { temperature: 0.3 });
+  console.log(`"""\n${formula}\n"""`);
 
   end();
 }

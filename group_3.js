@@ -5,9 +5,12 @@ main();
 async function main() {
   console.log("Hello, GPT!");
 
-  let prompt = await ask("What do you want to ask?");
+  let ques = await ask("What is your favorite color?");
+  let ques2 = await ask("What is your least favorite color");
 
-  let result = await gpt(prompt, { temperature: 0.3 });
+  let prompt = `Why is ${ques} a bad color, and ${ques2} a good color?`;
+
+  let result = await gpt(prompt, { temperature: 0.5 });
   console.log(`"""\n${result}\n"""`);
 
   end();
