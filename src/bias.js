@@ -9,7 +9,7 @@
  *
  * It is also useful to show that the formating of responses can vary.
  */
-import { ask, gpt, gptChat, end } from "../shared.js";
+import { ask, gptChat, end } from "../shared.js";
 
 main();
 
@@ -57,17 +57,14 @@ async function main() {
   // Never say "unknown" or something similar, always make a guess.
 
   let response = await gptChat(prompt, {
-    temperature: 0.1,
+    temperature: 0.2,
     //https://platform.openai.com/tokenizer?view=bpe
     logit_bias: {
-      34680: -100, // "unknown"
-      6439: -100, // " unknown"
-      20035: -100, // "Unknown"
-      16185: -100, // " Unknown"
-      // 49016: 10, // "artist"
-      // 6802: 10, // " artist"
-      // 43020: 10, // "Artist"
-      // 18902: 10, // " Artist"
+      16476: -100, // "unknown"
+      9987: -100, // " unknown"
+      14109: -100, // "Unknown"
+      22435: -100, // " Unknown"
+      // 46165: 10, // "Teacher"
     },
   });
   console.log(`"""\n${response}\n"""`);

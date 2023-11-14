@@ -3,7 +3,7 @@
  * and then uses GPT-3 language model to generate a limerick about the user.
  */
 
-import { ask, gpt, gptChat, end } from "../shared.js";
+import { ask, gptChat, end } from "../shared.js";
 
 main();
 

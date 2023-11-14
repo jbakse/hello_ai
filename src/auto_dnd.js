@@ -1,16 +1,13 @@
 /**
- * This program "fakes" a text adventure game using Javascript and GPT.
- * It provides a basic loop which prompts the user for commands and then prompts
- * GPT with some high level instructions, the last few GPT responses
- * for context, and the users command.
+ * This program builds on dm.js which "fakes" a text adventure game using
+ * Javascript and GPT.
  *
- * If the user "plays along" the experience is suprisingly similar to a true
- * text adventure game. But the user can easily "break" the game by issuing
- * outlandish commands.
+ * It extends that example by having GPT decide what to do and play the game
+ * itelf.
  *
  */
 
-import { ask, gpt, end } from "../shared.js";
+import { ask, gptChat, end } from "../shared.js";
 
 main();
 
@@ -18,8 +15,7 @@ async function main() {
   console.log("Hello, Player!");
 
   let history = [];
-  let player_history = [];
-  let playing = true;
+
   const theme = "wild west";
   const location = "saloon";
   const player = {};
@@ -45,7 +41,10 @@ async function main() {
 
     let command = "look";
     if (turns > 1)
-      command = await gpt(player_prompt, { max_tokens: 10, temperature: 1.2 });
+      command = await gptChat(player_prompt, {
+        max_tokens: 10,
+        temperature: 1.2,
+      });
 
     history.push(command);
     console.log(`\n ${turns}> ${command}\n`);
@@ -68,7 +67,7 @@ async function main() {
   The player command is '${command}'. 
   `;
 
-    let response = await gpt(prompt, { max_tokens: 128, temperature: 1.0 });
+    let response = await gptChat(prompt, { max_tokens: 128, temperature: 1.0 });
     history.push(response);
     console.log(`\n${response}\n`);
   }
@@ -79,7 +78,7 @@ async function main() {
     ${history.join(" ")}
     `;
 
-  let summary = await gpt(summary_prompt, {
+  let summary = await gptChat(summary_prompt, {
     max_tokens: 2048,
     temperature: 0.5,
   });

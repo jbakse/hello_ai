@@ -24,81 +24,69 @@ const openai = new OpenAI({
   apiKey: secrets.apiKey,
 });
 
-const gpt_config = {
-  // https://platform.openai.com/docs/models/gpt-3
-
-  model: "text-davinci-003",
-  //  model: "text-curie-001",
-  //  model: "text-babbage-001",
-  //  model: "text-ada-001",
-
-  // https://platform.openai.com/docs/api-reference/completions
-  prompt: "",
-  suffix: null,
-  max_tokens: 512,
-  temperature: 0.2,
-  top_p: 1,
-  n: 1,
-  stream: false,
-  stop: null,
-  presence_penalty: 0,
-  frequency_penalty: 0,
+const models = {
+  "3.5-turbo": {
+    name: "gpt-3.5-turbo",
+    promptCost: 0.001,
+    completionCost: 0.002,
+  },
+  "4.0": {
+    name: "gpt-4",
+    promptCost: 0.03,
+    completionCost: 0.06,
+  },
+  "4.0-turbo": {
+    name: "gpt-4-1106-preview",
+    promptCost: 0.01,
+    completionCost: 0.03,
+  },
 };
 
-export async function gpt(prompt, c = {}) {
-  let response = await openai.completions.create({
-    ...gpt_config,
-    ...c,
-    prompt,
-  });
-  console.log(`gpt() ${gpt_config.model}`);
-  return response.choices[0].text?.trim() || "";
-}
+// https://platform.openai.com/docs/api-reference/chat/create
+const config = {
+  frequency_penalty: 0,
+  logit_bias: {},
+  max_tokens: 128,
+  n: 1,
+  presence_penalty: 0,
+  response_format: { type: "text" },
+  seed: null,
+  stop: null,
+  stream: false,
+  temperature: 0.8,
+  top_p: null,
+};
 
 export async function gptChat(prompt, c = {}) {
-  const model = "gpt-4-1106-preview";
-  // gpt-3.5-turbo      $.001 / .002
-  // gpt-4               .030 / .060
-  // gpt-4-1106-preview  .010 / .030
+  const model = c.model || "4.0-turbo";
+  if (!models[model]) {
+    throw new Error(`Unknown model: ${model}`);
+  }
 
-  const promptCosts = {
-    "gpt-3.5-turbo": 0.001,
-    "gpt-4": 0.03,
-    "gpt-4-1106-preview": 0.01,
-  };
-  const completionCosts = {
-    "gpt-3.5-turbo": 0.002,
-    "gpt-4": 0.06,
-    "gpt-4-1106-preview": 0.03,
-  };
-
-  const start = process.hrtime();
+  const startTime = performance.now();
   const response = await openai.chat.completions.create({
-    messages: [
-      {
-        role: "system",
-        content: "You are a helpful assistant.",
-      },
-      { role: "user", content: prompt },
-    ],
-    model,
+    ...config,
+    ...c,
+    model: models[model].name,
+    messages: [{ role: "user", content: prompt }],
   });
-  const time = process.hrtime(start);
-  // calculate seconds to two decimal places
-  const seconds = (time[0] + time[1] / 1000000000).toFixed(2);
+
+  const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
   const prompt_tokens = response.usage?.prompt_tokens ?? 0;
   const completion_tokens = response.usage?.completion_tokens ?? 0;
-  const prompt_cost = (prompt_tokens / 1000) * promptCosts[model];
-  const completion_cost = (completion_tokens / 1000) * completionCosts[model];
+  const prompt_cost = (prompt_tokens / 1000) * models[model].promptCost;
+  const completion_cost =
+    (completion_tokens / 1000) * models[model].completionCost;
   const total_cost = prompt_cost + completion_cost;
 
   console.log(
     chalk.gray(
       `gptChat() ${model} ${prompt_tokens}/${completion_tokens} ${seconds}s $${total_cost.toFixed(
-        3
-      )}`
-    )
+        3,
+      )}`,
+    ),
   );
+
   return response.choices[0].message.content.trim() || "";
 }

@@ -1,4 +1,4 @@
-import { ask, gpt, gptChat, end } from "../shared.js";
+import { ask, gptChat, end } from "../shared.js";
 
 let things = {
   chamber1: {

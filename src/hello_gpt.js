@@ -1,4 +1,4 @@
-import { ask, gpt, end } from "../shared.js";
+import { ask, gptChat, end } from "../shared.js";
 
 main();
 
@@ -7,7 +7,7 @@ async function main() {
 
   let prompt = await ask("What do you want to ask?");
 
-  let result = await gpt(prompt, { temperature: 0.3 });
+  let result = await gptChat(prompt, { temperature: 0.3 });
 
   console.log(`"""\n${result}\n"""`);
 
