@@ -10,7 +10,7 @@
  *
  */
 
-import { ask, gpt, end } from "./shared.js";
+import { ask, gptChat, end } from "../shared.js";
 
 main();
 
@@ -48,7 +48,7 @@ async function main() {
   The player command is '${command}'. 
   `;
 
-    let response = await gpt(prompt, { max_tokens: 128, temperature: 0.5 });
+    let response = await gptChat(prompt, { max_tokens: 128, temperature: 0.5 });
     context.push(response);
     console.log(`\n${response}\n`);
   }

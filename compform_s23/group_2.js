@@ -7,7 +7,7 @@
  * It then feeds this story back into gpt to summarize it.
  */
 
-import { ask, gpt, end } from "./shared.js";
+import { ask, gpt, end } from "../shared.js";
 
 async function vs() {
   let fox = { hp: 10, attack: 12, defense: 6 };

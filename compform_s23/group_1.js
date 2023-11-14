@@ -1,4 +1,4 @@
-import { ask, gpt, end } from "./shared.js";
+import { ask, gpt, end } from "../shared.js";
 // GROUP 1: Reshma, Sahiti, Shayla
 
 main();

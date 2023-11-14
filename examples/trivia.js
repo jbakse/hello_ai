@@ -1,4 +1,5 @@
-import { ask, gpt, end } from "./shared.js";
+import { ask, gpt, gptChat, end } from "../shared.js";
+import wrapAnsi from "wrap-ansi";
 
 main();
 
@@ -7,12 +8,14 @@ async function main() {
 
   const topic = await ask("What do you want to be quized on?");
 
-  const questionsString = await gpt(
+  const questionsString = await gptChat(
     `
     Generate 4 questions for a triva game. Do not provide answers.
     The topic is ${topic}.
     provide the questions as a javascript array of strings like this:
     ["question 1", "question 2", "question 3", "question 4"]
+
+    Just include the array, start with [ and end with ].
     `,
     { max_tokens: 1024, temperature: 0.3 }
   );
@@ -30,7 +33,7 @@ async function main() {
 
   for (const q of questions) {
     const a = await ask(q);
-    const response = await gpt(
+    const response = await gptChat(
       `
     The question was '${q}'.
     The answer was '${a}'.

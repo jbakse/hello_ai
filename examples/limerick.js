@@ -3,7 +3,7 @@
  * and then uses GPT-3 language model to generate a limerick about the user.
  */
 
-import { ask, gpt, end } from "./shared.js";
+import { ask, gpt, gptChat, end } from "../shared.js";
 
 main();
 
@@ -17,7 +17,7 @@ async function main() {
 
   const prompt = `My name is ${name} and I am from ${town}. Create a limerick about me.`;
 
-  const limerick = await gpt(prompt, { temperature: 0.0 });
+  const limerick = await gptChat(prompt, { temperature: 0.7 });
   console.log(`"""\n${limerick}\n"""`);
 
   end();

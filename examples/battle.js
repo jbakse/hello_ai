@@ -7,7 +7,7 @@
  * It then feeds this story back into gpt to summarize it.
  */
 
-import { ask, gpt, end } from "./shared.js";
+import { ask, gpt, gptChat, end } from "../shared.js";
 
 async function vs() {
   let fox = { hp: 10, attack: 12, defense: 6 };
@@ -44,7 +44,7 @@ async function vs() {
   console.log(outline);
 
   const prompt = `Write a short story about a cat and a fox fighting based on the outline below. Use colorful, descriptive language. Don't use any numbers to describe damage or health amounts, use descriptive adjectives instead. \n${outline}`;
-  const response = await gpt(prompt);
+  const response = await gptChat(prompt);
 
   console.log(`"""\n${response}\n"""`);
 
@@ -52,7 +52,7 @@ async function vs() {
   Summarize following story in four sentences.
   ${response}
   `;
-  const response2 = await gpt(prompt2);
+  const response2 = await gptChat(prompt2);
 
   console.log(`"""\n${response2}\n"""`);
 
