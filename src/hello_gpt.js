@@ -1,15 +1,15 @@
-import { ask, gptChat, end } from "../shared.js";
+import { ask, say, gptChat, end } from "../shared.js";
 
 main();
 
 async function main() {
-  console.log("Hello, GPT!");
+  say("Hello, GPT!");
 
   let prompt = await ask("What do you want to ask?");
 
   let result = await gptChat(prompt, { temperature: 0.3 });
 
-  console.log(`"""\n${result}\n"""`);
+  say(`"""\n${result}\n"""`);
 
   end();
 }

@@ -10,12 +10,12 @@
  *
  */
 
-import { ask, gptChat, end } from "../shared.js";
+import { ask, say, gptChat, end } from "../shared.js";
 
 main();
 
 async function main() {
-  console.log("Hello, Player!");
+  say("Hello, Player!");
 
   let context = [];
   let playing = true;
@@ -24,7 +24,7 @@ async function main() {
   player.name = await ask("What is your name?");
   player.class = await ask("What is your class?");
 
-  console.log("");
+  say("");
 
   while (playing) {
     let command = await ask("What do you want to do?");
@@ -50,7 +50,7 @@ async function main() {
 
     let response = await gptChat(prompt, { max_tokens: 128, temperature: 0.5 });
     context.push(response);
-    console.log(`\n${response}\n`);
+    say(`\n${response}\n`);
   }
 
   end();
