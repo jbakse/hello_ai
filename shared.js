@@ -1,3 +1,4 @@
+import util from "util";
 import chalk from "chalk";
 import wrapAnsi from "wrap-ansi";
 
@@ -10,16 +11,20 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-export async function ask(prompt) {
-  return await rl.question(wrapAnsi(prompt, 80) + "\n> ");
+export async function ask(prompt = "\n> ") {
+  return await rl.question(prompt);
 }
 
 export function end() {
   rl.close();
 }
 
-export function say(text) {
-  console.log(wrapAnsi(text, 80));
+export function say(text, wrap = 80) {
+  console.log(wrapAnsi(text, wrap));
+}
+
+export function inspect(obj) {
+  console.log(util.inspect(obj, false, null, true));
 }
 
 //////////////////////////////
@@ -65,9 +70,50 @@ const config = {
   top_p: null,
 };
 
+// export async function gptChat(prompt, c = {}) {
+//   // Choose the model
+//   const model = c.model ?? "4.0-turbo";
+
+//   if (!models[model]) {
+//     throw new Error(`Unknown model: ${model}`);
+//   }
+
+//   // Start a timer to measure how long it takes to get the response
+//   const startTime = performance.now();
+
+//   // Call the OpenAI API
+//   const response = await openai.chat.completions.create({
+//     ...config,
+//     ...c,
+//     model: models[model].name,
+//     messages: [{ role: "user", content: prompt }],
+//   });
+
+//   // Calculate how long it took
+//   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
+
+//   // Log the results
+//   logUsage(
+//     model,
+//     response.usage?.prompt_tokens ?? 0,
+//     response.usage?.completion_tokens ?? 0,
+//     seconds,
+//   );
+
+//   // Return the response
+//   return response.choices[0].message.content.trim() ?? "";
+// }
+
 export async function gptChat(prompt, c = {}) {
+  c.messages = [{ role: "user", content: prompt }];
+  const message = await gptFunction(c);
+  return message.content.trim() ?? "";
+}
+
+export async function gptFunction(c = {}) {
   // Choose the model
-  const model = c.model || "4.0-turbo";
+  const model = c.model ?? "4.0-turbo";
+
   if (!models[model]) {
     throw new Error(`Unknown model: ${model}`);
   }
@@ -80,31 +126,38 @@ export async function gptChat(prompt, c = {}) {
     ...config,
     ...c,
     model: models[model].name,
-    messages: [{ role: "user", content: prompt }],
   });
 
   // Calculate how long it took
   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
-  // Calculate the cost
-  const prompt_tokens = response.usage?.prompt_tokens ?? 0;
-  const completion_tokens = response.usage?.completion_tokens ?? 0;
-  const prompt_cost = (prompt_tokens / 1000) * models[model].promptCost;
-  const completion_cost =
-    (completion_tokens / 1000) * models[model].completionCost;
-  const total_cost = prompt_cost + completion_cost;
-
   // Log the results
-  console.log(
-    chalk.gray(
-      `gptChat() ${model} ${prompt_tokens}/${completion_tokens} ${seconds}s $${total_cost.toFixed(
-        3,
-      )}`,
-    ),
+  logUsage(
+    model,
+    response.usage?.prompt_tokens ?? 0,
+    response.usage?.completion_tokens ?? 0,
+    seconds,
   );
 
   // Return the response
-  return response.choices[0].message.content.trim() || "";
+  return response.choices[0].message;
+}
+
+function calculateCost(model, prompt_tokens, completion_tokens) {
+  const prompt_cost = (prompt_tokens / 1000) * models[model].promptCost;
+  const completion_cost =
+    (completion_tokens / 1000) * models[model].completionCost;
+
+  const cost = prompt_cost + completion_cost ?? 0;
+  return cost;
+}
+
+function logUsage(model, p_tokens, c_tokents, seconds) {
+  const total_cost = calculateCost(model, p_tokens, c_tokents).toFixed(3);
+
+  console.log(
+    chalk.gray(`${model} ${p_tokens}/${c_tokents} ${seconds}s $${total_cost}`),
+  );
 }
 
 // generate an image for the given prompt
@@ -153,7 +206,7 @@ export async function makeImage(prompt, c = {}) {
   return image.data[0].url;
 }
 
-import fs from "fs";
+// import fs from "fs";
 
 // export async function makeImageStability(prompt, c = {}) {
 //   const path =
