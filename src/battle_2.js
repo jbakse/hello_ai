@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import dedent from "dedent";
 
 import { say, ask, gptFunction, inspect, end } from "../shared.js";
 
@@ -97,7 +98,7 @@ const availableFunctions = {
 const messages = [
   {
     role: "system",
-    content: `
+    content: dedent`
       You assist in running a role-playing text adventure game. You take user commands, call functions to update the game state, and narrate the results.
       
       The player is engaged in battle and can't pursue other activities until it concludes. 
@@ -117,22 +118,29 @@ const messages = [
 // GAME LOOP
 
 async function game() {
+  // start with some introductory text
   const introText = "A wild slime appears!";
   messages.push({ role: "assistant", content: introText });
   say(`\n${introText}`);
 
+  // the main game loop
   while (game_data.player_hp > 0 && game_data.enemy_hp > 0) {
+    // show the current game state
     inspect(game_data);
+
+    // ask the user for their next command
     let command = await ask();
     messages.push({ role: "user", content: command });
 
+    // use GPT to respond to command
     let responseMessage = await gptFunction({
       messages,
       tools,
       max_tokens: 256,
     });
-
     messages.push(responseMessage);
+
+    // if GPT calls tools, handle them
     if (responseMessage.tool_calls) {
       handleToolCalls(responseMessage.tool_calls);
       responseMessage = await gptFunction({
@@ -142,6 +150,7 @@ async function game() {
       messages.push(responseMessage);
     }
 
+    // show user response
     say(responseMessage.content);
   }
 }
@@ -150,7 +159,7 @@ function handleToolCalls(tool_calls) {
   for (const tool_call of tool_calls) {
     const functionName = tool_call.function.name;
     const response = availableFunctions[functionName]?.() || "unknown function";
-    say(chalk.red(`${functionName}()`));
+    say(chalk.blue(`${functionName}()`));
     messages.push({
       tool_call_id: tool_call.id,
       role: "tool",
@@ -163,10 +172,10 @@ function handleToolCalls(tool_calls) {
 try {
   await game();
 } catch (e) {
-  console.log("Well, something went wrong.");
+  console.error(chalk.red("\nWell, something went wrong."));
   console.error(e);
 } finally {
-  const shouldLog = await ask("Log messages? (y/n) ");
+  const shouldLog = await ask("\nLog messages? (y/n) ");
   if (shouldLog === "y") {
     inspect(messages);
   }

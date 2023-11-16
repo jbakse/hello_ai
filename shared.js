@@ -24,7 +24,14 @@ export function say(text, wrap = 80) {
 }
 
 export function inspect(obj) {
-  console.log(util.inspect(obj, false, null, true));
+  console.log(
+    util.inspect(obj, {
+      showHidden: true,
+      depth: null,
+      colors: true,
+      compact: true,
+    }),
+  );
 }
 
 //////////////////////////////
