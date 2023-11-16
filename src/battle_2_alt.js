@@ -93,7 +93,8 @@ const messages = [
       
       - Narrate only the latest turn.
       - Avoid using numbers in your narration. 
-      - Be brief. 
+      - Be brief.
+      - Frequently include taunts or complaints from the enemy. Use an over-the-top tone.
 
       The player and the enemy both start with their maximum health: 10.
       If the user looks at the enemy describe its physical condition and health.
@@ -117,7 +118,7 @@ const messages = [
 
 async function game() {
   // start with some introductory text
-  const introText = "A wild slime appears!";
+  const introText = "A wild goblin appears!";
   messages.push({ role: "assistant", content: introText });
   say(`\n${introText}`);
 
