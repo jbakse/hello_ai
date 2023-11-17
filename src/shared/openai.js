@@ -1,43 +1,5 @@
-import util from "util";
 import chalk from "chalk";
-import wrapAnsi from "wrap-ansi";
-
-//////////////////////////////
-// CLI HELPERS
-
-import * as readline from "readline/promises";
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-export async function ask(prompt = "\n> ") {
-  return await rl.question(prompt);
-}
-
-export function end() {
-  rl.close();
-}
-
-export function say(text, wrap = 80) {
-  console.log(wrapAnsi(text, wrap));
-}
-
-export function inspect(obj) {
-  console.log(
-    util.inspect(obj, {
-      showHidden: true,
-      depth: null,
-      colors: true,
-      compact: true,
-    }),
-  );
-}
-
-//////////////////////////////
-// OPEN AI
-
-import * as secrets from "./secrets.js";
+import * as secrets from "../../secrets.js";
 import OpenAI from "openai"; //  { OpenAIError }
 
 const openai = new OpenAI({
@@ -63,7 +25,7 @@ const models = {
 };
 
 // https://platform.openai.com/docs/api-reference/chat/create
-const config = {
+const defaults = {
   frequency_penalty: 0,
   logit_bias: {},
   max_tokens: 128,
@@ -77,47 +39,21 @@ const config = {
   top_p: null,
 };
 
-// export async function gptChat(prompt, c = {}) {
-//   // Choose the model
-//   const model = c.model ?? "4.0-turbo";
-
-//   if (!models[model]) {
-//     throw new Error(`Unknown model: ${model}`);
-//   }
-
-//   // Start a timer to measure how long it takes to get the response
-//   const startTime = performance.now();
-
-//   // Call the OpenAI API
-//   const response = await openai.chat.completions.create({
-//     ...config,
-//     ...c,
-//     model: models[model].name,
-//     messages: [{ role: "user", content: prompt }],
-//   });
-
-//   // Calculate how long it took
-//   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
-
-//   // Log the results
-//   logUsage(
-//     model,
-//     response.usage?.prompt_tokens ?? 0,
-//     response.usage?.completion_tokens ?? 0,
-//     seconds,
-//   );
-
-//   // Return the response
-//   return response.choices[0].message.content.trim() ?? "";
-// }
-
-export async function gptChat(prompt, c = {}) {
+export async function gptPrompt(prompt, c = {}) {
   c.messages = [{ role: "user", content: prompt }];
-  const message = await gptFunction(c);
+  const message = await gpt(c);
   return message.content.trim() ?? "";
 }
 
-export async function gptFunction(c = {}) {
+/**
+ * Calls the OpenAI API to generate a completion based on the provided configuration.
+ *
+ * @param {Object} c - The configuration for the OpenAI API call. If a model is not provided, "4.0-turbo" is used by default.
+ * @throws {Error} Will throw an error if the provided model is not known.
+ * @returns {string} The message from the first choice in the response from the OpenAI API.
+ */
+
+export async function gpt(c = {}) {
   // Choose the model
   const model = c.model ?? "4.0-turbo";
 
@@ -130,7 +66,7 @@ export async function gptFunction(c = {}) {
 
   // Call the OpenAI API
   const response = await openai.chat.completions.create({
-    ...config,
+    ...defaults,
     ...c,
     model: models[model].name,
   });
@@ -212,52 +148,3 @@ export async function makeImage(prompt, c = {}) {
 
   return image.data[0].url;
 }
-
-// import fs from "fs";
-
-// export async function makeImageStability(prompt, c = {}) {
-//   const path =
-//     "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image";
-
-//   const headers = {
-//     "Content-Type": "application/json",
-//     Accept: "application/json",
-//     Authorization: `Bearer ${secrets.stabilityKey}`,
-//   };
-
-//   const body = {
-//     steps: 30,
-//     width: 1024,
-//     height: 1024,
-//     seed: 0,
-//     cfg_scale: 5,
-//     samples: 1,
-//     // style_preset: "fantasy-art",
-//     // clip_guidance_preset: "FAST_BLUE",
-//     text_prompts: [
-//       {
-//         text: prompt,
-//         weight: 1,
-//       },
-//     ],
-//   };
-
-//   const response = await fetch(path, {
-//     headers,
-//     method: "POST",
-//     body: JSON.stringify(body),
-//   });
-
-//   if (!response.ok) {
-//     throw new Error(`Non-200 response: ${await response.text()}`);
-//   }
-
-//   const responseJSON = await response.json();
-
-//   responseJSON.artifacts.forEach((image, index) => {
-//     fs.writeFileSync(
-//       `./out/txt2img_${image.seed}.png`,
-//       Buffer.from(image.base64, "base64"),
-//     );
-//   });
-// }

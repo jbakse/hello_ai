@@ -7,9 +7,9 @@
  * It then feeds this story back into gpt to summarize it.
  */
 
-import { gptChat, end } from "../shared.js";
+import { gptPrompt } from "../shared/openai.js";
 
-async function vs() {
+async function main() {
   let fox = { hp: 10, attack: 12, defense: 6 };
   let cat = { hp: 10, attack: 12, defense: 6 };
 
@@ -43,20 +43,21 @@ async function vs() {
 
   console.log(outline);
 
-  const prompt = `Write a short story about a cat and a fox fighting based on the outline below. Use colorful, descriptive language. Don't use any numbers to describe damage or health amounts, use descriptive adjectives instead. \n${outline}`;
-  const response = await gptChat(prompt);
+  const prompt = `
+  Write a short story about a cat and a fox fighting based on the outline below. Use colorful, descriptive language. Don't use any numbers to describe damage or health amounts, use descriptive adjectives instead.
+  ${outline}`;
 
-  console.log(`"""\n${response}\n"""`);
+  const response = await gptPrompt(prompt, { max_tokens: 1000 });
+
+  console.log(`${response}`);
 
   const prompt2 = `
   Summarize following story in four sentences.
   ${response}
   `;
-  const response2 = await gptChat(prompt2);
+  const response2 = await gptPrompt(prompt2, { max_tokens: 500 });
 
-  console.log(`"""\n${response2}\n"""`);
-
-  end();
+  console.log(`${response2}`);
 }
 
-vs();
+main();

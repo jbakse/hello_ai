@@ -1,5 +1,5 @@
-import { ask, gptChat, end } from "../shared.js";
-
+import { ask, end } from "../shared/cli.js";
+import { gptPrompt } from "../shared/openai.js";
 main();
 
 async function main() {
@@ -7,7 +7,7 @@ async function main() {
 
   const topic = await ask("What do you want to be quized on?");
 
-  const questionsString = await gptChat(
+  const questionsString = await gptPrompt(
     `
     Generate 4 questions for a triva game. Do not provide answers.
     The topic is ${topic}.
@@ -32,7 +32,7 @@ async function main() {
 
   for (const q of questions) {
     const a = await ask(q);
-    const response = await gptChat(
+    const response = await gptPrompt(
       `
     The question was '${q}'.
     The provided answer was '${a}'.

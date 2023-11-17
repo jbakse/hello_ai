@@ -10,7 +10,8 @@
  *
  */
 
-import { ask, say, gptChat, end } from "../shared.js";
+import { gptPrompt } from "../shared/openai.js";
+import { ask, end, say } from "../shared/cli.js";
 
 main();
 
@@ -48,7 +49,10 @@ async function main() {
   The player command is '${command}'. 
   `;
 
-    let response = await gptChat(prompt, { max_tokens: 128, temperature: 0.5 });
+    let response = await gptPrompt(prompt, {
+      max_tokens: 128,
+      temperature: 0.5,
+    });
     context.push(response);
     say(`\n${response}\n`);
   }

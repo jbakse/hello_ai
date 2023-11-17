@@ -4,10 +4,10 @@
  *
  * It extends that example by having GPT decide what to do and play the game
  * itelf.
- *
  */
 
-import { ask, gptChat, end } from "../shared.js";
+import { gptPrompt } from "../shared/openai.js";
+import { ask, end } from "../shared/cli.js";
 
 main();
 
@@ -41,7 +41,7 @@ async function main() {
 
     let command = "look";
     if (turns > 1)
-      command = await gptChat(player_prompt, {
+      command = await gptPrompt(player_prompt, {
         max_tokens: 10,
         temperature: 1.2,
       });
@@ -67,7 +67,10 @@ async function main() {
   The player command is '${command}'. 
   `;
 
-    let response = await gptChat(prompt, { max_tokens: 128, temperature: 1.0 });
+    let response = await gptPrompt(prompt, {
+      max_tokens: 128,
+      temperature: 1.0,
+    });
     history.push(response);
     console.log(`\n${response}\n`);
   }
@@ -78,7 +81,7 @@ async function main() {
     ${history.join(" ")}
     `;
 
-  let summary = await gptChat(summary_prompt, {
+  let summary = await gptPrompt(summary_prompt, {
     max_tokens: 2048,
     temperature: 0.5,
   });

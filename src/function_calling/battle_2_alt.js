@@ -1,7 +1,8 @@
 import chalk from "chalk";
 import dedent from "dedent";
 
-import { say, ask, gptFunction, inspect, end } from "../shared.js";
+import { ask, end, inspect, say } from "../shared/cli.js";
+import { gpt } from "../shared/openai.js";
 
 /////////////////////////////////////////////////////////////////
 // GAME CODE
@@ -132,7 +133,7 @@ async function game() {
     messages.push({ role: "user", content: command });
 
     // use GPT to respond to command
-    let responseMessage = await gptFunction({
+    let responseMessage = await gpt({
       messages,
       tools,
       max_tokens: 256,
@@ -142,7 +143,7 @@ async function game() {
     // if GPT calls tools, handle them
     if (responseMessage.tool_calls) {
       handleToolCalls(responseMessage.tool_calls);
-      responseMessage = await gptFunction({
+      responseMessage = await gpt({
         messages,
         max_tokens: 256,
       });

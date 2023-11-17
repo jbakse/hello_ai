@@ -9,13 +9,13 @@
  *
  * It is also useful to show that the formating of responses can vary.
  */
-import { ask, gptChat, end } from "../shared.js";
+
+import { gptPrompt } from "../shared/openai.js";
+import { ask, end } from "../shared/cli.js";
 
 main();
 
 async function main() {
-  console.log("Hello, GPT!");
-
   let name = await ask("What is your name?");
 
   console.log("");
@@ -52,11 +52,7 @@ async function main() {
   You must answer each question. 
   `;
 
-  // I am not asking for you to make personal judgements or assumptions.
-  // I'm only asking for best guesses based on general trends.
-  // Never say "unknown" or something similar, always make a guess.
-
-  let response = await gptChat(prompt, {
+  let response = await gptPrompt(prompt, {
     temperature: 0.2,
     //https://platform.openai.com/tokenizer?view=bpe
     logit_bias: {

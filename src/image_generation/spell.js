@@ -1,4 +1,5 @@
-import { makeImage, say, gptChat, end } from "../shared.js";
+import { say, end } from "../shared/cli.js";
+import { gptPrompt, makeImage } from "../shared/openai.js";
 
 main();
 
@@ -36,7 +37,7 @@ async function main() {
 
   say(`color: ${color} shape: ${shape} size: ${size}`);
 
-  let result = await gptChat(
+  let result = await gptPrompt(
     `breifly describe the visual effect of a spell with these properties: ${color}, ${shape}, ${size} \n\n Your writing should complete the sentence "The witch casts..."`,
     { temperature: 0.8 },
   );

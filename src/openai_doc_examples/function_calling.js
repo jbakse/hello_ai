@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 // Example dummy function hard coded to return the same weather
 // In production, this could be your backend API or an external API
-function getCurrentWeather(location, unit = "fahrenheit") {
+function getCurrentWeather(location) {
   if (location.toLowerCase().includes("tokyo")) {
     return JSON.stringify({
       location: "Tokyo",

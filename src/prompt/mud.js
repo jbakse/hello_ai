@@ -1,4 +1,5 @@
-import { ask, gptChat, end } from "../shared.js";
+import { gptPrompt } from "../shared/openai.js";
+import { ask, end } from "../shared/cli.js";
 
 let things = {
   chamber1: {
@@ -78,7 +79,7 @@ async function main() {
   Return only the formatted command, which will be two words.
   `;
 
-    const formatted_command = await gptChat(prompt, {
+    const formatted_command = await gptPrompt(prompt, {
       max_tokens: 32,
       temperature: 0.2,
     });
@@ -95,7 +96,7 @@ async function main() {
 
     if (verb === "look") {
       if (things[noun].description.length === 0) {
-        things[noun].description = await gptChat(`
+        things[noun].description = await gptPrompt(`
         This is a text adventure. 
 
         Context:

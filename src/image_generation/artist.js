@@ -1,4 +1,5 @@
-import { makeImage, say, end } from "../shared.js";
+import { say, end } from "../shared/cli.js";
+import { makeImage } from "../shared/openai.js";
 
 main();
 
