@@ -1,3 +1,5 @@
+import ora from "ora";
+
 import chalk from "chalk";
 import * as secrets from "../../secrets.js";
 import OpenAI from "openai"; //  { OpenAIError }
@@ -39,6 +41,8 @@ const defaults = {
   top_p: null,
 };
 
+let total_cost = 0;
+
 export async function gptPrompt(prompt, c = {}) {
   c.messages = [{ role: "user", content: prompt }];
   const message = await gpt(c);
@@ -64,6 +68,11 @@ export async function gpt(c = {}) {
   // Start a timer to measure how long it takes to get the response
   const startTime = performance.now();
 
+  const spinner = ora({
+    text: model,
+    discardStdin: false,
+  }).start();
+
   // Call the OpenAI API
   const response = await openai.chat.completions.create({
     ...defaults,
@@ -74,12 +83,15 @@ export async function gpt(c = {}) {
   // Calculate how long it took
   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
-  // Log the results
-  logUsage(
-    model,
-    response.usage?.prompt_tokens ?? 0,
-    response.usage?.completion_tokens ?? 0,
-    seconds,
+  // Calculate the cost
+  const p_tokens = response.usage?.prompt_tokens ?? 0;
+  const c_tokents = response.usage?.completion_tokens ?? 0;
+  const cost = calculateCost(model, p_tokens, c_tokents);
+  total_cost += cost;
+
+  // report usage
+  spinner.succeed(
+    formatUsage(model, p_tokens, c_tokents, seconds, cost, total_cost),
   );
 
   // Return the response
@@ -95,11 +107,11 @@ function calculateCost(model, prompt_tokens, completion_tokens) {
   return cost;
 }
 
-function logUsage(model, p_tokens, c_tokents, seconds) {
-  const total_cost = calculateCost(model, p_tokens, c_tokents).toFixed(3);
-
-  console.log(
-    chalk.gray(`${model} ${p_tokens}/${c_tokents} ${seconds}s $${total_cost}`),
+function formatUsage(model, p_tokens, c_tokents, seconds, cost, total_cost) {
+  cost = cost.toFixed(3);
+  total_cost = total_cost.toFixed(3);
+  return chalk.gray(
+    `${model} ${p_tokens}/${c_tokents}t ${seconds}s $${cost} $${total_cost}`,
   );
 }
 
