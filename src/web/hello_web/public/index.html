@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello, Web!</title>
+
+    <style>
+      #log {
+        width: 100%;
+        height: 300px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-sizing: border-box;
+        margin-bottom: 1em;
+      }
+
+      #inputField {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 1em;
+      }
+
+      .user-message {
+        background: #eeeeff;
+        padding: 0.5em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Hello, Web!</h1>
+    <div id="log"></div>
+    <input
+      type="text"
+      id="inputField"
+      placeholder="Type here and press enter"
+      onkeydown="handleEnter(event)"
+    />
+    <script>
+      function handleEnter(event) {
+        if (event.key === "Enter") {
+          const inputField = document.getElementById("inputField");
+          appendToLog(inputField.value);
+          inputField.value = "";
+        }
+      }
+
+      function appendToLog(message) {
+        const logDiv = document.getElementById("log");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = "user-message";
+        messageDiv.textContent = message;
+        logDiv.appendChild(messageDiv);
+        logDiv.scrollTop = logDiv.scrollHeight;
+      }
+    </script>
+  </body>
+</html>
