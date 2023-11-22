@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import url from "url";
 
-console.log("hello, web");
+console.log("Hello, Web!");
 
 const app = express();
 const port = 3000;

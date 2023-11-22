@@ -1,0 +1,134 @@
+.text-effect {
+    position: relative;
+    white-space: nowrap;
+}
+
+.text-effect .letter {
+    display: inline-block;
+    white-space: normal;
+    will-change: transform;
+}
+
+.text-effect.faded {
+    opacity: 0.5;
+}
+
+.text-effect.wavy .letter {
+    animation: wavy 0.25s ease-in-out infinite alternate;
+    /* 
+  animation-name: wavy;
+  animation-duration: 0.25s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate; 
+  */
+}
+
+.text-effect.wavy .letter:nth-child(5n + 1) {
+    animation-delay: 0.1s;
+}
+
+.text-effect.wavy .letter:nth-child(5n + 2) {
+    animation-delay: 0.2s;
+}
+
+.text-effect.wavy .letter:nth-child(5n + 3) {
+    animation-delay: 0.3s;
+}
+
+.text-effect.wavy .letter:nth-child(5n + 4) {
+    animation-delay: 0.4s;
+}
+
+.text-effect.wavy .letter:nth-child(5n + 5) {
+    animation-delay: 0.5s;
+}
+
+@keyframes wavy {
+    0% {
+        /* stick to transform and opacity for FAST animations */
+        /* top: 0px; */
+        transform: translateY(0);
+    }
+
+    100% {
+        /* top: -5px; */
+        transform: translateY(-5px);
+    }
+}
+
+.text-effect.scary .letter {
+    /* animation: scary 0.25s steps(1) infinite; */
+    color: rgb(180,0,0);
+    animation: scary 0.25s linear infinite;
+}
+
+.text-effect.scary .letter:nth-child(5n + 1) {
+    animation-delay: 0.5s;
+}
+
+.text-effect.scary .letter:nth-child(5n + 2) {
+    animation-delay: 0.15s;
+}
+
+.text-effect.scary .letter:nth-child(5n + 3) {
+    animation-delay: 0s;
+}
+
+.text-effect.scary .letter:nth-child(5n + 4) {
+    animation-delay: 0.2s;
+}
+
+@keyframes scary {
+    0% {
+        transform: translate(-2px, 3px);
+    }
+
+    20% {
+        transform: translate(0px, -3px);
+    }
+
+    40% {
+        transform: translate(2px, 3px);
+    }
+
+    60% {
+        transform: translate(-3px, -2px);
+    }
+
+    80% {
+        transform: translate(3px, -2px);
+    }
+
+    100% {
+        transform: translate(-2px, 3px);
+    }
+}
+
+.text-effect.rainbow .letter:nth-child(7n + 1) {
+    color: red;
+}
+
+.text-effect.rainbow .letter:nth-child(7n + 2) {
+    color: orange;
+}
+
+.text-effect.rainbow .letter:nth-child(7n + 3) {
+    color: rgb(180, 180, 0);
+}
+
+.text-effect.rainbow .letter:nth-child(7n + 4) {
+    color: green;
+}
+
+.text-effect.rainbow .letter:nth-child(7n + 5) {
+    color: blue;
+}
+
+.text-effect.rainbow .letter:nth-child(7n + 6) {
+    color: indigo;
+}
+
+.text-effect.rainbow .letter:nth-child(7n + 7) {
+    color: violet;
+}

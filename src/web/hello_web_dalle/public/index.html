@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello, Web + DALL•E!</title>
+
+    <style>
+      #log {
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      #log img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 1em;
+      }
+
+      #inputField {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        font-size: 1em;
+        margin-bottom: 1em;
+      }
+
+      .user-message {
+        background: #eeeeff;
+        padding: 0.5em;
+      }
+
+      .bot-message {
+        background: #eeffee;
+        padding: 0.5em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Hello, Web + DALL•E!</h1>
+    <input
+      type="text"
+      id="inputField"
+      placeholder="Type here and press enter"
+      onkeydown="handleEnter(event)"
+    />
+    <div id="log"></div>
+    <script>
+      async function handleEnter(event) {
+        if (event.key === "Enter") {
+          const inputField = document.getElementById("inputField");
+          const prompt = inputField.value;
+          inputField.value = "";
+          const response = await makeImage(prompt);
+          console.log("response", response);
+          appendImageToLog(response);
+        }
+      }
+
+      function appendImageToLog(imageUrl) {
+        const log = document.getElementById("log");
+        const img = document.createElement("img");
+        img.src = imageUrl;
+
+        // append to start
+        log.insertBefore(img, log.firstChild);
+      }
+
+      async function makeImage(prompt) {
+        try {
+          const response = await fetch("/makeImage", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ prompt }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          return await response.text();
+        } catch (error) {
+          console.error("Error:", error);
+          return `Error: ${error.message}`;
+        }
+      }
+    </script>
+  </body>
+</html>

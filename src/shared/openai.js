@@ -138,6 +138,11 @@ export async function makeImage(prompt, c = {}) {
 
   const startTime = performance.now();
 
+  const spinner = ora({
+    text: config.model,
+    discardStdin: false,
+  }).start();
+
   const image = await openai.images.generate({
     ...config,
     prompt,
@@ -155,7 +160,8 @@ export async function makeImage(prompt, c = {}) {
   if (hd && big) cost = 0.12;
 
   // Log the results
-  console.log(chalk.gray(`images/generations ${seconds}s $${cost}`));
+  spinner.succeed(chalk.gray(`${config.model} ${seconds}s $${cost}`));
+
   console.log(chalk.gray(image.data[0].revised_prompt));
 
   return image.data[0].url;
