@@ -152,8 +152,8 @@ export async function makeImage(prompt, c = {}) {
   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
   // Calculate the cost
-  const hd = config.quality != "standard";
-  const big = config.size != "1024x1024";
+  const hd = config.quality !== "standard";
+  const big = config.size !== "1024x1024";
   let cost = 0.04;
   if (hd && !big) cost = 0.08;
   if (!hd && big) cost = 0.08;
