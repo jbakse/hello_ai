@@ -4,4 +4,4 @@
 /node_modules
 .env
 secrets.js
-
+out

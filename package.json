@@ -18,6 +18,8 @@
     "wrap-ansi": "^9.0.0"
   },
   "devDependencies": {
+    "rollup": "^4.6.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
     "eslint": "^8.53.0",
     "jest": "^29.7.0"
   }
