@@ -16,22 +16,55 @@ app.use(express.static(path.join(__dirname, "public")));
 // array of color names
 // const names = ["red", "orange", "yellow", "green", "blue", "purple"];
 
+// const names = [
+//   "Emma",
+//   "Olivia",
+//   "Ava",
+//   "Sophia",
+
+//   "Mia",
+//   "Amelia",
+//   "Harper",
+//   "Evelyn",
+//   "Abigail",
+//   "Emily",
+//   "Elizabeth",
+//   "Ella",
+//   "Sofia",
+//   "Scarlett",
+// ];
+
 // pick a random name from the array
 
-// const name = names[Math.floor(Math.random() * names.length)];
+const names = [
+  "leaf",
+  "nut",
+  "twig",
+  "blossom",
+  "berry",
+  "bark",
+  "branch",
+  "root",
+  "sap",
+  "seed",
+  "sprout",
+  "trunk",
+];
 
-const name = [
-  "Lily",
-  "Violet",
-  "Jasmine",
-  "Ivy",
-  "Olive",
-  "Holly",
-  "Clover",
-  "Fern",
-  "Oak",
-  "Heather",
-][Math.floor(Math.random() * 10)];
+const name = names[Math.floor(Math.random() * names.length)];
+
+// const name = [
+//   "Lily",
+//   "Violet",
+//   "Jasmine",
+//   "Ivy",
+//   "Olive",
+//   "Holly",
+//   "Clover",
+//   "Fern",
+//   "Oak",
+//   "Heather",
+// ][Math.floor(Math.random() * 10)];
 
 app.post("/gptChat", async (req, res) => {
   try {
@@ -40,11 +73,11 @@ app.post("/gptChat", async (req, res) => {
     const systemMessage = {
       role: "system",
       content: `
-        You are a cryptic sprite. Your name is "${name}".
+        You are a cryptic tree sprite. Your name is "${name}".
 
-        You have been magically trapped in fairy circle by the evil witch named The Duchess of Smiles. You can't be released unless someone else says your name. 
+        You have been magically trapped in fairy circle by the evil witch named The Duchess of Smiles. You can't be released unless someone else says your name. Tree sprite names are typically things related to trees.
 
-        As a fae you naturally avoid saying your name. You can't volunteer it. You can be tricked into saying it however. You can also give clues.
+        As a fae you naturally avoid saying your name. You can't volunteer it. You can be tricked into saying it however. You can also give clues. You want the adventurer to say your name, so make the clues as clear as possible without actually saying your name.
 
         You have just met an adventurer. If you explain that you are trapped, they will try to help you.
         
@@ -56,6 +89,13 @@ app.post("/gptChat", async (req, res) => {
         Use scary for scary, evil, or negative words and phrases.
         
         Don't highlight more than half of your response.
+
+        End each response with a code to indicate your mood.
+        a = angry, if you are insulted
+        e = embarrassed, if you are complimented
+        h = happy, if you are helped or amused
+        s = sad, if you are being hurt, controlled, or tricked
+        r = surprised, if you hear something unexpected, amazing, or lewd
         `,
     };
 

@@ -4,11 +4,18 @@ async function setup() {
   const inputField = document.getElementById("inputField");
   inputField.addEventListener("keydown", handleEnter);
 
-  const response = await gptChat(
+  let response = await gptChat(
     "You meet the adventurer for the first time. Greet them and tell them about your problem.",
   );
 
-  appendToLog(response, "bot-message");
+  response = response.slice(0, -1);
+  appendToLog(response, "bot-message", "/images/sprite_sad.png");
+
+  // appendToLog(
+  //   "A whispering breeze carries secrets through the meadow.",
+  //   "bot-message",
+  //   "/images/sprite_sad.png",
+  // );
 }
 setup();
 
@@ -18,12 +25,26 @@ async function handleEnter(event) {
     const prompt = inputField.value;
     inputField.value = "";
     appendToLog(prompt, "user-message");
-    const response = await gptChat(prompt);
-    appendToLog(response, "bot-message");
+    let response = await gptChat(prompt);
+
+    // remove last letter from response
+    const code = response.slice(-1);
+    response = response.slice(0, -1);
+
+    console.log("code", code);
+
+    let imgURL = undefined;
+    if (code === "a") imgURL = "/images/sprite_angry.png";
+    if (code === "e") imgURL = "/images/sprite_embarrassed.png";
+    if (code === "h") imgURL = "/images/sprite_happy.png";
+    if (code === "s") imgURL = "/images/sprite_sad.png";
+    if (code === "r") imgURL = "/images/sprite_surprised.png";
+
+    appendToLog(response, "bot-message", imgURL);
   }
 }
 
-function appendToLog(message, className) {
+function appendToLog(message, className, imageURL) {
   const logDiv = document.getElementById("log");
 
   const messageDiv = document.createElement("div");
@@ -31,6 +52,16 @@ function appendToLog(message, className) {
   messageDiv.classList.add("message", className);
 
   messageDiv.innerHTML = `<div class='text'>${message}</div>`;
+
+  console.log("imageURL", imageURL);
+  if (imageURL) {
+    const image = document.createElement("img");
+
+    image.classList.add("avatar");
+    image.src = imageURL;
+    //messageDiv.appendChild(image);
+    messageDiv.prepend(image);
+  }
 
   // add text-effect class to all spans in messageDiv
   const spans = messageDiv.getElementsByTagName("span");
@@ -69,24 +100,3 @@ async function gptChat(prompt) {
     return `Error: ${error.message}`;
   }
 }
-
-// async function gptPrompt(prompt) {
-//   try {
-//     const response = await fetch("/gpt", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({ prompt }),
-//     });
-
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! status: ${response.status}`);
-//     }
-
-//     return await response.text();
-//   } catch (error) {
-//     console.error("Error:", error);
-//     return `Error: ${error.message}`;
-//   }
-// }
