@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello, SAM!</title>
+  </head>
+  <body>
+    <h1>Hello, SAM!</h1>
+    <script>
+      async function postAdd() {
+        try {
+          const response = await fetch(
+            // "http://127.0.0.1:3000/add",
+            "https://227zhw6rxa.execute-api.us-east-1.amazonaws.com/Prod/add",
+            {
+              //  set no cors
+
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ a: 1, b: 2 }),
+            },
+          );
+
+          console.log(response);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          console.log(data);
+          return data;
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+
+      postAdd();
+    </script>
+  </body>
+</html>
