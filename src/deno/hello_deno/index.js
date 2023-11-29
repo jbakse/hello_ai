@@ -5,9 +5,9 @@ import { gptPrompt } from "./gpt.js";
 const app = new Application();
 
 const router = new Router();
-router.get("/", (ctx) => {
-  ctx.response.body = "Hello World!";
-});
+// router.get("/", (ctx) => {
+//   ctx.response.body = "Hello World!";
+// });
 router.get("/gpt", async (ctx) => {
   const result = await gptPrompt("What rhymes with orange? Be breif!");
   ctx.response.body = result;
