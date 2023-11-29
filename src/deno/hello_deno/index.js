@@ -1,0 +1,37 @@
+import { Application, Router } from "https://deno.land/x/oak/mod.ts";
+
+import { gptPrompt } from "./gpt.js";
+
+const app = new Application();
+
+// app.use(async (ctx) => {
+//   const result = await gptPrompt("What rhymes with orange? Be breif!");
+
+//   ctx.response.body = result;
+// });
+
+const router = new Router();
+router.get("/", (ctx) => {
+  ctx.response.body = "Hello World!";
+});
+router.get("/gpt", async (ctx) => {
+  const result = await gptPrompt("What rhymes with orange? Be breif!");
+  ctx.response.body = result;
+});
+
+app.use(async (context, next) => {
+  try {
+    await context.send({
+      root: `${Deno.cwd()}/public`,
+      index: "index.html",
+    });
+  } catch {
+    await next();
+  }
+});
+
+app.use(router.routes());
+app.use(router.allowedMethods());
+
+console.log("Listening on http://localhost:8000");
+await app.listen({ port: 8000 });

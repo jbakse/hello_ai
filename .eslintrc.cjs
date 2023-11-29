@@ -9,6 +9,8 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
+  // ignore src/deno
+  ignorePatterns: ["src/deno/**/*"],
   rules: {
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
