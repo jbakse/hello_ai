@@ -1,14 +1,8 @@
-import { Application, Router } from "https://deno.land/x/oak/mod.ts";
+import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
 import { gptPrompt } from "./gpt.js";
 
 const app = new Application();
-
-// app.use(async (ctx) => {
-//   const result = await gptPrompt("What rhymes with orange? Be breif!");
-
-//   ctx.response.body = result;
-// });
 
 const router = new Router();
 router.get("/", (ctx) => {
