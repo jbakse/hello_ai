@@ -15,6 +15,7 @@ router.get("/gpt", async (ctx) => {
 
 app.use(async (context, next) => {
   try {
+    console.log("cwd", Deno.cwd());
     await context.send({
       root: `${Deno.cwd()}/public`,
       index: "index.html",
