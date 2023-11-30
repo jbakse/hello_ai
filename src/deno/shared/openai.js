@@ -1,3 +1,4 @@
+import process from "node:process";
 import ora from "npm:ora@7";
 import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
@@ -56,12 +57,11 @@ export async function gpt(c = {}) {
   }
 
   const startTime = performance.now();
-  console.log(chalk.blue("blue"));
 
   const spinner = ora({
     text: model,
     discardStdin: false,
-    isEnabled: false,
+    stream: process.stdout,
   }).start();
 
   const response = await openai.chat.completions.create({
