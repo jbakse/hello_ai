@@ -18,7 +18,6 @@ export async function spriteChat(context) {
 
     // check if messages is 5000 character
     const charCount = JSON.stringify(messages).length;
-    console.log("charCount", charCount);
 
     if (charCount > 3000) {
       context.response.body = "You are a long talker. I am lost. s";

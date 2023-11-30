@@ -56,10 +56,12 @@ export async function gpt(c = {}) {
   }
 
   const startTime = performance.now();
+  console.log(chalk.blue("blue"));
 
   const spinner = ora({
     text: model,
     discardStdin: false,
+    isEnabled: false,
   }).start();
 
   const response = await openai.chat.completions.create({
