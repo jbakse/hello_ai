@@ -1,10 +1,11 @@
 import ora from "npm:ora@7";
 import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
-import * as secrets from "../../../secrets.js";
+import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
+const env = await load();
 
 const openai = new OpenAI({
-  apiKey: secrets.apiKey,
+  apiKey: env.OPENAI_API_KEY,
 });
 
 const models = {
