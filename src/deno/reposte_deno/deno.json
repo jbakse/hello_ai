@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "start": "deno run --allow-net --allow-read=. index.js",
-    "dev": "deno run --allow-net --allow-read=. --watch index.js"
+    "start": "deno run --allow-env --allow-net --allow-read=. index.js",
+    "dev": "deno run --allow-env --allow-net --allow-read=. --watch index.js"
   }
 }

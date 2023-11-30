@@ -1,10 +1,10 @@
-import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
+import ora from "npm:ora@7";
+import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
-
-const env = await load();
+import * as secrets from "../../../secrets.js";
 
 const openai = new OpenAI({
-  apiKey: env.OPENAI_API_KEY,
+  apiKey: secrets.apiKey,
 });
 
 const models = {
@@ -25,7 +25,6 @@ const models = {
   },
 };
 
-// https://platform.openai.com/docs/api-reference/chat/create
 const defaults = {
   frequency_penalty: 0,
   logit_bias: {},
@@ -49,37 +48,38 @@ export async function gptPrompt(prompt, c = {}) {
 }
 
 export async function gpt(c = {}) {
-  // Choose the model
   const model = c.model ?? "4.0-turbo";
 
   if (!models[model]) {
     throw new Error(`Unknown model: ${model}`);
   }
 
-  // Start a timer to measure how long it takes to get the response
   const startTime = performance.now();
 
-  // Call the OpenAI API
+  const spinner = ora({
+    text: model,
+    discardStdin: false,
+  }).start();
+
   const response = await openai.chat.completions.create({
     ...defaults,
     ...c,
     model: models[model].name,
   });
 
-  // Calculate how long it took
   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
-  // Calculate the cost
   const p_tokens = response.usage?.prompt_tokens ?? 0;
   const c_tokents = response.usage?.completion_tokens ?? 0;
   const cost = calculateCost(model, p_tokens, c_tokents);
   total_cost += cost;
 
-  console.log(
-    formatUsage(model, p_tokens, c_tokents, seconds, cost, total_cost),
+  spinner.succeed(
+    chalk.gray(
+      formatUsage(model, p_tokens, c_tokents, seconds, cost, total_cost),
+    ),
   );
 
-  // Return the response
   return response.choices[0].message;
 }
 
@@ -92,8 +92,51 @@ function calculateCost(model, prompt_tokens, completion_tokens) {
   return cost;
 }
 
-function formatUsage(model, p_tokens, c_tokents, seconds, cost, total_cost) {
+function formatUsage(m, p_tokens, c_tokents, seconds, cost, t_cost) {
   cost = cost.toFixed(3);
-  total_cost = total_cost.toFixed(3);
-  return `${model} ${p_tokens}/${c_tokents}t ${seconds}s $${cost} $${total_cost}`;
+  t_cost = t_cost.toFixed(3);
+  return `${m} ${p_tokens}/${c_tokents}t ${seconds}s $${cost} $${t_cost}`;
+}
+
+export async function makeImage(prompt, c = {}) {
+  const defaults = {
+    model: "dall-e-3",
+    quality: "standard",
+    response_format: "url",
+    style: "vivid",
+    size: "1024x1024",
+  };
+
+  const config = {
+    ...defaults,
+    ...c,
+  };
+
+  const startTime = performance.now();
+
+  const spinner = ora({
+    text: config.model,
+    discardStdin: false,
+  }).start();
+
+  const image = await openai.images.generate({
+    ...config,
+    prompt,
+    n: 1,
+  });
+
+  const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
+
+  const hd = config.quality !== "standard";
+  const big = config.size !== "1024x1024";
+  let cost = 0.04;
+  if (hd && !big) cost = 0.08;
+  if (!hd && big) cost = 0.08;
+  if (hd && big) cost = 0.12;
+
+  spinner.succeed(chalk.gray(`${config.model} ${seconds}s $${cost}`));
+
+  console.log(chalk.gray(image.data[0].revised_prompt));
+
+  return image.data[0].url;
 }

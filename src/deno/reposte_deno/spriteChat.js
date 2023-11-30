@@ -1,26 +1,28 @@
-import { gpt } from "../hello_deno/gpt.js";
+import { gpt } from "../shared/openai.js";
 
 export async function spriteChat(context) {
   try {
     const body = await context.request.body().value;
     const messages = body.messages || [];
-    const name = body.name || "";
+    const spriteName = body.name || "";
 
-    // use just the last 7 messages
+    // use just the last 7 messages (3 exchanges, and the current user message)
     messages.splice(0, messages.length - 7);
 
     // prepend system message
     const systemMessage = {
       role: "system",
-      content: systemPrompt({ name }),
+      content: systemPrompt({ spriteName }),
     };
     messages.unshift(systemMessage);
 
     // check if messages is 5000 character
     const charCount = JSON.stringify(messages).length;
+    console.log("charCount", charCount);
 
-    if (charCount > 5000) {
-      context.response.body = "You are a long talker. I am lost.";
+    if (charCount > 3000) {
+      context.response.body = "You are a long talker. I am lost. s";
+      return;
     }
 
     // ask gpt for response
@@ -34,7 +36,7 @@ export async function spriteChat(context) {
     context.response.body = response.content;
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error getting GPT response.");
+    context.response.body = "Error getting GPT response. a";
   }
 }
 
