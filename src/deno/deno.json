@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "deploy": "deployctl deploy --project=jbakse-woodsprite ./reposte_deno/index.js"
+  }
+}

@@ -1,3 +1,5 @@
+console.log("Woodland Sprite");
+
 const names = [
   "leaf",
   "nut",

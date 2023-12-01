@@ -2,11 +2,12 @@ import process from "node:process";
 import ora from "npm:ora@7";
 import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
+
 import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
-const env = await load();
+const env = await load({ envPath: "../.env" });
 
-console.log("env", env);
-
+// ! if apiKey is undefined, constructor will try to find
+// ! an environment variable called OPENAI_API_KEY
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
 });
