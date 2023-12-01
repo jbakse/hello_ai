@@ -7,6 +7,20 @@
   </head>
   <body>
     <h1>Hello, Deno!</h1>
-    <a href="/api/gpt">What rhymes with orange?</a>
+    <input id="prompt" type="text" placeholder="prompt" />
+    <button id="send">send</button>
+    <script>
+      const promptElement = document.getElementById("prompt");
+      const sendElement = document.getElementById("send");
+      sendElement.addEventListener("click", () => {
+        fetch(`/api/prompt?prompt=${promptElement.value}`)
+          .then((response) => response.text())
+          .then((responseText) => {
+            const responseElement = document.createElement("p");
+            responseElement.innerText = responseText;
+            document.body.appendChild(responseElement);
+          });
+      });
+    </script>
   </body>
 </html>
