@@ -12,7 +12,7 @@ export async function spriteChat(context) {
     // prepend system message
     const systemMessage = {
       role: "system",
-      content: systemPrompt({ spriteName }),
+      content: systemPrompt({ name: spriteName }),
     };
     messages.unshift(systemMessage);
 
@@ -24,6 +24,7 @@ export async function spriteChat(context) {
       return;
     }
 
+    console.log(JSON.stringify(messages));
     // ask gpt for response
     const response = await gpt({
       messages,
