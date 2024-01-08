@@ -13,7 +13,7 @@ const app = new Application();
 const router = new Router();
 
 // API routes
-router.get("/api/prompt", async (ctx) => {
+router.get("/api/gpt", async (ctx) => {
   const prompt = ctx.request.url.searchParams.get("prompt");
   const shortPrompt = prompt.slice(0, 128);
   const result = await gptPrompt(shortPrompt);

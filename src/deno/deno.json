@@ -1,5 +1,5 @@
 {
   "tasks": {
-    "deploy-woodsprite": "deployctl deploy --project=jbakse-woodsprite ./woodsprite_deno/index.js"
+    "deploy-woodsprite": "deployctl deploy --project=jbakse-woodsprite ./woodsprite/woodsprite.js"
   }
 }

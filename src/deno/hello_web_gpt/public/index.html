@@ -13,7 +13,7 @@
       const promptElement = document.getElementById("prompt");
       const sendElement = document.getElementById("send");
       sendElement.addEventListener("click", () => {
-        fetch(`/api/prompt?prompt=${promptElement.value}`)
+        fetch(`/api/gpt?prompt=${promptElement.value}`)
           .then((response) => response.text())
           .then((responseText) => {
             const responseElement = document.createElement("p");

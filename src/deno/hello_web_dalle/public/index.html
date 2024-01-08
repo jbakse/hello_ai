@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello, Web DALL•E</title>
+  </head>
+  <body>
+    <h1>Hello, Web DALL•E</h1>
+
+    <input id="prompt" type="text" placeholder="prompt" />
+    <button id="send">send</button>
+    <script>
+      const promptElement = document.getElementById("prompt");
+      const sendElement = document.getElementById("send");
+      sendElement.addEventListener("click", () => {
+        fetch(`/api/dalle?prompt=${promptElement.value}`)
+          .then((response) => response.text())
+          .then((url) => {
+            const img = document.createElement("img");
+            img.src = url;
+            document.body.appendChild(img);
+          });
+      });
+    </script>
+  </body>
+</html>
