@@ -1,12 +1,9 @@
 {
   "name": "open_ai_examples",
   "version": "0.0.1",
-  "description": "OpenAI API demo apps for Justin Bakse's classes",
+  "description": "Demo Apps for Javascript + OpenAI class",
   "main": "index.js",
   "type": "module",
-  "scripts": {
-    "test": "NODE_OPTIONS='--experimental-vm-modules' jest"
-  },
   "author": "Justin Bakse",
   "license": "UNLICENSED",
   "dependencies": {
