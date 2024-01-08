@@ -1,3 +1,5 @@
+// deno-lint-ignore-file
+
 function wrapLetters(e) {
   // match all non-whitespace characters (\S) globaly (g)
   // replace with matched character wrapped in span

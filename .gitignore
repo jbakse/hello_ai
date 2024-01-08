@@ -1,8 +1,17 @@
+
+# MacOS folder metadata, not relevant to codebase
 .DS_Store
 
 
+# contains installed node modules and dependencies, should be installed with `npm install` rather than from version control
 /node_modules
+
+# .env files contain sensitive information like API keys, database passwords, etc. Should be kept private and not tracked in version control for security reasons.
 .env
+
+# secrets.js files likely contain sensitive information, similar to .env. It should be kept out of version control to avoid exposing confidential data.
 secrets.js
+
+# Commonly a directory for built or compiled files, like the output of a build process. These files are generated from source and do not need to be tracked.
 out
-.aws-sam
+
