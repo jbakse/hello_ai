@@ -1,7 +1,9 @@
-import { gptPrompt } from "../shared/openai.js";
-import { ask, end } from "../shared/cli.js";
+// unfinished demo
 
-let things = {
+import { ask, say } from "../shared/cli.js";
+import { gptPrompt } from "../shared/openai.js";
+
+const things = {
   chamber1: {
     id: "chamber1",
     description: "",
@@ -41,17 +43,17 @@ let things = {
   },
 };
 
-let location = "chamber1";
+const location = "chamber1";
 
 main();
 
 async function main() {
-  console.log("Hello, Player!");
+  say("Hello, Player!");
 
-  console.log("");
+  say("");
   let playing = true;
   while (playing) {
-    let command = await ask("\nWhat do you want to do?");
+    const command = await ask("\nWhat do you want to do?");
     if (command == "quit") {
       playing = false;
     }
@@ -87,10 +89,10 @@ async function main() {
     const verb = formatted_command.split(" ")[0];
     const noun = formatted_command.split(" ")[1];
 
-    console.log(`(${verb}) (${noun})`);
+    say(`(${verb}) (${noun})`);
 
     if (!things[noun]) {
-      console.log(`I don't know what ${noun} is.`);
+      say(`I don't know what ${noun} is.`);
       continue;
     }
 
@@ -106,9 +108,9 @@ async function main() {
         Write a text description of '${noun}'. Don't use item ids in the description, use natural language.
         `);
       }
-      console.log(things[noun].description);
+      say(things[noun].description);
     }
   }
 
-  end();
+  
 }

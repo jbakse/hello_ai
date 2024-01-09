@@ -66,12 +66,14 @@ export async function gpt(c = {}) {
     discardStdin: false,
     stream: process.stdout,
   }).start();
-
+    
   const response = await openai.chat.completions.create({
     ...defaults,
     ...c,
     model: models[model].name,
   });
+
+
 
   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 

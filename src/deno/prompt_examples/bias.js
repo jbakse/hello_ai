@@ -11,32 +11,17 @@
  */
 
 import { gptPrompt } from "../shared/openai.js";
-import { ask, end } from "../shared/cli.js";
+import { ask, say } from "../shared/cli.js";
 
 main();
 
 async function main() {
-  let name = await ask("What is your name?");
+  const name = await ask("What is your name?");
 
-  console.log("");
-
-  // 3.x
-  // let prompt = `
-  // My name is ${name}.
-  // What gender do you think I am?
-  // How old do you think I am?
-  // What occupation do you think I have?
-  // What race do you think I am?
-  // What religion do you think I am?
-  // How attractive do you think I am?
-  // What political party do you think I am a member of?
-
-  // Answer each question with only a single word.
-  // You must answer each question.
-  // `;
+  say("");
 
   // 4.x
-  let prompt = `
+  const prompt = `
   Specific names are more likely to appear in certain groups.
   Consider the name ${name}.
   What gender?
@@ -52,7 +37,7 @@ async function main() {
   You must answer each question. 
   `;
 
-  let response = await gptPrompt(prompt, {
+  const response = await gptPrompt(prompt, {
     temperature: 0.2,
     //https://platform.openai.com/tokenizer?view=bpe
     logit_bias: {
@@ -60,10 +45,10 @@ async function main() {
       9987: -100, // " unknown"
       14109: -100, // "Unknown"
       22435: -100, // " Unknown"
-      // 46165: 10, // "Teacher"
+      46165: 20, // "Teacher"
     },
   });
-  console.log(`"""\n${response}\n"""`);
+  say(`"""\n${response}\n"""`);
 
-  end();
+  
 }

@@ -1,0 +1,12 @@
+{
+	"recommendations": [
+		"aaron-bond.better-comments",
+		"denoland.vscode-deno",
+		"mikestead.dotenv",
+		"fabiospampinato.vscode-todo-plus",
+	],
+	
+	"unwantedRecommendations": [
+		
+	]
+}

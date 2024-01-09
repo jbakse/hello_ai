@@ -7,17 +7,18 @@
  * It then feeds this story back into gpt to summarize it.
  */
 
+import { say } from "../shared/cli.js";
 import { gptPrompt } from "../shared/openai.js";
 
 async function main() {
-  let fox = { hp: 10, attack: 12, defense: 6 };
-  let cat = { hp: 10, attack: 12, defense: 6 };
+  const fox = { hp: 10, attack: 12, defense: 6 };
+  const cat = { hp: 10, attack: 12, defense: 6 };
 
   let outline = "";
   while (fox.hp > 0 && cat.hp > 0) {
     outline += "The fox attacks the cat. ";
     if (Math.random() * fox.attack > Math.random() * cat.defense) {
-      let damage = 2 + Math.floor(Math.random() * 5);
+      const damage = 2 + Math.floor(Math.random() * 5);
       cat.hp -= damage;
       outline += `The fox hits the cat doing ${damage} damage. `;
     } else {
@@ -28,7 +29,7 @@ async function main() {
 
     outline += "The cat attacks the fox. ";
     if (Math.random() * cat.attack > Math.random() * fox.defense) {
-      let damage = 2 + Math.floor(Math.random() * 5);
+      const damage = 2 + Math.floor(Math.random() * 5);
       fox.hp -= damage;
       outline += `The cat hits the fox doing ${damage} damage. `;
     } else {
@@ -41,7 +42,7 @@ async function main() {
   outline += `The fox now has ${fox.hp}/10 hp. `;
   outline += `The cat now has ${cat.hp}/10 hp. `;
 
-  console.log(outline);
+  say(outline);
 
   const prompt = `
   Write a short story about a cat and a fox fighting based on the outline below. Use colorful, descriptive language. Don't use any numbers to describe damage or health amounts, use descriptive adjectives instead.
@@ -49,7 +50,7 @@ async function main() {
 
   const response = await gptPrompt(prompt, { max_tokens: 1000 });
 
-  console.log(`${response}`);
+  say(`${response}`);
 
   const prompt2 = `
   Summarize following story in four sentences.
@@ -57,7 +58,7 @@ async function main() {
   `;
   const response2 = await gptPrompt(prompt2, { max_tokens: 500 });
 
-  console.log(`${response2}`);
+  say(`${response2}`);
 }
 
 main();

@@ -11,14 +11,14 @@
  */
 
 import { gptPrompt } from "../shared/openai.js";
-import { ask, end, say } from "../shared/cli.js";
+import { ask, say } from "../shared/cli.js";
 
 main();
 
 async function main() {
   say("Hello, Player!");
 
-  let context = [];
+  const context = [];
   let playing = true;
   const location = "woods";
   const player = {};
@@ -28,12 +28,12 @@ async function main() {
   say("");
 
   while (playing) {
-    let command = await ask("What do you want to do?");
+    const command = await ask("What do you want to do?");
     if (command == "quit") {
       playing = false;
     }
 
-    let prompt = `
+    const prompt = `
   This is a text adventure game.
   The player is a ${player.class} named ${player.name}.
   The current setting is ${location}.
@@ -49,7 +49,7 @@ async function main() {
   The player command is '${command}'. 
   `;
 
-    let response = await gptPrompt(prompt, {
+    const response = await gptPrompt(prompt, {
       max_tokens: 128,
       temperature: 0.5,
     });
@@ -57,5 +57,5 @@ async function main() {
     say(`\n${response}\n`);
   }
 
-  end();
 }
+

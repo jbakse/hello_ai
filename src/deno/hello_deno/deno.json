@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "start": "deno run hello_deno.js",
+    "dev": "deno run --watch --no-clear-screen hello_deno.js"
+  }
+}

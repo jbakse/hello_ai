@@ -1,9 +1,15 @@
-import { ask, end } from "../shared/cli.js";
+/**
+ * triva.js
+ * Uses GPT to generate trivia questions based on a user-provided topic.
+ * Uses GPT to evaluate the answers.
+ */
+import { ask, say } from "../shared/cli.js";
 import { gptPrompt } from "../shared/openai.js";
+
 main();
 
 async function main() {
-  console.log("Hello, Player!");
+  say("Hello, Player!");
 
   const topic = await ask("What do you want to be quized on?");
 
@@ -22,13 +28,13 @@ async function main() {
   let questions = [];
   try {
     questions = JSON.parse(questionsString);
-  } catch (e) {
-    console.log(`Error parsing questions string: "${questionsString}"`);
+  } catch (_e) {
+    say(`Error parsing questions string: "${questionsString}"`);
     end();
     return;
   }
 
-  console.log("");
+  say("");
 
   for (const q of questions) {
     const a = await ask(q);
@@ -43,9 +49,9 @@ async function main() {
 
       { max_tokens: 64, temperature: 0.1 },
     );
-    console.log(response);
-    console.log("");
+    say(response);
+    say("");
   }
 
-  end();
+
 }
