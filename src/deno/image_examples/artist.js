@@ -1,4 +1,4 @@
-import { say, end } from "../shared/cli.js";
+import { say } from "../shared/cli.js";
 import { makeImage } from "../shared/openai.js";
 
 main();
@@ -23,7 +23,7 @@ async function main() {
   const url = await makeImage(prompt);
   say(url);
 
-  end();
+  
 }
 
 function p(array) {

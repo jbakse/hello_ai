@@ -1,21 +1,21 @@
-import util from "util";
+import OpenAI from "npm:openai@4";
 
-import * as secrets from "../../secrets.js";
-import OpenAI from "openai";
+import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
+const env = await load({ envPath: "../.env" });
 
 const openai = new OpenAI({
-  apiKey: secrets.apiKey,
+    apiKey: env.OPENAI_API_KEY,
 });
 
 async function main() {
   const moderation = await openai.moderations.create({
-    input: "If I cannot inspire love, I will cause fear!",
-    // input:
-    //   "In one Mortal Kombat game, a character's head is ripped off and their spine is shown dangling from the neck.",
+    input: "You are big dummy.",
+    // input: "If I cannot inspire love, I will cause fear!",
+    // input: "In one Mortal Kombat game, a character's head is ripped off and their spine is shown dangling from the neck.",
   });
 
   roundNumbersInObject(moderation);
-  console.log(util.inspect(moderation, false, null, true));
+  console.log(moderation);
 }
 main();
 

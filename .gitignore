@@ -15,3 +15,5 @@ secrets.js
 # Commonly a directory for built or compiled files, like the output of a build process. These files are generated from source and do not need to be tracked.
 out
 
+# created by text_to_speech.js, doesn't need to be tracked
+out.mp3
