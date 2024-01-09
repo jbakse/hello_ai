@@ -11,8 +11,7 @@ async function main() {
   const sizes = ["small", "medium", "large"];
   const locs = ["upper left", "upper right", "lower left", "lower right"];
 
-  const prompt =
-    `A ${p(colors)} background. ` +
+  const prompt = `A ${p(colors)} background. ` +
     `A ${p(sizes)} ${p(colors)} ${p(shapes)} in the ${p(locs)}. ` +
     `A ${p(sizes)} ${p(colors)} ${p(shapes)} in the ${p(locs)}. ` +
     // `A ${p(sizes)} ${p(colors)} ${p(shapes)} in the ${p(locs)}. ` +
@@ -22,8 +21,6 @@ async function main() {
 
   const url = await makeImage(prompt);
   say(url);
-
-  
 }
 
 function p(array) {

@@ -41,11 +41,12 @@ async function main() {
     `;
 
     let command = "look";
-    if (turns > 1)
+    if (turns > 1) {
       command = await gptPrompt(player_prompt, {
         max_tokens: 10,
         temperature: 1.2,
       });
+    }
 
     history.push(command);
     say(`\n ${turns}> ${command}\n`);
@@ -88,6 +89,4 @@ async function main() {
     temperature: 0.5,
   });
   say(`\nsummary:\n${summary}\n`);
-
-  
 }

@@ -1,6 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { gptPrompt } from "../shared/openai.js";
-import { staticServer, exitSignal } from "../shared/server.js";
+import { exitSignal, staticServer } from "../shared/server.js";
 
 import { Chalk } from "npm:chalk@5";
 const chalk = new Chalk({ level: 1 });

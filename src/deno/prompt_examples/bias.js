@@ -49,6 +49,4 @@ async function main() {
     },
   });
   say(`"""\n${response}\n"""`);
-
-  
 }

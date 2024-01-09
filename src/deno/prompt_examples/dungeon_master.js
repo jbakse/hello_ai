@@ -7,7 +7,6 @@
  * If the user "plays along" the experience is suprisingly similar to a true
  * text adventure game. But the user can easily "break" the game by issuing
  * outlandish commands.
- *
  */
 
 import { gptPrompt } from "../shared/openai.js";
@@ -56,6 +55,4 @@ async function main() {
     context.push(response);
     say(`\n${response}\n`);
   }
-
 }
-

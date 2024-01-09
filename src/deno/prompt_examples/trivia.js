@@ -46,12 +46,9 @@ async function main() {
     Be an easy grader. Accept answers that are close enough. Allow misspellings.
     Answer yes or no. If no, provide the correct answer.
     `,
-
       { max_tokens: 64, temperature: 0.1 },
     );
     say(response);
     say("");
   }
-
-
 }

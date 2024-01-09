@@ -4,7 +4,7 @@ import { Application } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
 // static server serves files from the public directory
 // exitSignal is used to shut down the server when the process exits (ctrl-c)
-import { staticServer, exitSignal } from "../shared/server.js";
+import { exitSignal, staticServer } from "../shared/server.js";
 
 // change working directory to directory of this file
 const dirName = new URL(".", Deno.mainModule).pathname;

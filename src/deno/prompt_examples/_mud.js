@@ -111,6 +111,4 @@ async function main() {
       say(things[noun].description);
     }
   }
-
-  
 }

@@ -4,7 +4,7 @@ import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
 const env = await load({ envPath: "../.env" });
 
 const openai = new OpenAI({
-    apiKey: env.OPENAI_API_KEY,
+  apiKey: env.OPENAI_API_KEY,
 });
 
 async function main() {

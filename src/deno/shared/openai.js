@@ -66,14 +66,12 @@ export async function gpt(c = {}) {
     discardStdin: false,
     stream: process.stdout,
   }).start();
-    
+
   const response = await openai.chat.completions.create({
     ...defaults,
     ...c,
     model: models[model].name,
   });
-
-
 
   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
@@ -93,8 +91,8 @@ export async function gpt(c = {}) {
 
 function calculateCost(model, prompt_tokens, completion_tokens) {
   const prompt_cost = (prompt_tokens / 1000) * models[model].promptCost;
-  const completion_cost =
-    (completion_tokens / 1000) * models[model].completionCost;
+  const completion_cost = (completion_tokens / 1000) *
+    models[model].completionCost;
 
   const cost = prompt_cost + completion_cost ?? 0;
   return cost;

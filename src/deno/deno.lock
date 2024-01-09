@@ -3,6 +3,7 @@
   "packages": {
     "specifiers": {
       "npm:chalk@5": "npm:chalk@5.3.0",
+      "npm:dedent": "npm:dedent@1.5.1",
       "npm:openai@4": "npm:openai@4.20.1",
       "npm:ora@7": "npm:ora@7.0.1",
       "npm:wrap-ansi@9": "npm:wrap-ansi@9.0.0"
@@ -98,6 +99,10 @@
       },
       "crypt@0.0.2": {
         "integrity": "sha512-mCxBlsHFYh9C+HVpiEacem8FEBnMXgU9gy4zmNC+SXAZNB/1idgp/aulFJ4FgCi7GPEVbfyng092GqL2k2rmow==",
+        "dependencies": {}
+      },
+      "dedent@1.5.1": {
+        "integrity": "sha512-+LxW+KLWxu3HW3M2w2ympwtqPrqYRzU8fqi6Fhd18fBALe15blJPI/I4+UHveMVG6lJqB4JNd4UG0S5cnVHwIg==",
         "dependencies": {}
       },
       "delayed-stream@1.0.0": {

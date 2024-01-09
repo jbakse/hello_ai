@@ -47,8 +47,6 @@ async function main() {
   const url = await makeImage(result + " Fantasy Art Digital Painting.");
 
   say(url);
-
-  
 }
 
 function pick(array) {

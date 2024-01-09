@@ -20,7 +20,7 @@ async function main() {
             type: "text",
             // text: "Provide a comma separated list of tags for this image.",
             // text: "What does this say? Respond just with the text.",
-            text: "Write an image prompt from this image."
+            text: "Write an image prompt from this image.",
           },
           {
             type: "image_url",
@@ -34,7 +34,7 @@ async function main() {
       },
     ],
   });
-  
+
   console.log(response.choices[0], { colors: true });
   console.log(response.choices[0].message.content);
 }

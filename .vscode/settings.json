@@ -1,6 +1,8 @@
 {
   "deno.enable": true,
   "deno.lint": true,
-  "deno.unstable": false,
-  "deno.enablePaths": ["./src/deno"]
+  "deno.unstable": true,
+  "deno.enablePaths": ["./src/deno"],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "denoland.vscode-deno"
 }
