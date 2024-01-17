@@ -1,7 +1,9 @@
 import wrapAnsi from "npm:wrap-ansi@9";
 
+import Ask from "https://deno.land/x/ask@1.0.6/mod.ts";
+
 export function ask(message = "\n> ") {
-  return prompt(message).trim();
+  return (prompt(message) || "").trim();
 }
 
 export function say(text, wrap = 80) {

@@ -4,7 +4,8 @@ import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
 
 import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
-const env = await load({ envPath: "../.env" });
+const __dirname = new URL(".", import.meta.url).pathname;
+const env = await load({ envPath: `${__dirname}/../.env` });
 
 // ! if apiKey is undefined, `new OpenAI` constructor will try to find
 // ! an environment variable called OPENAI_API_KEY

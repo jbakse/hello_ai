@@ -5,10 +5,6 @@ import { exitSignal, staticServer } from "../shared/server.js";
 import { Chalk } from "npm:chalk@5";
 const chalk = new Chalk({ level: 1 });
 
-// change working directory to directory of this file
-const dirName = new URL(".", Deno.mainModule).pathname;
-Deno.chdir(dirName);
-
 const app = new Application();
 const router = new Router();
 

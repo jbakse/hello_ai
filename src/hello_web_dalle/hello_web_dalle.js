@@ -8,10 +8,6 @@ import { makeImage } from "../shared/openai.js";
 // exitSignal is used to shut down the server when the process exits (ctrl-c)
 import { exitSignal, staticServer } from "../shared/server.js";
 
-// change working directory to directory of this file
-const dirName = new URL(".", Deno.mainModule).pathname;
-Deno.chdir(dirName);
-
 // create web server
 const app = new Application();
 const router = new Router();
