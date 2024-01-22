@@ -1,8 +1,6 @@
 General:
   ☐ comment shared/* for students
-  □ fix deployment for woodsprite
-  □ add deployment for Hello, Web!
-  □ bring in "oil painting" from sketches
+  □ bring in "p5_painter" from sketches
 
 Bugs:
   □ ctrl-c doesn't always exit when on an "ask"

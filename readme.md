@@ -1,9 +1,8 @@
-# OpenAI + Javascript
+# Hello, AI!
 
-Examples for the OpenAI + Javascript class.
+This repository contains code examples written for use in my classes.
 
-
-
+The examples are written in Javascript for the Deno runtime.
 
 ### Running the Hello_X! examples
 
@@ -28,17 +27,20 @@ deno run -A src/prompt_examples/trivia.js
 ### Quitting the examples
 
 Some of the examples run until you stop them explicitly. You can use `ctrl-c` to
-stop them. `ctrl-c` isn't always working, sometimes just entering empty input will close the program.
-
+stop them. After I ported these to Deno `ctrl-c` isn't always working, sometimes just entering empty input will close the program.
 
 ### Tips
+
+If you are running a web demo:
 
 - Have the Chrome Dev Tools open.
 - Make sure `Dev Tools > Network > Disable cache` is checked.
 - Keep an eye on the dev tools console. Thats where chrome tells you about problems.
 
-# Formatting
+# Formatting + Linting
 
-# Linting
+Deno has its own formatter and linter! If you have the VSCode Deno extension installed and configured it will use Deno to format and lint your code. I suggest configuring VS Code to format on save. My Deno config is in `.vscode/settings.json`.
 
 # Testing
+
+This code doesn't have any tests yet. There -is- a stub of a test file `src/deno_test.ts` that I set up to make sure that the Deno test runner is set up, but it doesn't have any useful tests in it yet.
