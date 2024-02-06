@@ -4,8 +4,33 @@ import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
 
 import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
-const __dirname = new URL(".", import.meta.url).pathname;
+import { existsSync } from "https://deno.land/std/fs/mod.ts";
+
+// the following includes a problematic leading slash on Windows
+// const __dirname = new URL(".", import.meta.url).pathname;
+// see https://stackoverflow.com/questions/61829367/node-js-dirname-filename-equivalent-in-deno
+
+// the following should work on all platforms
+import * as path from "https://deno.land/std@0.188.0/path/mod.ts";
+const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
+const parentDir = path.dirname(__dirname);
+
+// check if .env exists
+if (existsSync(`${parentDir}/.env`)) {
+  console.log(chalk.green(`Found .env in ${parentDir}\n`));
+} else {
+  console.log(chalk.red(`Did not find .env in ${parentDir}\n`));
+  console.log("exiting");
+  Deno.exit(1);
+}
+
 const env = await load({ envPath: `${__dirname}/../.env` });
+
+if (!env.OPENAI_API_KEY) {
+  console.log(chalk.red("OPENAI_API_KEY not found in .env"));
+  console.log("exiting");
+  Deno.exit(1);
+}
 
 // ! if apiKey is undefined, `new OpenAI` constructor will try to find
 // ! an environment variable called OPENAI_API_KEY

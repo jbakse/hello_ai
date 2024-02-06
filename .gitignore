@@ -4,7 +4,9 @@
 
 
 # contains installed node modules and dependencies, should be installed with `npm install` rather than from version control
-/node_modules
+# Deno doesn't use node_modules, but we'll ignore it just in case we use it
+# for something parallel to Deno
+node_modules
 
 # .env files contain sensitive information like API keys, database passwords, etc. Should be kept private and not tracked in version control for security reasons.
 .env
