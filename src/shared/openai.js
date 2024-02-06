@@ -3,15 +3,15 @@ import ora from "npm:ora@7";
 import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
 
-import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
-import { existsSync } from "https://deno.land/std/fs/mod.ts";
+import { load } from "https://deno.land/std@0.214.0/dotenv/mod.ts";
+import { existsSync } from "https://deno.land/std@0.214.0/fs/mod.ts";
 
 // the following includes a problematic leading slash on Windows
 // const __dirname = new URL(".", import.meta.url).pathname;
 // see https://stackoverflow.com/questions/61829367/node-js-dirname-filename-equivalent-in-deno
 
 // the following should work on all platforms
-import * as path from "https://deno.land/std@0.188.0/path/mod.ts";
+import * as path from "https://deno.land/std@0.214.0/path/mod.ts";
 const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
 const parentDir = path.dirname(__dirname);
 
