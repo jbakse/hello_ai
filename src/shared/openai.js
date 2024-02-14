@@ -20,16 +20,16 @@ if (existsSync(`${parentDir}/.env`)) {
   console.log(chalk.green(`Found .env in ${parentDir}\n`));
 } else {
   console.log(chalk.red(`Did not find .env in ${parentDir}\n`));
-  console.log("exiting");
-  Deno.exit(1);
+  // console.log("exiting");
+  // Deno.exit(1);
 }
 
 const env = await load({ envPath: `${__dirname}/../.env` });
 
 if (!env.OPENAI_API_KEY) {
   console.log(chalk.red("OPENAI_API_KEY not found in .env"));
-  console.log("exiting");
-  Deno.exit(1);
+  // console.log("exiting");
+  // Deno.exit(1);
 }
 
 // ! if apiKey is undefined, `new OpenAI` constructor will try to find
