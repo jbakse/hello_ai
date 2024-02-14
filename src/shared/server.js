@@ -1,5 +1,6 @@
 import process from "node:process";
 
+console.log(`staticServer serving from ${Deno.cwd()}/public`);
 // Serve static files from public directory
 export async function staticServer(context, next) {
   try {
