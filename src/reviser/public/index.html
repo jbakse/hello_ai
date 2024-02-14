@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reviser!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+
+  <body class="bg-gray-800 text-blue-200 font-sans flex">
+    <div class="w-96 p-4 flex-none">
+      <h1 class="text-xl">Reviser!</h1>
+
+      <label
+        class="inline-block mt-4 py-2 px-4 pV-1 rounded-t-lg bg-gray-600"
+        for="original"
+        >Original</label
+      >
+      <textarea
+        class="block w-full h-96 p-2 bg-gray-300 text-gray-900"
+        id="original"
+      ></textarea>
+
+      <label
+        class="inline-block mt-4 py-2 px-4 pV-1 rounded-t-lg bg-gray-600"
+        for="instruction"
+        >Instruction</label
+      >
+      <textarea
+        class="block w-full h-48 p-2 bg-gray-300 text-gray-900"
+        id="instruction"
+      ></textarea>
+
+      <button
+        class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        id="submit"
+      >
+        Revise It!
+      </button>
+    </div>
+
+    <div class="p-4 flex-1">
+      <h1 class="text-xl">&nbsp;</h1>
+
+      <ul class="flex mt-4 flex-wrap text-center">
+        <li class="block py-2 px-4 pV-1 rounded-t-lg ml-2" id="revision-tab">
+          Revision
+        </li>
+        <li class="block py-2 px-4 pV-1 rounded-t-lg bg-gray-600" id="diff-tab">
+          Differences
+        </li>
+      </ul>
+      <div
+        class="hidden block w-full min-h-96 p-2 bg-gray-300 text-gray-900 whitespace-pre text-wrap"
+        id="revision"
+      ></div>
+
+      <div
+        class="block w-full min-h-96 p-2 bg-gray-300 text-gray-900 whitespace-pre text-wrap"
+        id="diff"
+      ></div>
+    </div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.2.0/diff.js"
+      integrity="sha512-Ubw08LwzeoACkP9I1L0LqwnhiVs6Vg9LWeTFDj0leZIVp5XG28xcxK0lrlFvaL8ZqR8oMOBnFdZLo6agy5+SgQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script src="main.js"></script>
+  </body>
+</html>

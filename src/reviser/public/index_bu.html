@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hello, Deno!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <h1>Hello, Deno!</h1>
+    <input id="prompt" type="text" placeholder="prompt" />
+    <button id="send">send</button>
+
+    <div id="diff"></div>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.2.0/diff.js"
+      integrity="sha512-Ubw08LwzeoACkP9I1L0LqwnhiVs6Vg9LWeTFDj0leZIVp5XG28xcxK0lrlFvaL8ZqR8oMOBnFdZLo6agy5+SgQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script src="main.js"></script>
+
+    <script>
+      const promptElement = document.getElementById("prompt");
+      const sendElement = document.getElementById("send");
+      sendElement.addEventListener("click", () => {
+        fetch(`/api/gpt?prompt=${promptElement.value}`)
+          .then((response) => response.text())
+          .then((responseText) => {
+            const responseElement = document.createElement("p");
+            responseElement.innerText = responseText;
+            document.body.appendChild(responseElement);
+          });
+      });
+    </script>
+  </body>
+</html>
