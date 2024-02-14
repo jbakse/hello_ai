@@ -1,5 +1,6 @@
 {
   "tasks": {
-    "deploy-woodsprite": "deployctl deploy --project=jbakse-woodsprite ./woodsprite/woodsprite.js"
+    "deploy-woodsprite": "deployctl deploy --project=jbakse-woodsprite ./woodsprite/woodsprite.js",
+    "deploy-reviser": "deployctl deploy --project=jbakse-reviser ./reviser/reviser.js"
   }
 }
