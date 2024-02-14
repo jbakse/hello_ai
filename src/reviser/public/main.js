@@ -19,7 +19,7 @@ async function onSubmit() {
   revisionDiv.innerHTML = "loading...";
   diffDiv.innerHTML = "loading...";
 
-  const version2 = await fetch(`/api/gpt?prompt=${prompt}`)
+  const version2 = await fetch(`/api/gpt?prompt=${encodeURIComponent(prompt)}`)
     .then((response) => response.text());
 
   revisionDiv.innerHTML = version2;
