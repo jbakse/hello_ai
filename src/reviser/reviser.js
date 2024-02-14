@@ -1,8 +1,13 @@
+const newWorkingDir = new URL(".", import.meta.url).pathname;
+console.log(`Setting working directory to ${newWorkingDir}`);
+Deno.chdir(newWorkingDir);
+
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { gptPrompt } from "../shared/openai.js";
 import { exitSignal, staticServer } from "../shared/server.js";
 
 import { Chalk } from "npm:chalk@5";
+
 const chalk = new Chalk({ level: 1 });
 
 const app = new Application();
