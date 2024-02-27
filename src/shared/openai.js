@@ -6,6 +6,7 @@ import OpenAI from "npm:openai@4";
 import { load } from "https://deno.land/std@0.214.0/dotenv/mod.ts";
 import { existsSync } from "https://deno.land/std@0.214.0/fs/mod.ts";
 
+// get the directory of the current module
 // the following includes a problematic leading slash on Windows
 // const __dirname = new URL(".", import.meta.url).pathname;
 // see https://stackoverflow.com/questions/61829367/node-js-dirname-filename-equivalent-in-deno
@@ -15,27 +16,37 @@ import * as path from "https://deno.land/std@0.214.0/path/mod.ts";
 const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
 const parentDir = path.dirname(__dirname);
 
+// determine if running on the deno deploy platform
+const isDeployed = Deno.env.get("DENO_DEPLOYMENT_ID") ?? false;
+console.log(`Running in ${isDeployed ? "deployed" : "local"} environment`);
+
 // check if .env exists
 if (existsSync(`${parentDir}/.env`)) {
-  console.log(chalk.green(`Found .env in ${parentDir}\n`));
+  console.log(chalk.green(`Found .env in ${parentDir}`));
 } else {
-  console.log(chalk.red(`Did not find .env in ${parentDir}\n`));
-  // console.log("exiting");
-  // Deno.exit(1);
+  console.log(chalk.yellow(`Did not find .env in ${parentDir}`));
 }
 
-const env = await load({ envPath: `${__dirname}/../.env` });
+// load it
+const env = await load({ envPath: `${parentDir}/.env` });
 
-if (!env.OPENAI_API_KEY) {
-  console.log(chalk.red("OPENAI_API_KEY not found in .env"));
-  // console.log("exiting");
-  // Deno.exit(1);
+// get the openai api key from .env fallback to Deno.env
+const openaiAPIKey = env.OPENAI_API_KEY ?? Deno.env.get("OPENAI_API_KEY");
+
+// bail if no key
+if (!openaiAPIKey) {
+  console.log(chalk.red("OPENAI_API_KEY not found in .env or Deno.env"));
+  if (!isDeployed) {
+    // Deno.exit is not allowed on deno deploy
+    console.log("exiting");
+    Deno.exit(1);
+  }
 }
 
 // ! if apiKey is undefined, `new OpenAI` constructor will try to find
 // ! an environment variable called OPENAI_API_KEY
 const openai = new OpenAI({
-  apiKey: env.OPENAI_API_KEY,
+  apiKey: openaiAPIKey,
 });
 
 const models = {
