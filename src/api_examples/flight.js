@@ -1,6 +1,7 @@
-console.log("Hello, Flights!");
+// this example is unfinished.
+// looks like aviationapi.com is not working right now
 
-// fetch data from https://api.aviationapi.com/v1/airports?apt=JFK, consloe.log it
+console.log("Hello, Flights!");
 
 let airport = "JFK";
 let url = `https://api.aviationapi.com/v1/airports?apt=${airport}&key=xyz`;

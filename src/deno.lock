@@ -2,6 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "npm:@inquirer/prompts@4": "npm:@inquirer/prompts@4.1.0",
       "npm:chalk@5": "npm:chalk@5.3.0",
       "npm:dedent": "npm:dedent@1.5.1",
       "npm:openai@4": "npm:openai@4.20.1",
@@ -9,6 +10,116 @@
       "npm:wrap-ansi@9": "npm:wrap-ansi@9.0.0"
     },
     "npm": {
+      "@inquirer/checkbox@2.1.0": {
+        "integrity": "sha512-DyvMAKFoqJ5BCVBqHqiQELSJvwHTqXaJmV1onATgjxyM3vtp6b8xbfPE5feX1pR9wvH+sso02Pb326S92h6Q/A==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0",
+          "ansi-escapes": "ansi-escapes@4.3.2",
+          "chalk": "chalk@4.1.2",
+          "figures": "figures@3.2.0"
+        }
+      },
+      "@inquirer/confirm@3.0.0": {
+        "integrity": "sha512-LHeuYP1D8NmQra1eR4UqvZMXwxEdDXyElJmmZfU44xdNLL6+GcQBS0uE16vyfZVjH8c22p9e+DStROfE/hyHrg==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0"
+        }
+      },
+      "@inquirer/core@7.0.0": {
+        "integrity": "sha512-g13W5yEt9r1sEVVriffJqQ8GWy94OnfxLCreNSOTw0HPVcszmc/If1KIf7YBmlwtX4klmvwpZHnQpl3N7VX2xA==",
+        "dependencies": {
+          "@inquirer/type": "@inquirer/type@1.2.0",
+          "@types/mute-stream": "@types/mute-stream@0.0.4",
+          "@types/node": "@types/node@20.11.24",
+          "@types/wrap-ansi": "@types/wrap-ansi@3.0.0",
+          "ansi-escapes": "ansi-escapes@4.3.2",
+          "chalk": "chalk@4.1.2",
+          "cli-spinners": "cli-spinners@2.9.2",
+          "cli-width": "cli-width@4.1.0",
+          "figures": "figures@3.2.0",
+          "mute-stream": "mute-stream@1.0.0",
+          "run-async": "run-async@3.0.0",
+          "signal-exit": "signal-exit@4.1.0",
+          "strip-ansi": "strip-ansi@6.0.1",
+          "wrap-ansi": "wrap-ansi@6.2.0"
+        }
+      },
+      "@inquirer/editor@2.0.0": {
+        "integrity": "sha512-0n3agxb1X23A/lx+MI5sV6s/qeywGr4xmKAzZS7ZhToee7L/6DXotWa/VvvwNEoBT0mSuk9SDIAoQ0zLkJmpHg==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0",
+          "external-editor": "external-editor@3.1.0"
+        }
+      },
+      "@inquirer/expand@2.0.0": {
+        "integrity": "sha512-2VETEz+RyRrIeBwULKc5o+PJzKqbsibyT6IY0oP0XvM/17flO6eW7P+rdGCAvFP6g2hKieIH23ZVrcgsosb1/g==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0",
+          "chalk": "chalk@4.1.2",
+          "figures": "figures@3.2.0"
+        }
+      },
+      "@inquirer/input@2.0.0": {
+        "integrity": "sha512-qOjxSHLzqp/u6TvK7UtidPERoCa6BSSKyKG17aEaSOBl9uAQ4XIIqs9TtcEqwDloakarWS6xxTfR0sE1qvLwIQ==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0"
+        }
+      },
+      "@inquirer/password@2.0.0": {
+        "integrity": "sha512-PlUek3wTMiGZothmmGIL4OBLo+rDSCxqIUHsyroyM/+AnR3xr5NHMM0/5z6CuptpJs1ZbQewqslaNi7k6goWMw==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0",
+          "ansi-escapes": "ansi-escapes@4.3.2"
+        }
+      },
+      "@inquirer/prompts@4.1.0": {
+        "integrity": "sha512-HUVJ5yLjDUEq61LQiujs26qqFrKIaZOnpzDRmnYT67bsXUD8gxPmLg+DJq2ENniiDSQyBK33qVQIbeeAdR3ZlQ==",
+        "dependencies": {
+          "@inquirer/checkbox": "@inquirer/checkbox@2.1.0",
+          "@inquirer/confirm": "@inquirer/confirm@3.0.0",
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/editor": "@inquirer/editor@2.0.0",
+          "@inquirer/expand": "@inquirer/expand@2.0.0",
+          "@inquirer/input": "@inquirer/input@2.0.0",
+          "@inquirer/password": "@inquirer/password@2.0.0",
+          "@inquirer/rawlist": "@inquirer/rawlist@2.0.0",
+          "@inquirer/select": "@inquirer/select@2.0.0"
+        }
+      },
+      "@inquirer/rawlist@2.0.0": {
+        "integrity": "sha512-o4jHJBAvknVE6K15zX8AuLMemb1eN1EL0l+BIbJ2JgtpoU2zSuLf6jT98omvtWk/gbaowjw7RLsW7X5F+G19KA==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0",
+          "chalk": "chalk@4.1.2"
+        }
+      },
+      "@inquirer/select@2.0.0": {
+        "integrity": "sha512-ZxWP1gHbReAH6HdoNQRV/9W/UjgKSeiiQX2DxJ6w3GDiQeC3fRAL+lukuMM+QGteGqaTjWwIEWhPLvgbGIrRgg==",
+        "dependencies": {
+          "@inquirer/core": "@inquirer/core@7.0.0",
+          "@inquirer/type": "@inquirer/type@1.2.0",
+          "ansi-escapes": "ansi-escapes@4.3.2",
+          "chalk": "chalk@4.1.2",
+          "figures": "figures@3.2.0"
+        }
+      },
+      "@inquirer/type@1.2.0": {
+        "integrity": "sha512-/vvkUkYhrjbm+RolU7V1aUFDydZVKNKqKHR5TsE+j5DXgXFwrsOPcoGUJ02K0O7q7O53CU2DOTMYCHeGZ25WHA==",
+        "dependencies": {}
+      },
+      "@types/mute-stream@0.0.4": {
+        "integrity": "sha512-CPM9nzrCPPJHQNA9keH9CVkVI+WR5kMa+7XEs5jcGQ0VoAGnLv242w8lIVgwAEfmE4oufJRaTc9PNLQl0ioAow==",
+        "dependencies": {
+          "@types/node": "@types/node@18.16.19"
+        }
+      },
       "@types/node-fetch@2.6.9": {
         "integrity": "sha512-bQVlnMLFJ2d35DkPNjEPmd9ueO/rh5EiaZt2bhqiSarPjZIuIV6bPQVqcrEyvNo+AfTrRGVazle1tl597w3gfA==",
         "dependencies": {
@@ -26,6 +137,16 @@
           "undici-types": "undici-types@5.26.5"
         }
       },
+      "@types/node@20.11.24": {
+        "integrity": "sha512-Kza43ewS3xoLgCEpQrsT+xRo/EJej1y0kVYGiLFE1NEODXGzTfwiC6tXTLMQskn1X4/Rjlh0MQUvx9W+L9long==",
+        "dependencies": {
+          "undici-types": "undici-types@5.26.5"
+        }
+      },
+      "@types/wrap-ansi@3.0.0": {
+        "integrity": "sha512-ltIpx+kM7g/MLRZfkbL7EsCEjfzCcScLpkg37eXEtx5kmrAKBkTJwd1GIAjDSL8wTpM6Hzn5YO4pSb91BEwu1g==",
+        "dependencies": {}
+      },
       "abort-controller@3.0.0": {
         "integrity": "sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==",
         "dependencies": {
@@ -38,9 +159,25 @@
           "humanize-ms": "humanize-ms@1.2.1"
         }
       },
+      "ansi-escapes@4.3.2": {
+        "integrity": "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==",
+        "dependencies": {
+          "type-fest": "type-fest@0.21.3"
+        }
+      },
+      "ansi-regex@5.0.1": {
+        "integrity": "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==",
+        "dependencies": {}
+      },
       "ansi-regex@6.0.1": {
         "integrity": "sha512-n5M855fKb2SsfMIiFFoVrABHJC8QtHwVx+mHWP3QcEqBHYienj5dHSgjbxtC0WEZXYt4wcD6zrQElDPhFuZgfA==",
         "dependencies": {}
+      },
+      "ansi-styles@4.3.0": {
+        "integrity": "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==",
+        "dependencies": {
+          "color-convert": "color-convert@2.0.1"
+        }
       },
       "ansi-styles@6.2.1": {
         "integrity": "sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==",
@@ -73,8 +210,19 @@
           "ieee754": "ieee754@1.2.1"
         }
       },
+      "chalk@4.1.2": {
+        "integrity": "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==",
+        "dependencies": {
+          "ansi-styles": "ansi-styles@4.3.0",
+          "supports-color": "supports-color@7.2.0"
+        }
+      },
       "chalk@5.3.0": {
         "integrity": "sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==",
+        "dependencies": {}
+      },
+      "chardet@0.7.0": {
+        "integrity": "sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==",
         "dependencies": {}
       },
       "charenc@0.0.2": {
@@ -89,6 +237,20 @@
       },
       "cli-spinners@2.9.2": {
         "integrity": "sha512-ywqV+5MmyL4E7ybXgKys4DugZbX0FC6LnwrhjuykIjnK9k8OQacQ7axGKnjDXWNhns0xot3bZI5h55H8yo9cJg==",
+        "dependencies": {}
+      },
+      "cli-width@4.1.0": {
+        "integrity": "sha512-ouuZd4/dm2Sw5Gmqy6bGyNNNe1qt9RpmxveLSO7KcgsTnU7RXfsw+/bukWGo1abgBiMAic068rclZsO4IWmmxQ==",
+        "dependencies": {}
+      },
+      "color-convert@2.0.1": {
+        "integrity": "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==",
+        "dependencies": {
+          "color-name": "color-name@1.1.4"
+        }
+      },
+      "color-name@1.1.4": {
+        "integrity": "sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==",
         "dependencies": {}
       },
       "combined-stream@1.0.8": {
@@ -124,9 +286,31 @@
         "integrity": "sha512-QpLs9D9v9kArv4lfDEgg1X/gN5XLnf/A6l9cs8SPZLRZR3ZkY9+kwIQTxm+fsSej5UMYGE8fdoaZVIBlqG0XTw==",
         "dependencies": {}
       },
+      "emoji-regex@8.0.0": {
+        "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==",
+        "dependencies": {}
+      },
+      "escape-string-regexp@1.0.5": {
+        "integrity": "sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==",
+        "dependencies": {}
+      },
       "event-target-shim@5.0.1": {
         "integrity": "sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==",
         "dependencies": {}
+      },
+      "external-editor@3.1.0": {
+        "integrity": "sha512-hMQ4CX1p1izmuLYyZqLMO/qGNw10wSv9QDCPfzXfyFrOaCSSoRfqE1Kf1s5an66J5JZC62NewG+mK49jOCtQew==",
+        "dependencies": {
+          "chardet": "chardet@0.7.0",
+          "iconv-lite": "iconv-lite@0.4.24",
+          "tmp": "tmp@0.0.33"
+        }
+      },
+      "figures@3.2.0": {
+        "integrity": "sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==",
+        "dependencies": {
+          "escape-string-regexp": "escape-string-regexp@1.0.5"
+        }
       },
       "form-data-encoder@1.7.2": {
         "integrity": "sha512-qfqtYan3rxrnCk1VYaA4H+Ms9xdpPqvLZa6xmMgFvhO32x7/3J/ExcTd6qpxM0vH2GdMI+poehyBZvqfMTto8A==",
@@ -151,10 +335,20 @@
         "integrity": "sha512-2nk+7SIVb14QrgXFHcm84tD4bKQz0RxPuMT8Ag5KPOq7J5fEmAg0UbXdTOSHqNuHSU28k55qnceesxXRZGzKWA==",
         "dependencies": {}
       },
+      "has-flag@4.0.0": {
+        "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
+        "dependencies": {}
+      },
       "humanize-ms@1.2.1": {
         "integrity": "sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==",
         "dependencies": {
           "ms": "ms@2.1.3"
+        }
+      },
+      "iconv-lite@0.4.24": {
+        "integrity": "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==",
+        "dependencies": {
+          "safer-buffer": "safer-buffer@2.1.2"
         }
       },
       "ieee754@1.2.1": {
@@ -167,6 +361,10 @@
       },
       "is-buffer@1.1.6": {
         "integrity": "sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==",
+        "dependencies": {}
+      },
+      "is-fullwidth-code-point@3.0.0": {
+        "integrity": "sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==",
         "dependencies": {}
       },
       "is-interactive@2.0.0": {
@@ -208,6 +406,10 @@
       },
       "ms@2.1.3": {
         "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==",
+        "dependencies": {}
+      },
+      "mute-stream@1.0.0": {
+        "integrity": "sha512-avsJQhyd+680gKXyG/sQc0nXaC6rBkPOfyHYcFb9+hdkqQkR9bdnkJ0AMZhke0oesPqIO+mFFJ+IdBc7mst4IA==",
         "dependencies": {}
       },
       "node-domexception@1.0.0": {
@@ -254,6 +456,10 @@
           "strip-ansi": "strip-ansi@7.1.0"
         }
       },
+      "os-tmpdir@1.0.2": {
+        "integrity": "sha512-D2FR03Vir7FIu45XBY20mTb+/ZSWB00sjU9jdQXt83gDrI4Ztz5Fs7/yy74g2N5SVQY4xY1qDr4rNddwYRVX0g==",
+        "dependencies": {}
+      },
       "readable-stream@3.6.2": {
         "integrity": "sha512-9u/sniCrY3D5WdsERHzHE4G2YCXqoG5FTHUiCC4SIbr6XcLZBY05ya9EKjYek9O5xOAwjGq+1JdGBAS7Q9ScoA==",
         "dependencies": {
@@ -269,18 +475,38 @@
           "signal-exit": "signal-exit@3.0.7"
         }
       },
+      "run-async@3.0.0": {
+        "integrity": "sha512-540WwVDOMxA6dN6We19EcT9sc3hkXPw5mzRNGM3FkdN/vtE9NFvj5lFAPNwUDmJjXidm3v7TC1cTE7t17Ulm1Q==",
+        "dependencies": {}
+      },
       "safe-buffer@5.2.1": {
         "integrity": "sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==",
+        "dependencies": {}
+      },
+      "safer-buffer@2.1.2": {
+        "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==",
         "dependencies": {}
       },
       "signal-exit@3.0.7": {
         "integrity": "sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==",
         "dependencies": {}
       },
+      "signal-exit@4.1.0": {
+        "integrity": "sha512-bzyZ1e88w9O1iNJbKnOlvYTrWPDl46O1bG0D3XInv+9tkPrxrN8jUUTiFlDkkmKWgn1M6CfIA13SuGqOa9Korw==",
+        "dependencies": {}
+      },
       "stdin-discarder@0.1.0": {
         "integrity": "sha512-xhV7w8S+bUwlPTb4bAOUQhv8/cSS5offJuX8GQGq32ONF0ZtDWKfkdomM3HMRA+LhX6um/FZ0COqlwsjD53LeQ==",
         "dependencies": {
           "bl": "bl@5.1.0"
+        }
+      },
+      "string-width@4.2.3": {
+        "integrity": "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==",
+        "dependencies": {
+          "emoji-regex": "emoji-regex@8.0.0",
+          "is-fullwidth-code-point": "is-fullwidth-code-point@3.0.0",
+          "strip-ansi": "strip-ansi@6.0.1"
         }
       },
       "string-width@6.1.0": {
@@ -305,14 +531,36 @@
           "safe-buffer": "safe-buffer@5.2.1"
         }
       },
+      "strip-ansi@6.0.1": {
+        "integrity": "sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==",
+        "dependencies": {
+          "ansi-regex": "ansi-regex@5.0.1"
+        }
+      },
       "strip-ansi@7.1.0": {
         "integrity": "sha512-iq6eVVI64nQQTRYq2KtEg2d2uU7LElhTJwsH4YzIHZshxlgZms/wIc4VoDQTlG/IvVIrBKG06CrZnp0qv7hkcQ==",
         "dependencies": {
           "ansi-regex": "ansi-regex@6.0.1"
         }
       },
+      "supports-color@7.2.0": {
+        "integrity": "sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==",
+        "dependencies": {
+          "has-flag": "has-flag@4.0.0"
+        }
+      },
+      "tmp@0.0.33": {
+        "integrity": "sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==",
+        "dependencies": {
+          "os-tmpdir": "os-tmpdir@1.0.2"
+        }
+      },
       "tr46@0.0.3": {
         "integrity": "sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==",
+        "dependencies": {}
+      },
+      "type-fest@0.21.3": {
+        "integrity": "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==",
         "dependencies": {}
       },
       "undici-types@5.26.5": {
@@ -340,6 +588,14 @@
         "dependencies": {
           "tr46": "tr46@0.0.3",
           "webidl-conversions": "webidl-conversions@3.0.1"
+        }
+      },
+      "wrap-ansi@6.2.0": {
+        "integrity": "sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==",
+        "dependencies": {
+          "ansi-styles": "ansi-styles@4.3.0",
+          "string-width": "string-width@4.2.3",
+          "strip-ansi": "strip-ansi@6.0.1"
         }
       },
       "wrap-ansi@9.0.0": {
