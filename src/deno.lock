@@ -3,8 +3,11 @@
   "packages": {
     "specifiers": {
       "npm:@inquirer/prompts@4": "npm:@inquirer/prompts@4.1.0",
+      "npm:boxen@7.1.1": "npm:boxen@7.1.1",
       "npm:chalk@5": "npm:chalk@5.3.0",
       "npm:dedent": "npm:dedent@1.5.1",
+      "npm:dedent@1.5.1": "npm:dedent@1.5.1",
+      "npm:figlet@1.6.0": "npm:figlet@1.6.0",
       "npm:openai@4": "npm:openai@4.20.1",
       "npm:ora@7": "npm:ora@7.0.1",
       "npm:wrap-ansi@9": "npm:wrap-ansi@9.0.0"
@@ -159,6 +162,12 @@
           "humanize-ms": "humanize-ms@1.2.1"
         }
       },
+      "ansi-align@3.0.1": {
+        "integrity": "sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==",
+        "dependencies": {
+          "string-width": "string-width@4.2.3"
+        }
+      },
       "ansi-escapes@4.3.2": {
         "integrity": "sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==",
         "dependencies": {
@@ -203,12 +212,29 @@
           "readable-stream": "readable-stream@3.6.2"
         }
       },
+      "boxen@7.1.1": {
+        "integrity": "sha512-2hCgjEmP8YLWQ130n2FerGv7rYpfBmnmp9Uy2Le1vge6X3gZIfSmEzP5QTDElFxcvVcXlEn8Aq6MU/PZygIOog==",
+        "dependencies": {
+          "ansi-align": "ansi-align@3.0.1",
+          "camelcase": "camelcase@7.0.1",
+          "chalk": "chalk@5.3.0",
+          "cli-boxes": "cli-boxes@3.0.0",
+          "string-width": "string-width@5.1.2",
+          "type-fest": "type-fest@2.19.0",
+          "widest-line": "widest-line@4.0.1",
+          "wrap-ansi": "wrap-ansi@8.1.0"
+        }
+      },
       "buffer@6.0.3": {
         "integrity": "sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==",
         "dependencies": {
           "base64-js": "base64-js@1.5.1",
           "ieee754": "ieee754@1.2.1"
         }
+      },
+      "camelcase@7.0.1": {
+        "integrity": "sha512-xlx1yCK2Oc1APsPXDL2LdlNP6+uu8OCDdhOBSVT279M/S+y75O30C2VuD8T2ogdePBBl7PfPF4504tnLgX3zfw==",
+        "dependencies": {}
       },
       "chalk@4.1.2": {
         "integrity": "sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==",
@@ -227,6 +253,10 @@
       },
       "charenc@0.0.2": {
         "integrity": "sha512-yrLQ/yVUFXkzg7EDQsPieE/53+0RlaWTs+wBrvW36cyilJ2SaDWfl4Yj7MtLTXleV9uEKefbAGUPv2/iWSooRA==",
+        "dependencies": {}
+      },
+      "cli-boxes@3.0.0": {
+        "integrity": "sha512-/lzGpEWL/8PfI0BmBOPRwp0c/wFNX1RdUML3jK/RcSBA9T8mZDdQpqYBKtCFTOfQbwPqWEOpjqW+Fnayc0969g==",
         "dependencies": {}
       },
       "cli-cursor@4.0.0": {
@@ -290,6 +320,10 @@
         "integrity": "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==",
         "dependencies": {}
       },
+      "emoji-regex@9.2.2": {
+        "integrity": "sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg==",
+        "dependencies": {}
+      },
       "escape-string-regexp@1.0.5": {
         "integrity": "sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==",
         "dependencies": {}
@@ -305,6 +339,10 @@
           "iconv-lite": "iconv-lite@0.4.24",
           "tmp": "tmp@0.0.33"
         }
+      },
+      "figlet@1.6.0": {
+        "integrity": "sha512-31EQGhCEITv6+hi2ORRPyn3bulaV9Fl4xOdR169cBzH/n1UqcxsiSB/noo6SJdD7Kfb1Ljit+IgR1USvF/XbdA==",
+        "dependencies": {}
       },
       "figures@3.2.0": {
         "integrity": "sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==",
@@ -509,6 +547,14 @@
           "strip-ansi": "strip-ansi@6.0.1"
         }
       },
+      "string-width@5.1.2": {
+        "integrity": "sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA==",
+        "dependencies": {
+          "eastasianwidth": "eastasianwidth@0.2.0",
+          "emoji-regex": "emoji-regex@9.2.2",
+          "strip-ansi": "strip-ansi@7.1.0"
+        }
+      },
       "string-width@6.1.0": {
         "integrity": "sha512-k01swCJAgQmuADB0YIc+7TuatfNvTBVOoaUWJjTB9R4VJzR5vNWzf5t42ESVZFPS8xTySF7CAdV4t/aaIm3UnQ==",
         "dependencies": {
@@ -563,6 +609,10 @@
         "integrity": "sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==",
         "dependencies": {}
       },
+      "type-fest@2.19.0": {
+        "integrity": "sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==",
+        "dependencies": {}
+      },
       "undici-types@5.26.5": {
         "integrity": "sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==",
         "dependencies": {}
@@ -590,12 +640,26 @@
           "webidl-conversions": "webidl-conversions@3.0.1"
         }
       },
+      "widest-line@4.0.1": {
+        "integrity": "sha512-o0cyEG0e8GPzT4iGHphIOh0cJOV8fivsXxddQasHPHfoZf1ZexrfeA21w2NaEN1RHE+fXlfISmOE8R9N3u3Qig==",
+        "dependencies": {
+          "string-width": "string-width@5.1.2"
+        }
+      },
       "wrap-ansi@6.2.0": {
         "integrity": "sha512-r6lPcBGxZXlIcymEu7InxDMhdW0KDxpLgoFLcguasxCaJ/SOIZwINatK9KY/tf+ZrlywOKU0UDj3ATXUBfxJXA==",
         "dependencies": {
           "ansi-styles": "ansi-styles@4.3.0",
           "string-width": "string-width@4.2.3",
           "strip-ansi": "strip-ansi@6.0.1"
+        }
+      },
+      "wrap-ansi@8.1.0": {
+        "integrity": "sha512-si7QWI6zUMq56bESFvagtmzMdGOtoxfR+Sez11Mobfc7tm+VkUckk9bW2UeffTGVUbOksxmSw0AA2gs8g71NCQ==",
+        "dependencies": {
+          "ansi-styles": "ansi-styles@6.2.1",
+          "string-width": "string-width@5.1.2",
+          "strip-ansi": "strip-ansi@7.1.0"
         }
       },
       "wrap-ansi@9.0.0": {
@@ -652,6 +716,20 @@
     "https://deno.land/std@0.188.0/path/posix.ts": "8b7c67ac338714b30c816079303d0285dd24af6b284f7ad63da5b27372a2c94d",
     "https://deno.land/std@0.188.0/path/separator.ts": "0fb679739d0d1d7bf45b68dacfb4ec7563597a902edbaf3c59b50d5bcadd93b1",
     "https://deno.land/std@0.188.0/path/win32.ts": "d186344e5583bcbf8b18af416d13d82b35a317116e6460a5a3953508c3de5bba",
+    "https://deno.land/std@0.196.0/_util/os.ts": "d932f56d41e4f6a6093d56044e29ce637f8dcc43c5a90af43504a889cf1775e3",
+    "https://deno.land/std@0.196.0/assert/assert.ts": "9a97dad6d98c238938e7540736b826440ad8c1c1e54430ca4c4e623e585607ee",
+    "https://deno.land/std@0.196.0/assert/assertion_error.ts": "4d0bde9b374dfbcbe8ac23f54f567b77024fb67dbb1906a852d67fe050d42f56",
+    "https://deno.land/std@0.196.0/encoding/base64.ts": "144ae6234c1fbe5b68666c711dc15b1e9ee2aef6d42b3b4345bf9a6c91d70d0d",
+    "https://deno.land/std@0.196.0/fmt/colors.ts": "a7eecffdf3d1d54db890723b303847b6e0a1ab4b528ba6958b8f2e754cf1b3bc",
+    "https://deno.land/std@0.196.0/path/_constants.ts": "e49961f6f4f48039c0dfed3c3f93e963ca3d92791c9d478ac5b43183413136e0",
+    "https://deno.land/std@0.196.0/path/_interface.ts": "6471159dfbbc357e03882c2266d21ef9afdb1e4aa771b0545e90db58a0ba314b",
+    "https://deno.land/std@0.196.0/path/_util.ts": "d7abb1e0dea065f427b89156e28cdeb32b045870acdf865833ba808a73b576d0",
+    "https://deno.land/std@0.196.0/path/common.ts": "ee7505ab01fd22de3963b64e46cff31f40de34f9f8de1fff6a1bd2fe79380000",
+    "https://deno.land/std@0.196.0/path/glob.ts": "d479e0a695621c94d3fd7fe7abd4f9499caf32a8de13f25073451c6ef420a4e1",
+    "https://deno.land/std@0.196.0/path/mod.ts": "f065032a7189404fdac3ad1a1551a9ac84751d2f25c431e101787846c86c79ef",
+    "https://deno.land/std@0.196.0/path/posix.ts": "8b7c67ac338714b30c816079303d0285dd24af6b284f7ad63da5b27372a2c94d",
+    "https://deno.land/std@0.196.0/path/separator.ts": "0fb679739d0d1d7bf45b68dacfb4ec7563597a902edbaf3c59b50d5bcadd93b1",
+    "https://deno.land/std@0.196.0/path/win32.ts": "4fca292f8d116fd6d62f243b8a61bd3d6835a9f0ede762ba5c01afe7c3c0aa12",
     "https://deno.land/std@0.200.0/_util/os.ts": "d932f56d41e4f6a6093d56044e29ce637f8dcc43c5a90af43504a889cf1775e3",
     "https://deno.land/std@0.200.0/assert/assert.ts": "9a97dad6d98c238938e7540736b826440ad8c1c1e54430ca4c4e623e585607ee",
     "https://deno.land/std@0.200.0/assert/assertion_error.ts": "4d0bde9b374dfbcbe8ac23f54f567b77024fb67dbb1906a852d67fe050d42f56",
@@ -1041,6 +1119,30 @@
     "https://deno.land/x/cache@0.2.13/file_fetcher.ts": "5c793cc83a5b9377679ec313b2a2321e51bf7ed15380fa82d387f1cdef3b924f",
     "https://deno.land/x/cache@0.2.13/helpers.ts": "d1545d6432277b7a0b5ea254d1c51d572b6452a8eadd9faa7ad9c5586a1725c4",
     "https://deno.land/x/cache@0.2.13/mod.ts": "3188250d3a013ef6c9eb060e5284cf729083af7944a29e60bb3d8597dd20ebcd",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/_utils/distance.ts": "02af166952c7c358ac83beae397aa2fbca4ad630aecfcd38d92edb1ea429f004",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/ansi_escapes.ts": "193b3c3a4e520274bd8322ca4cab1c3ce38070bed1898cb2ade12a585dddd7c9",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/cursor_position.ts": "caa008d29f7a904908bda514f9839bfbb7a93f2d5f5580501675b646d26a87ff",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/deps.ts": "f48ae5d066684793f4a203524db2a9fd61f514527934b458006f3e57363c0215",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/tty.ts": "155aacdcb7dc00f3f95352616a2415c622ffb88db51c5934e5d2e8341eab010b",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/keycode/_key_codes.ts": "917f0a2da0dbace08cf29bcfdaaa2257da9fe7e705fff8867d86ed69dfb08cfe",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/keycode/key_code.ts": "730fa675ca12fc2a99ba718aa8dbebb1f2c89afd47484e30ef3cb705ddfca367",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_figures.ts": "e22413ddd51bb271b6b861a058742e83aaa3f62c14e8162cb73ae6f047062f51",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_generic_input.ts": "870dad97077582439cee26cb19aec123b4850376331338abdc64a91224733cdc",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_generic_list.ts": "8b0bea4521b1e2f62c564e0d3764a63264043694f4228bb0bc0b63ce129ef33b",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_generic_prompt.ts": "4c9d9cdeda749620a3f5332524df13d083e2d59b1ed90a003f43cd0991a75a10",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_generic_suggestions.ts": "5e6ee1190b4dd5af261ae2ff0196dec7f1988ea9c41c6288cfaece293703002c",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/_utils.ts": "498ae639d7666599d612b615ee85de9103b3c3a913d5196f6b265072674258c7",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/checkbox.ts": "9cfd71f1e278d0ef76054be103d956b66995593902c149380d01b1a1647025f3",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/confirm.ts": "ff892331f6de281079421fe2f57f1d56acb38f28bc48678f87a3fc11ef4a5f7c",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/deps.ts": "2560142f070bb2668e2e8a74683c799461648b9aad01bbf36b3cad3851d712e6",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/input.ts": "81821244f895cc4db32c2511c17e21fb48fd7606e300605aeb2a231ab1680544",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/list.ts": "e5d3e1a6d931b9736d03eec2425fb7b4d2b8d1461a84e210b4787edda414dca4",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts": "f8789193742daf3aba93b543a2ea099383284d60fcccc03567102e28c0d61927",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/number.ts": "5421bf1b6411a6f02c44da4e867f19e02315450769e0feacab3c1c88cc1b06d6",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/prompt.ts": "f10e1c8a0c2ca093a485f7f1156342210b27a8cffc96fe0b4cff60007cabab30",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/secret.ts": "cece271c7ce01e12b249c31c2f9cea9e53b6e6be7621a478dac902bd8f288b61",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/select.ts": "c10902aeaca02a55d9b846934958dd166ee39c741faebdaa9800689e402186cf",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/toggle.ts": "028f80de31750e7b5479727a64b4878f090ecd783fe3bb0d286e2e1c29f0eee3",
     "https://deno.land/x/iro@1.0.3/mod.ts": "ac3bdb5d5373a0b623652bd79ab552c1305e5eabb2872438dfef9c1499611676",
     "https://deno.land/x/iro@1.0.3/src/iro.ts": "b1791e78b57defbd22263a5976da1865873501a6033d2e51070919ad97646995",
     "https://deno.land/x/oak@v12.6.1/application.ts": "3028d3f6fa5ee743de013881550d054372c11d83c45099c2d794033786d27008",
