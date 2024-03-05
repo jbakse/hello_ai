@@ -1,23 +1,36 @@
-import { Chalk } from "npm:chalk@5";
-const chalk = new Chalk({ level: 1 });
+/**
+ * Triva 2
+ *
+ * This example expands triva.js with UX/UI improvements and additional
+ * features including a diffuculty setting. It also uses the GPT API
+ * response_format option to request structured responses.
+ */
+
+// import and configure dependencies
+import chalk from "npm:chalk@5";
+// const chalk = new Chalk({ level: 1 });
 import figlet from "npm:figlet@1.6.0";
 import dedent from "npm:dedent@1.5.1";
 import boxen from "npm:boxen@7.1.1";
 import { gptPrompt } from "../shared/openai.js";
 import { topics } from "./trivia_topics.js";
-
+import wrapAnsi from "npm:wrap-ansi@9";
 import {
   Input,
   Select,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts";
+import { ask } from "../shared/cli.js";
 
+// print banner
 console.clear();
+console.log(chalk.cyan(figlet.textSync("Trivia 2", "Big")));
 
-const banner = figlet.textSync("Trivia 2", "Big");
-console.log(chalk.cyan(banner));
+// main loop
+while (true) {
+  await main();
+}
 
 async function main() {
-  console.log("\n");
   const choice = await Select.prompt({
     message: "Would you like to play or read the instructions?",
     options: ["play", "instructions", "exit"],
@@ -51,8 +64,8 @@ function showInstructions() {
   Good Luck!
   `;
 
-  console.log("\n");
-  console.log(
+  print();
+  print(
     boxen(copy, {
       title: "Instructions",
       padding: 1,
@@ -60,11 +73,15 @@ function showInstructions() {
       borderStyle: "round",
     }),
   );
+  print();
 }
 
+// prompts the user for topic and difficulty
+// generates and asks questions
+// shows the results
 async function playGame() {
   // collect settings
-  console.log("\n");
+  print();
 
   let topic = await Input.prompt({
     message: "Choose your topic:",
@@ -81,65 +98,82 @@ async function playGame() {
   const score = await askQuestions(questions);
 
   // show the results
-  console.log("\n");
-  const resultMessage = `You got ${score} out of ${questions.length} correct!`;
-  console.log(
-    boxen(resultMessage, {
+  print();
+  print(
+    boxen(`You got ${score} out of ${questions.length} correct!`, {
       padding: 1,
       borderColor: "cyan",
       borderStyle: "round",
     }),
   );
+  print();
 }
 
+// takes an array of questions and asks them one by one
+// returns the number of correct answers
 async function askQuestions(questions) {
   let score = 0;
   for (const [index, question] of questions.entries()) {
-    console.log("\n");
-    console.log(chalk.gray(`Question ${index + 1} of ${questions.length}`));
-    const answer = await Input.prompt({
-      message: question,
-    });
-
-    const response = await gptPrompt(
-      `
-        The question was '${question}'.
-        The provided answer was '${answer}'.
-        Was the answer correct?
-        Be an easy grader. Accept answers that are close enough. Allow misspellings.
-        Also provide a response. If the answer was correct respond with a encouraging message and expand on the answer with more information.
-        If the answer was incorrect, say "no" and provide the correct answer.
-        Keep the response brief, one or two setences.
-
-        respond with json with this format:
-        {
-          correct: true,
-          response: "the correct answer"
-        }
-        `,
-      {
-        max_tokens: 128,
-        temperature: 0.1,
-        response_format: { type: "json_object" },
-      },
-    );
-
-    try {
-      const responseData = JSON.parse(response);
-      if (responseData.correct) score++;
-      console.log(
-        responseData.correct
-          ? chalk.green("Correct!")
-          : chalk.red("Incorrect!"),
-      );
-      console.log(responseData.response);
-    } catch (_e) {
-      console.log(`Error parsing response: "${response}"`);
-    }
+    print();
+    print(chalk.gray(`Question ${index + 1} of ${questions.length}`));
+    const isCorrect = await askQuestion(question);
+    if (isCorrect) score++;
   }
   return score;
 }
+
+// takes a question and asks for a response
+// uses the GPT API to evaluate the response
+// returns true if the response was correct
+async function askQuestion(question) {
+  // prompt for answer
+  const answer = await Input.prompt({
+    message: question,
+  });
+
+  // ask GPT for evaluation
+  const prompt = dedent`
+    The question was '${question}'.
+    The provided answer was '${answer}'.
+    Was the answer correct? Be an easy grader. Accept answers that are close enough. Allow misspellings.
+    Also provide a response. If the answer was correct respond with a encouraging message and expand on the answer with more information.
+    If the answer was incorrect, say "no" and provide the correct answer and explain why the answer was incorrect in an encouraging way.
+    Keep the response brief, one or two sentences.
+
+    Respond with json with this format:
+    {
+      isCorrect: true,
+      response: "the correct answer"
+    }
+  `;
+  const response = await gptPrompt(prompt, {
+    max_tokens: 128,
+    temperature: 0.1,
+    response_format: { type: "json_object" },
+  });
+  const responseData = tryJSONParse(response);
+
+  // handle error
+  if (!responseData) {
+    console.error(`Error parsing response: "${response}"`);
+    return false;
+  }
+
+  // show the result
+  if (responseData.isCorrect) {
+    print(chalk.green("Correct!"));
+  } else {
+    print(chalk.red("Incorrect!"));
+  }
+  print(responseData.response);
+
+  // return the evaluation for scoring
+  return responseData.isCorrect;
+}
+
+// uses the GPT API to generate questions for a given topic and difficulty
 async function getQuestions(topic, difficulty) {
+  // ask GPT for questions
   const difficultyPrompts = {
     easy: "Difficulty: easy. Generate questions for a kindergarten student.",
     medium: "Difficulty: medium. Generate questions for high school student.",
@@ -148,16 +182,13 @@ async function getQuestions(topic, difficulty) {
   };
   const prompt = dedent`
     Generate 4 questions for a triva game. Do not provide answers.
-    
-    provide the questions as a json array of strings like this:
+    The topic is ${topic}.
+    ${difficultyPrompts[difficulty]}
+
+    Provide the questions as a json array of strings like this:
     {
         questions: ["question 1", "question 2", "question 3", "question 4"]
     }
-
-    Include only the array, start with [ and end with ].
-
-    The topic is ${topic}.
-    ${difficultyPrompts[difficulty]}
   `;
 
   const response = await gptPrompt(prompt, {
@@ -166,14 +197,28 @@ async function getQuestions(topic, difficulty) {
     response_format: { type: "json_object" },
   });
 
-  try {
-    return JSON.parse(response)?.questions ?? [];
-  } catch (_e) {
-    console.log(`Error parsing questions: "${response}"`);
+  const responseData = tryJSONParse(response);
+
+  // handle error
+  if (!responseData) {
+    console.error(`Error parsing questions: "${response}"`);
     return [];
   }
+
+  // respond with the questions or empty array if questions are missing
+  return responseData?.questions ?? [];
 }
 
-while (true) {
-  await main();
+// log text, wrapping at 80 characters
+function print(text = "", wrap = 80) {
+  console.log(wrapAnsi(text, wrap));
+}
+
+// try to parse JSON, return null if it fails
+function tryJSONParse(str) {
+  try {
+    return JSON.parse(str);
+  } catch (_e) {
+    return null;
+  }
 }
