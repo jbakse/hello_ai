@@ -8,6 +8,32 @@
 
 import { gptPrompt } from "../shared/openai.js";
 
+if (!Deno.args[0]) {
+  console.log("Usage: duck_duck_go.js '<query>'");
+  Deno.exit(1);
+}
+
+// console.log("Searching for:", Deno.args[0]);
+
+const abstract = await searchDuckDuckGo(Deno.args[0]);
+if (!abstract) {
+  console.log("No abstract found.");
+  Deno.exit(1);
+}
+
+const response = await gptPrompt(
+  `Read this abstract: ${abstract}\n\nList three facts from the abstract as bullet points. Be extreemly concise. Each bullet point should contain a single fact in less than 10 words.`,
+  { temperature: .1 },
+);
+
+console.log(response);
+console.log(`Summarized from DuckDuckGo API query for ${Deno.args[0]}`);
+console.log(
+  `https://api.duckduckgo.com/?q='${
+    encodeURIComponent(Deno.args[0])
+  }'&format=json`,
+);
+
 async function searchDuckDuckGo(query) {
   const url = `https://api.duckduckgo.com/?q='${
     encodeURIComponent(query)
@@ -28,25 +54,3 @@ async function searchDuckDuckGo(query) {
     return false;
   }
 }
-
-if (!Deno.args[0]) {
-  console.log("Usage: duck_duck_go.js '<query>'");
-  Deno.exit(1);
-}
-
-console.log("Searching for:", Deno.args[0]);
-
-const abstract = await searchDuckDuckGo(Deno.args[0]);
-if (!abstract) {
-  console.log("No abstract found.");
-  Deno.exit(1);
-}
-
-console.log("Abstract:", abstract);
-
-const response = await gptPrompt(
-  `Read this abstract: ${abstract}\n\nList three facts from the abstract as bullet points. Be extreemly concise. Each bullet point should contain a single fact in less than 10 words.`,
-  { temperature: .1 },
-);
-
-console.log(response);
