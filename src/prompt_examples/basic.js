@@ -3,7 +3,9 @@
  */
 
 import { ask, say } from "../shared/cli.js";
-import { gptPrompt } from "../shared/openai.js";
+import { gptPrompt, initOpenAI } from "../shared/openai.js";
+
+initOpenAI(true);
 
 main();
 

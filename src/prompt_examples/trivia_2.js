@@ -12,14 +12,16 @@ import chalk from "npm:chalk@5";
 import figlet from "npm:figlet@1.6.0";
 import dedent from "npm:dedent@1.5.1";
 import boxen from "npm:boxen@7.1.1";
-import { gptPrompt } from "../shared/openai.js";
+import { gptPrompt, initOpenAI } from "../shared/openai.js";
 import { topics } from "./trivia_topics.js";
 import wrapAnsi from "npm:wrap-ansi@9";
 import {
   Input,
   Select,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts";
-import { ask } from "../shared/cli.js";
+
+// init openai quietly
+initOpenAI(false);
 
 // print banner
 console.clear();
@@ -115,7 +117,9 @@ async function askQuestions(questions) {
   let score = 0;
   for (const [index, question] of questions.entries()) {
     print();
-    print(chalk.gray(`Question ${index + 1} of ${questions.length}`));
+    print(
+      chalk.gray(`Question ${index + 1} of ${questions.length}`),
+    );
     const isCorrect = await askQuestion(question);
     if (isCorrect) score++;
   }
@@ -150,6 +154,9 @@ async function askQuestion(question) {
     max_tokens: 128,
     temperature: 0.1,
     response_format: { type: "json_object" },
+  }, {
+    loadingMessage: "Evaluating your answer...",
+    successMessage: false,
   });
   const responseData = tryJSONParse(response);
 
@@ -160,6 +167,7 @@ async function askQuestion(question) {
   }
 
   // show the result
+  print();
   if (responseData.isCorrect) {
     print(chalk.green("Correct!"));
   } else {
@@ -195,6 +203,9 @@ async function getQuestions(topic, difficulty) {
     max_tokens: 2048,
     temperature: 0.3,
     response_format: { type: "json_object" },
+  }, {
+    loadingMessage: "Generating questions...",
+    successMessage: "Questions generated!",
   });
 
   const responseData = tryJSONParse(response);

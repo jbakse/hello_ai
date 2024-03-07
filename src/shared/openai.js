@@ -3,51 +3,64 @@ import ora from "npm:ora@7";
 import chalk from "npm:chalk@5";
 import OpenAI from "npm:openai@4";
 
+import * as path from "https://deno.land/std@0.214.0/path/mod.ts";
+
 import { load } from "https://deno.land/std@0.214.0/dotenv/mod.ts";
 import { existsSync } from "https://deno.land/std@0.214.0/fs/mod.ts";
 
-// get the directory of the current module
-// the following includes a problematic leading slash on Windows
-// const __dirname = new URL(".", import.meta.url).pathname;
-// see https://stackoverflow.com/questions/61829367/node-js-dirname-filename-equivalent-in-deno
+let openai = null;
 
-// the following should work on all platforms
-import * as path from "https://deno.land/std@0.214.0/path/mod.ts";
-const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
-const parentDir = path.dirname(__dirname);
+export async function initOpenAI(printDebugInfo = true) {
+  // get the directory of the current module
+  // the following includes a problematic leading slash on Windows
+  // const __dirname = new URL(".", import.meta.url).pathname;
+  // see https://stackoverflow.com/questions/61829367/node-js-dirname-filename-equivalent-in-deno
 
-// determine if running on the deno deploy platform
-const isDeployed = Deno.env.get("DENO_DEPLOYMENT_ID") ?? false;
-console.log(`Running in ${isDeployed ? "deployed" : "local"} environment`);
+  // the following should work on all platforms
 
-// check if .env exists
-if (existsSync(`${parentDir}/.env`)) {
-  console.log(chalk.green(`Found .env in ${parentDir}`));
-} else {
-  console.log(chalk.yellow(`Did not find .env in ${parentDir}`));
-}
+  const __dirname = path.dirname(path.fromFileUrl(import.meta.url));
+  const parentDir = path.dirname(__dirname);
+  printDebugInfo && console.log("openai.js - parentDir is", parentDir);
 
-// load it
-const env = await load({ envPath: `${parentDir}/.env` });
+  // determine if running on the deno deploy platform
+  const isDeployed = Deno.env.get("DENO_DEPLOYMENT_ID") ?? false;
+  printDebugInfo && console.log(
+    `openai.js - running in ${isDeployed ? "deployed" : "local"} environment`,
+  );
 
-// get the openai api key from .env fallback to Deno.env
-const openaiAPIKey = env.OPENAI_API_KEY ?? Deno.env.get("OPENAI_API_KEY");
-
-// bail if no key
-if (!openaiAPIKey) {
-  console.log(chalk.red("OPENAI_API_KEY not found in .env or Deno.env"));
-  if (!isDeployed) {
-    // Deno.exit is not allowed on deno deploy
-    console.log("exiting");
-    Deno.exit(1);
+  // check if .env exists
+  if (existsSync(`${parentDir}/.env`)) {
+    printDebugInfo &&
+      console.log("openai.js -", chalk.green(`Found .env in ${parentDir}`));
+  } else {
+    printDebugInfo && console.log(
+      "openai.js - ",
+      chalk.yellow(`Did not find .env in ${parentDir}`),
+    );
   }
-}
 
-// ! if apiKey is undefined, `new OpenAI` constructor will try to find
-// ! an environment variable called OPENAI_API_KEY
-const openai = new OpenAI({
-  apiKey: openaiAPIKey,
-});
+  // load it
+  const env = await load({ envPath: `${parentDir}/.env` });
+
+  // get the openai api key from .env fallback to Deno.env
+  const openaiAPIKey = env.OPENAI_API_KEY ?? Deno.env.get("OPENAI_API_KEY");
+
+  // bail if no key
+  if (!openaiAPIKey) {
+    console.error(chalk.red("OPENAI_API_KEY not found in .env or Deno.env"));
+    if (!isDeployed) {
+      // Deno.exit is not allowed on deno deploy
+      console.log("exiting");
+      Deno.exit(1);
+    }
+  }
+
+  // ! if apiKey is undefined, `new OpenAI` constructor will try to find
+  // ! an environment variable called OPENAI_API_KEY
+  openai = new OpenAI({
+    apiKey: openaiAPIKey,
+  });
+}
 
 const models = {
   "3.5-turbo": {
@@ -83,13 +96,15 @@ const defaults = {
 
 let total_cost = 0;
 
-export async function gptPrompt(prompt, c = {}) {
+export async function gptPrompt(prompt, c = {}, settings = {}) {
   c.messages = [{ role: "user", content: prompt }];
-  const message = await gpt(c);
+  const message = await gpt(c, settings);
   return message.content.trim() ?? "";
 }
 
-export async function gpt(c = {}) {
+export async function gpt(c = {}, settings = {}) {
+  if (!openai) await initOpenAI();
+
   const model = c.model ?? "4.0-turbo";
 
   if (!models[model]) {
@@ -99,7 +114,7 @@ export async function gpt(c = {}) {
   const startTime = performance.now();
 
   const spinner = ora({
-    text: model,
+    text: settings?.loadingMessage ?? model,
     discardStdin: false,
     stream: process.stdout,
   }).start();
@@ -117,11 +132,16 @@ export async function gpt(c = {}) {
   const cost = calculateCost(model, p_tokens, c_tokents);
   total_cost += cost;
 
-  spinner.succeed(
-    chalk.gray(
-      formatUsage(model, p_tokens, c_tokents, seconds, cost, total_cost),
-    ),
-  );
+  if (settings?.successMessage === false) {
+    spinner.stop();
+  } else {
+    spinner.succeed(
+      settings?.successMessage ??
+        chalk.gray(
+          formatUsage(model, p_tokens, c_tokents, seconds, cost, total_cost),
+        ),
+    );
+  }
 
   return response.choices[0].message;
 }
@@ -142,6 +162,8 @@ function formatUsage(m, p_tokens, c_tokents, seconds, cost, t_cost) {
 }
 
 export async function makeImage(prompt, c = {}) {
+  if (!openai) initOpenAI();
+
   const defaults = {
     model: "dall-e-3",
     quality: "standard",
