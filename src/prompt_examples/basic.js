@@ -5,8 +5,6 @@
 import { ask, say } from "../shared/cli.js";
 import { gptPrompt, initOpenAI } from "../shared/openai.js";
 
-initOpenAI(true);
-
 main();
 
 async function main() {
@@ -14,7 +12,9 @@ async function main() {
 
   const response = ask("What do you want to ask? ");
 
-  const result = await gptPrompt(response, { temperature: 1.9 });
+  const result = await gptPrompt(response, {
+    temperature: .8,
+  });
 
   say(`\n${result}`);
 }

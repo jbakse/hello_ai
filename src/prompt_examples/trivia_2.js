@@ -21,7 +21,7 @@ import {
 } from "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts";
 
 // init openai quietly
-initOpenAI(false);
+await initOpenAI(false);
 
 // print banner
 console.clear();

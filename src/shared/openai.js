@@ -60,6 +60,7 @@ export async function initOpenAI(printDebugInfo = true) {
   openai = new OpenAI({
     apiKey: openaiAPIKey,
   });
+  return openai;
 }
 
 const models = {
@@ -162,7 +163,7 @@ function formatUsage(m, p_tokens, c_tokents, seconds, cost, t_cost) {
 }
 
 export async function makeImage(prompt, c = {}) {
-  if (!openai) initOpenAI();
+  if (!openai) await initOpenAI();
 
   const defaults = {
     model: "dall-e-3",
