@@ -1,4 +1,5 @@
 import process from "node:process";
+import * as log from "./logger.ts";
 
 // Serve static files from public directory
 export async function staticServer(context, next) {
@@ -17,7 +18,7 @@ Deno.addSignalListener("SIGINT", () => {
   Deno.exit();
 });
 process.on("exit", () => {
-  console.log("Goodbye!");
+  log.info("Goodbye!");
   exitController.abort();
 });
 export const exitSignal = exitController.signal;

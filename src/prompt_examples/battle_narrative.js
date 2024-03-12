@@ -7,8 +7,8 @@
  * It then feeds this story back into gpt to summarize it.
  */
 
-import { say } from "../shared/cli.js";
-import { gptPrompt } from "../shared/openai.js";
+import { say } from "../shared/cli.ts";
+import { gptPrompt } from "../shared/openai.ts";
 
 async function main() {
   const fox = { hp: 10, attack: 12, defense: 6 };

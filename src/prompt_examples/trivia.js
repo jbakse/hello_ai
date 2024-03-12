@@ -3,8 +3,8 @@
  * Uses GPT to generate trivia questions based on a user-provided topic.
  * Uses GPT to evaluate the answers.
  */
-import { ask, say } from "../shared/cli.js";
-import { gptPrompt } from "../shared/openai.js";
+import { ask, say } from "../shared/cli.ts";
+import { gptPrompt } from "../shared/openai.ts";
 
 main();
 

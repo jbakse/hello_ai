@@ -3,12 +3,12 @@
  */
 
 import { ask, say } from "../shared/cli.ts";
-import { gptPrompt, initOpenAI } from "../shared/openai.js";
+import { gptPrompt, initOpenAI } from "../shared/openai.ts";
 
 main();
 
 async function main() {
-  await initOpenAI();
+  initOpenAI();
 
   say("Hello, GPT!");
 

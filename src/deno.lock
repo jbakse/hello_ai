@@ -1143,6 +1143,7 @@
     "https://deno.land/x/cache@0.2.13/mod.ts": "3188250d3a013ef6c9eb060e5284cf729083af7944a29e60bb3d8597dd20ebcd",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/_utils/distance.ts": "02af166952c7c358ac83beae397aa2fbca4ad630aecfcd38d92edb1ea429f004",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/ansi_escapes.ts": "193b3c3a4e520274bd8322ca4cab1c3ce38070bed1898cb2ade12a585dddd7c9",
+    "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts": "328916ea1627c202b39f2ed0f1ca65a573cfb75fa8986aa3dbcc0b7463911005",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/cursor_position.ts": "caa008d29f7a904908bda514f9839bfbb7a93f2d5f5580501675b646d26a87ff",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/deps.ts": "f48ae5d066684793f4a203524db2a9fd61f514527934b458006f3e57363c0215",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/tty.ts": "155aacdcb7dc00f3f95352616a2415c622ffb88db51c5934e5d2e8341eab010b",

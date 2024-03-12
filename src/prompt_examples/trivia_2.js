@@ -7,25 +7,25 @@
  */
 
 // import and configure dependencies
-import chalk from "npm:chalk@5";
-// const chalk = new Chalk({ level: 1 });
+
 import figlet from "npm:figlet@1.6.0";
 import dedent from "npm:dedent@1.5.1";
 import boxen from "npm:boxen@7.1.1";
-import { gptPrompt, initOpenAI } from "../shared/openai.js";
-import { topics } from "./trivia_topics.js";
 import wrapAnsi from "npm:wrap-ansi@9";
 import {
   Input,
   Select,
 } from "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts";
+import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
+
+import { gptPrompt, initOpenAI } from "../shared/openai.ts";
 
 // init openai quietly
 await initOpenAI(false);
 
 // print banner
 console.clear();
-console.log(chalk.cyan(figlet.textSync("Trivia 2", "Big")));
+console.log(colors.cyan(figlet.textSync("Trivia 2", "Big")));
 
 // main loop
 while (true) {
@@ -85,9 +85,9 @@ async function playGame() {
   // collect settings
   print();
 
-  let topic = await Input.prompt({
+  const topic = await Input.prompt({
     message: "Choose your topic:",
-    suggestions: topics,
+    suggestions: ["science", "history", "literature", "dungeons and dragons"],
   });
 
   const difficulty = await Select.prompt({
@@ -118,7 +118,7 @@ async function askQuestions(questions) {
   for (const [index, question] of questions.entries()) {
     print();
     print(
-      chalk.gray(`Question ${index + 1} of ${questions.length}`),
+      colors.gray(`Question ${index + 1} of ${questions.length}`),
     );
     const isCorrect = await askQuestion(question);
     if (isCorrect) score++;
@@ -169,9 +169,9 @@ async function askQuestion(question) {
   // show the result
   print();
   if (responseData.isCorrect) {
-    print(chalk.green("Correct!"));
+    print(colors.green("Correct!"));
   } else {
-    print(chalk.red("Incorrect!"));
+    print(colors.red("Incorrect!"));
   }
   print(responseData.response);
 
