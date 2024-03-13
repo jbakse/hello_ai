@@ -7,7 +7,7 @@ import * as log from "./logger.ts";
 import { isDenoDeployment, loadEnv } from "./util.ts";
 
 const chatParamsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
-  model: "gpt-3.5-turbo",
+  model: "gpt-4-turbo-preview",
   messages: [],
   frequency_penalty: 0,
   logit_bias: {},
