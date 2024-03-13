@@ -13,11 +13,11 @@ const chalk = new Chalk({ level: 1 });
 
 import dedent from "npm:dedent";
 
-import { ask, say } from "../shared/cli.js";
-import { gpt } from "../shared/openai.js";
+import { ask, say } from "../shared/cli.ts";
+import { gpt } from "../shared/openai.ts";
 
 /////////////////////////////////////////////////////////////////
-// GAME CODE
+/// GAME CODE
 
 const game_data = {
   player_hp: 10,
@@ -62,7 +62,7 @@ function sitRep() {
 }
 
 /////////////////////////////////////////////////////////////////
-// GPT CONFIG
+/// GPT CONFIG
 
 const tools = [
   {
@@ -128,7 +128,7 @@ const messages = [
 ];
 
 /////////////////////////////////////////////////////////////////
-// GAME LOOP
+/// GAME LOOP
 
 async function game() {
   say(
@@ -199,7 +199,7 @@ try {
 }
 
 /////////////////////////////////////////////////////////////////
-// UTIL
+/// UTIL
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
