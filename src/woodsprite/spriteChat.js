@@ -1,4 +1,4 @@
-import { gpt } from "../shared/openai.js";
+import { gpt } from "../shared/openai.ts";
 
 export async function spriteChat(context) {
   try {

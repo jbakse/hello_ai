@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "start": "deno run --allow-env --allow-net --allow-read=.. woodsprite.js",
-    "dev": "deno run --allow-env --allow-net --allow-read=.. --watch --no-clear-screen woodsprite.js"
+    "start": "deno run --allow-env --allow-net --allow-read=../.. woodsprite.js",
+    "dev": "deno run --allow-env --allow-net --allow-read=../.. --watch --no-clear-screen woodsprite.js"
   }
 }

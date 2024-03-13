@@ -36,6 +36,7 @@ function log(level: number, color: Color, label: string, msg: unknown) {
 
 function formatCaller() {
   const stack = new Error().stack || "";
+
   const lines = stack.split("\n");
   const callingLine = lines[4]; // find grand caller
   const match = callingLine.match(/at (\S+) \((.*?):(\d+):\d+\)/);

@@ -1,11 +1,7 @@
 /**
- * This is a basic example showing how to use Deno to make a terminal app.
+ * This is a minimal example of a deno CLI app.
  */
 
-import { ask, say } from "../shared/cli.js";
+const response = prompt("What is your name? ");
 
-say("Hello, Deno!");
-
-const response = ask("What is your name? ");
-
-say(`\nHello, ${response}!`);
+console.log(`Hello, ${response}!`);

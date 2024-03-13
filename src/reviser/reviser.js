@@ -1,6 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { gptPrompt } from "../shared/openai.js";
-import { exitSignal, staticServer } from "../shared/server.js";
+import { gptPrompt } from "../shared/openai.ts";
+import { createExitSignal, staticServer } from "../shared/server.ts";
 import { Chalk } from "npm:chalk@5";
 
 // output an empty line
@@ -31,4 +31,4 @@ app.use(router.allowedMethods());
 
 console.log(chalk.green("\nListening on http://localhost:8000"));
 
-await app.listen({ port: 8000, signal: exitSignal });
+await app.listen({ port: 8000, signal: createExitSignal() });

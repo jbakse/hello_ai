@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "start": "deno run --unstable-kv --allow-env --allow-net --allow-read=../.. hitcounter.js",
+    "dev": "deno run --unstable-kv --allow-env --allow-net --allow-read=../.. --watch --no-clear-screen hitcounter.js"
+  }
+}

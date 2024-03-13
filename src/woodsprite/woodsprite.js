@@ -1,5 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { exitSignal, staticServer } from "../shared/server.js";
+import { createExitSignal, staticServer } from "../shared/server.ts";
 import { spriteChat } from "./spriteChat.js";
 
 // Change the current working directory to the directory of this script
@@ -19,4 +19,4 @@ app.use(router.allowedMethods());
 
 // Start server
 console.log(`Listening on http://localhost:8000`);
-await app.listen({ port: 8000, signal: exitSignal });
+await app.listen({ port: 8000, signal: createExitSignal() });

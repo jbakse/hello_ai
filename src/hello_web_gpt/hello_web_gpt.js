@@ -1,6 +1,6 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { gptPrompt } from "../shared/openai.js";
-import { exitSignal, staticServer } from "../shared/server.js";
+import { gptPrompt } from "../shared/openai.ts";
+import { createExitSignal, staticServer } from "../shared/server.ts";
 
 import { Chalk } from "npm:chalk@5";
 const chalk = new Chalk({ level: 1 });
@@ -16,10 +16,10 @@ router.get("/api/gpt", async (ctx) => {
   ctx.response.body = result;
 });
 
-app.use(staticServer);
 app.use(router.routes());
-app.use(router.allowedMethods());
+// app.use(router.allowedMethods());
+app.use(staticServer);
 
 console.log(chalk.green("\nListening on http://localhost:8000"));
 
-await app.listen({ port: 8000, signal: exitSignal });
+await app.listen({ port: 8000, signal: createExitSignal() });

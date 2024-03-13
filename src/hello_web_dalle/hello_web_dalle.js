@@ -2,11 +2,11 @@
 // write web apps in Deno.
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
-import { makeImage } from "../shared/openai.js";
+import { makeImage } from "../shared/openai.ts";
 
 // static server serves files from the public directory
 // exitSignal is used to shut down the server when the process exits (ctrl-c)
-import { exitSignal, staticServer } from "../shared/server.js";
+import { createExitSignal, staticServer } from "../shared/server.ts";
 
 // create web server
 const app = new Application();
@@ -33,4 +33,4 @@ app.use(router.allowedMethods());
 console.log("\nListening on http://localhost:8000");
 
 // start the web server
-await app.listen({ port: 8000, signal: exitSignal });
+await app.listen({ port: 8000, signal: createExitSignal() });
