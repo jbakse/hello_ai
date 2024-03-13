@@ -1,7 +1,7 @@
 #!/usr/bin/env -S deno run --allow-env --allow-read --allow-net
 import dedent from "npm:dedent@1.5.1";
 
-import { gpt, initOpenAI } from "../shared/openai.js";
+import { gpt, initOpenAI } from "../shared/openai.ts";
 
 await initOpenAI(false);
 
