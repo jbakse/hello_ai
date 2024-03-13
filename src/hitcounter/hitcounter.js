@@ -12,15 +12,14 @@ const kv = await Deno.openKv();
 const app = new Application();
 const router = new Router();
 
-router.get("/api/random", async (ctx) => {
+router.get("/api/random", (ctx) => {
   ctx.response.body = Math.random();
 });
 
-router.get("/api/randomint", async (ctx) => {
+router.get("/api/randomint", (ctx) => {
   ctx.response.body = Math.floor(Math.random() * 100);
 });
 
-let hits = 0;
 router.get("/api/hits", async (ctx) => {
   const kvResponse = await kv.get(["hits"]);
   const hits = kvResponse.value ?? 0;
