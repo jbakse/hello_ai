@@ -1,0 +1,3 @@
+- deploy with deployctl or github action?
+- should use oak or just built in deno?
+- a p5 demo?
