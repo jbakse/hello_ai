@@ -11,15 +11,14 @@
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing
 
 // import libraries
-import { Chalk } from "npm:chalk@5";
-const chalk = new Chalk({ level: 1 });
-import { input, select } from "npm:@inquirer/prompts@4";
+
+import { ask, say } from "../shared/cli.ts";
 
 // welcome message
-console.log(chalk.blue(`\n\nWelcome to Word Smith!`));
+say(`Welcome to Word Smith!`);
 
 // prompt the user for a word
-const word = await input({ message: "Enter your word" });
+const word = await ask("Enter your word");
 
 // fetch the data
 const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`;
@@ -29,24 +28,4 @@ const definition = data?.[0]?.meanings?.[0]?.definitions?.[0]?.definition ??
   "unknown";
 
 // report the data
-// console.log(chalk.gray(JSON.stringify(data, null, 2)));
-console.log(chalk.blue(definition));
-
-// collect feedback
-console.log("\n");
-const feedback = await select({
-  message: "Happy?",
-  choices: [{
-    name: "yes",
-    value: true,
-    description: "that definition was great",
-  }, {
-    name: "no",
-    value: false,
-    description: "i didn't like it",
-  }],
-});
-
-console.log(chalk.blue(feedback ? "Great!" : "Whatever."));
-
-Deno.exit(0);
+say(definition);

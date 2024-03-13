@@ -1,6 +1,8 @@
 General:
   ☐ comment shared/* for students
   □ bring in "p5_painter" from sketches
+  □ web apps, order api middleware before static
+
 
 Bugs:
   □ ctrl-c doesn't always exit when on an "ask"

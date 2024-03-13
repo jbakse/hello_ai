@@ -6,7 +6,7 @@
  * I think the DuckDuckGo API may be unsupported, but it works for now.
  */
 
-import { gptPrompt } from "../shared/openai.js";
+import { gptPrompt } from "../shared/openai.ts";
 
 if (!Deno.args[0]) {
   console.log("Usage: duck_duck_go.js '<query>'");
