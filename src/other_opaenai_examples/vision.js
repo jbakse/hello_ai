@@ -1,7 +1,7 @@
 import OpenAI from "npm:openai@4";
 
 import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
-const env = await load({ envPath: "../.env" });
+const env = await load({ envPath: ".env" });
 
 const openai = new OpenAI({
   apiKey: env.OPENAI_API_KEY,
