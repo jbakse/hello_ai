@@ -17,7 +17,7 @@ router.get("/api/gpt", async (ctx) => {
 });
 
 app.use(router.routes());
-// app.use(router.allowedMethods());
+app.use(router.allowedMethods());
 app.use(staticServer);
 
 console.log(chalk.green("\nListening on http://localhost:8000"));

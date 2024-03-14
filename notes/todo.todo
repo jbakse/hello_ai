@@ -1,11 +1,11 @@
 General:
+  □ deploy reviser, woodsprite, make sure deploys work
   ☐ comment shared/* for students
-  □ bring in "p5_painter" from sketches
-  □ web apps, order api middleware before static
+  □ p5_painter
+    □ bring in "p5_painter" from sketches
+    □ improve ux/ui
+  
+  ✓ web apps, order api middleware before static @done(24-03-14 10:28)
+  ✓ add fal.ai example @done(24-03-14 10:28)
+  
 
-
-Bugs:
-  □ ctrl-c doesn't always exit when on an "ask"
-    □ actually it seems to not work in other cases in deno also, see auto_dnd
-    □ also ask isn't actually async
-    □ should I use something other than `prompt`?

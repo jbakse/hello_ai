@@ -12,10 +12,11 @@ console.log(`Current working directory: ${Deno.cwd()}`);
 // Setup server
 const app = new Application();
 const router = new Router();
-app.use(staticServer);
 router.post("/spriteChat", spriteChat);
+
 app.use(router.routes());
 app.use(router.allowedMethods());
+app.use(staticServer);
 
 // Start server
 console.log(`Listening on http://localhost:8000`);

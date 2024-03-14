@@ -191,50 +191,51 @@ function formatStats(
   return `${m} ${p_tokens}/${c_tokents}t ${secondsF}s $${costF} $${t_costF}`;
 }
 
-// export async function makeImage(prompt, c = {}) {
-//   if (!openai) await initOpenAI();
+export async function makeImage(prompt: string, c = {}) {
+  if (!openai) await initOpenAI();
 
-//   const defaults = {
-//     model: "dall-e-3",
-//     quality: "standard",
-//     response_format: "url",
-//     style: "vivid",
-//     size: "1024x1024",
-//   };
+  const defaults: OpenAI.Images.ImageGenerateParams = {
+    prompt: "",
+    model: "dall-e-3",
+    quality: "standard",
+    response_format: "url",
+    style: "vivid",
+    size: "1024x1024",
+  };
 
-//   const config = {
-//     ...defaults,
-//     ...c,
-//   };
+  const config = {
+    ...defaults,
+    ...c,
+  };
 
-//   const startTime = performance.now();
+  const startTime = performance.now();
 
-//   const spinner = ora({
-//     text: config.model,
-//     discardStdin: false,
-//   }).start();
+  const spinner = ora({
+    text: config.model as string,
+    discardStdin: false,
+  }).start();
 
-//   const image = await openai.images.generate({
-//     ...config,
-//     prompt,
-//     n: 1,
-//   });
+  const image = await openai.images.generate({
+    ...config,
+    prompt,
+    n: 1,
+  });
 
-//   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
+  const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
-//   const hd = config.quality !== "standard";
-//   const big = config.size !== "1024x1024";
-//   let cost = 0.04;
-//   if (hd && !big) cost = 0.08;
-//   if (!hd && big) cost = 0.08;
-//   if (hd && big) cost = 0.12;
+  const hd = config.quality !== "standard";
+  const big = config.size !== "1024x1024";
+  let cost = 0.04;
+  if (hd && !big) cost = 0.08;
+  if (!hd && big) cost = 0.08;
+  if (hd && big) cost = 0.12;
 
-//   spinner.succeed(colors.gray(`${config.model} ${seconds}s $${cost}`));
+  spinner.succeed(colors.gray(`${config.model} ${seconds}s $${cost}`));
 
-//   log.info(image.data[0].revised_prompt);
+  log.info(image.data[0].revised_prompt);
 
-//   return image.data[0].url;
-// }
+  return image.data[0].url;
+}
 
 function getOpenAIKey() {
   // look in environment variables first

@@ -21,12 +21,12 @@ window.setup = function () {
   input.setAttribute("placeholder", "API-KEY");
   document.body.appendChild(input);
 
-  // call paint it on enter
-  input.addEventListener("keyup", (event) => {
-    if (event.key === "Enter") {
-      paintIt();
-    }
-  });
+  // create a submit button
+
+  const submit = document.createElement("button");
+  submit.textContent = "Submit";
+  submit.addEventListener("click", paintIt);
+  document.body.appendChild(submit);
 };
 
 window.draw = function () {

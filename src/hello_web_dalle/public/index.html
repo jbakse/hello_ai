@@ -8,12 +8,24 @@
     <h1>Hello, Web DALL•E</h1>
 
     <input id="prompt" type="text" placeholder="prompt" />
-    <button id="send">send</button>
+    <button id="dalle">dalle</button>
+    <button id="fal">fal</button>
     <script>
       const promptElement = document.getElementById("prompt");
-      const sendElement = document.getElementById("send");
-      sendElement.addEventListener("click", () => {
+      const dalleButton = document.getElementById("dalle");
+      dalleButton.addEventListener("click", () => {
         fetch(`/api/dalle?prompt=${promptElement.value}`)
+          .then((response) => response.text())
+          .then((url) => {
+            const img = document.createElement("img");
+            img.src = url;
+            document.body.appendChild(img);
+          });
+      });
+
+      const falButton = document.getElementById("fal");
+      falButton.addEventListener("click", () => {
+        fetch(`/api/fal?prompt=${promptElement.value}`)
           .then((response) => response.text())
           .then((url) => {
             const img = document.createElement("img");
