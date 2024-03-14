@@ -3,23 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <title>Hello, Web DALL•E</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1>Hello, Web DALL•E</h1>
+  <body class="bg-gray-800 text-blue-200 font-sans">
+    <div class="p-4 bg-blue-900">
+      <input
+        id="prompt"
+        type="text"
+        placeholder="prompt"
+        class="block rounded w-full py-2 px-4 text-black"
+      />
+      <button
+        id="dalle"
+        class="mt-4 mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        openai Dall•e 3
+      </button>
+      <button
+        id="fal"
+        class="mt-4 mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        fal SD Cascade
+      </button>
+      <button
+        id="falfast"
+        class="mt-4 mr-16 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        fal SD Lightning
+      </button>
 
-    <input id="prompt" type="text" placeholder="prompt" />
-    <button id="dalle">dalle</button>
-    <button id="fal">fal</button>
+      <button
+        id="makeprompt"
+        class="mt-4 bg-pink-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Make Prompt
+      </button>
+    </div>
+    <div id="output" class="p-4"></div>
+
     <script>
       const promptElement = document.getElementById("prompt");
       const dalleButton = document.getElementById("dalle");
       dalleButton.addEventListener("click", () => {
-        fetch(`/api/dalle?prompt=${promptElement.value}`)
+        const prompt = promptElement.value || "no prompt";
+        fetch(`/api/dalle?prompt=${prompt}`)
           .then((response) => response.text())
           .then((url) => {
-            const img = document.createElement("img");
-            img.src = url;
-            document.body.appendChild(img);
+            const e = document.createElement("div");
+
+            e.innerHTML = `
+            <div class="mb-4">
+              <img class="block" src="${url}" />
+              <div class="p-4 bg-gray-500 text-white w-1/2">${prompt}</div>
+              <div class="p-4 bg-red-500 text-white w-1/4">openai Dall•e 3</div>
+            </div>
+            `;
+            const output = document.getElementById("output");
+
+            output.insertBefore(e, output.firstChild);
           });
       });
 
@@ -28,11 +69,137 @@
         fetch(`/api/fal?prompt=${promptElement.value}`)
           .then((response) => response.text())
           .then((url) => {
-            const img = document.createElement("img");
-            img.src = url;
-            document.body.appendChild(img);
+            const e = document.createElement("div");
+
+            e.innerHTML = `
+            <div class="mb-4">
+              <img class="block" src="${url}" />
+              <div class="p-4 bg-gray-500 text-white w-1/2">${
+                promptElement.value || "no prompt"
+              }</div>
+              <div class="p-4 bg-red-500 text-white w-1/4">fal SD Cascade</div>
+            </div>
+            `;
+            const output = document.getElementById("output");
+
+            output.insertBefore(e, output.firstChild);
           });
       });
+
+      const falfastButton = document.getElementById("falfast");
+      falfastButton.addEventListener("click", () => {
+        fetch(`/api/falfast?prompt=${promptElement.value}`)
+          .then((response) => response.text())
+          .then((url) => {
+            const e = document.createElement("div");
+
+            e.innerHTML = `
+            <div class="mb-4">
+              <img class="block" src="${url}" />
+              <div class="p-4 bg-gray-500 text-white w-1/2">${
+                promptElement.value || "no prompt"
+              }</div>
+              <div class="p-4 bg-red-500 text-white w-1/4">fal SD Lightning</div>
+            </div>
+            `;
+            const output = document.getElementById("output");
+
+            output.insertBefore(e, output.firstChild);
+          });
+      });
+
+      const makepromptButton = document.getElementById("makeprompt");
+      makepromptButton.addEventListener("click", () => {
+        const style = [
+          "hyperrealistic",
+          "surreal",
+          "abstract",
+          "noir",
+          "cyberpunk",
+          "minimalist",
+        ];
+        const media = [
+          "photo",
+          "painting",
+          "sketch",
+          "sculpture",
+          "film still",
+        ];
+        const professions = [
+          "Barista",
+          "Zoologist",
+          "Sommelier",
+          "Cartographer",
+          "Entomologist",
+          "Botanist",
+          "Numismatist",
+          "Philatelist",
+          "Calligrapher",
+          "Mycologist",
+          "Taxidermist",
+          "Ornithologist",
+          "Ichthyologist",
+          "Horologist",
+          "Palynologist",
+          "Apiarist",
+          "Ethnobotanist",
+          "Herpetologist",
+          "Speleologist",
+          "Glaciologist",
+          "Oenophile",
+          "Phlebotomist",
+          "Arborist",
+          "Falconer",
+          "Astronomer",
+          "Oceanographer",
+          "Viticulturist",
+          "Gemologist",
+          "Philosopher",
+          "Limnologist",
+          "Petrologist",
+          "Sculptor",
+          "Calligrapher",
+          "Luthier",
+          "Topiary",
+          "Origamist",
+          "Baroque",
+          "Paleontologist",
+          "Semiotician",
+          "Harpsichordist",
+          "Biomechanist",
+          "Vexillologist",
+          "Dendrochronologist",
+          "Choreographer",
+          "Metallurgist",
+          "Cartomancer",
+          "Electrochemist",
+          "Embryologist",
+          "Kinesiologist",
+        ];
+
+        const verbs = [
+          "eating",
+          "drinking",
+          "sleeping",
+          "running",
+          "walking",
+          "flying",
+          "swimming",
+          "cycling",
+          "driving",
+          "sailing",
+          "hiking",
+          "climbing",
+        ];
+
+        promptElement.value = `${pick(style)} ${pick(media)} of a ${pick(
+          professions
+        )} ${pick(verbs)}`;
+      });
+
+      function pick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+      }
     </script>
   </body>
 </html>

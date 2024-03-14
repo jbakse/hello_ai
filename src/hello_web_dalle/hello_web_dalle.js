@@ -62,6 +62,30 @@ router.get("/api/fal", async (ctx) => {
   ctx.response.body = result.images[0].url;
 });
 
+router.get("/api/falfast", async (ctx) => {
+  const prompt = ctx.request.url.searchParams.get("prompt");
+  console.log("Request received");
+  console.log(prompt);
+  const shortPrompt = prompt.slice(0, 1024);
+  const result = await fal.subscribe("fal-ai/fast-lightning-sdxl", {
+    input: {
+      "prompt": shortPrompt,
+      "image_size": "square_hd",
+      "num_inference_steps": "4",
+      "num_images": 1,
+      "enable_safety_checker": true,
+    },
+    logs: true,
+    onQueueUpdate: (update) => {
+      if (update.status === "IN_PROGRESS") {
+        // update.logs.map((log) => log.message).forEach(console.log);
+      }
+    },
+  });
+  console.log("result", result);
+  ctx.response.body = result.images[0].url;
+});
+
 // install routes
 app.use(router.routes());
 app.use(router.allowedMethods());
