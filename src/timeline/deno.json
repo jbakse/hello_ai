@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "start": "deno run --allow-env --allow-net --allow-read=../.. timeline.js",
+    "dev": "deno run --allow-env --allow-net --allow-read=../.. --watch --no-clear-screen timeline.js"
+  }
+}

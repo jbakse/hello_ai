@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+
+    <title>Timeline!</title>
+  </head>
+  <body class="bg-gray-800 text-blue-200 font-sans">
+    <div class="p-4 bg-blue-900 flex">
+      <input
+        id="prompt"
+        type="text"
+        placeholder="prompt"
+        class="rounded w-full py-2 px-4 text-black"
+      />
+      <button
+        id="send"
+        class="mt-4 ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        send
+      </button>
+    </div>
+    <div id="cards" class="flex flex-wrap"></div>
+    <script src="main.js"></script>
+  </body>
+</html>
