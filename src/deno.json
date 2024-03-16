@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "deploy-woodsprite": "deployctl deploy --prod --project=jbakse-woodsprite --exclude=.env ./woodsprite/woodsprite.js",
-    "deploy-reviser": "deployctl deploy --prod --project=jbakse-reviser --exclude=.env ./reviser/reviser.js"
+    "deploy-woodsprite": "deployctl deploy --prod --project=jbakse-woodsprite ./woodsprite/woodsprite.js",
+    "deploy-reviser": "deployctl deploy --prod --project=jbakse-reviser ./reviser/reviser.js",
+    "deploy-timeline": "deployctl deploy --prod --project=jbakse-timeline ./timeline/timeline.js"
   }
 }
