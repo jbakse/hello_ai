@@ -20,3 +20,9 @@ The woodsprite example is set up to deploy using deployctl.
 4. run the deploy task `deno task deploy-woodsprite`
 
 Note that the deploy script is in `src/deno.json` rather than `src/woodsprite/deno.json` so that the `shared` directory is included in the deployment.
+
+# Killing App by Port
+
+```bash
+kill -9 $(lsof -t -i:8000)
+```
