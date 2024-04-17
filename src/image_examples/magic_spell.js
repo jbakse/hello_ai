@@ -1,5 +1,5 @@
-import { say } from "../shared/cli.js";
-import { gptPrompt, makeImage } from "../shared/openai.js";
+import { say } from "../shared/cli.ts";
+import { gptPrompt, makeImage } from "../shared/openai.ts";
 
 main();
 

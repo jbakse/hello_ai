@@ -2,7 +2,7 @@ import { decodeBase64 } from "https://deno.land/std@0.207.0/encoding/base64.ts";
 
 import { load } from "https://deno.land/std@0.207.0/dotenv/mod.ts";
 const __dirname = new URL(".", import.meta.url).pathname;
-const env = await load({ envPath: `${__dirname}/../.env` });
+const env = await load({ envPath: `${__dirname}/../../.env` });
 
 await makeImageStability("A painting of a cat in golden armor", { seed: 1 });
 
