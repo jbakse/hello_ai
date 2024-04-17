@@ -2,8 +2,10 @@ import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { gptPrompt } from "../shared/openai.ts";
 import { createExitSignal, staticServer } from "../shared/server.ts";
 import { Chalk } from "npm:chalk@5";
+import * as log from "../shared/logger.ts";
 
-// output an empty line
+// tell the shared library code to log as much as possible
+log.setLogLevel(log.LogLevel.DEBUG);
 
 // Change the current working directory to the directory of this script
 // This is necessary to serve static files with the correct path even
