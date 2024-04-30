@@ -6,7 +6,7 @@ const env = await load({ envPath: `${__dirname}/../../.env` });
 
 //await makeImageStability("A painting of a cat in golden armor", { seed: 1 });
 await makeImageStability(
-  "A cartoon drawing of a girl and a panda playing videogames in front of CRT tv in 80s bedroom. Text on TV says 'ATARI'",
+  "a cat dressed as a ninja",
   { seed: 1 },
 );
 

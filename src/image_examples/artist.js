@@ -1,5 +1,5 @@
-import { say } from "../shared/cli.js";
-import { makeImage } from "../shared/openai.js";
+import { say } from "../shared/cli.ts";
+import { makeImage } from "../shared/openai.ts";
 
 main();
 
