@@ -1,6 +1,0 @@
-{
-  "tasks": {
-    "start": "deno run --allow-env --allow-net --allow-read=../.. hello_web_gpt.js",
-    "dev": "deno run --allow-env --allow-net --allow-read=../.. --watch --no-clear-screen hello_web_gpt.js"
-  }
-}

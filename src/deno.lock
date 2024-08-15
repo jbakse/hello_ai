@@ -21,6 +21,7 @@
       "npm:dedent@1.5.1": "npm:dedent@1.5.1",
       "npm:figlet@1.6.0": "npm:figlet@1.6.0",
       "npm:openai@4": "npm:openai@4.20.1",
+      "npm:openai@4.55.7": "npm:openai@4.55.7",
       "npm:ora@7": "npm:ora@7.0.1",
       "npm:path-to-regexp@6.2.1": "npm:path-to-regexp@6.2.1",
       "npm:wrap-ansi@9": "npm:wrap-ansi@9.0.0"
@@ -534,6 +535,18 @@
           "formdata-node": "formdata-node@4.4.1",
           "node-fetch": "node-fetch@2.7.0",
           "web-streams-polyfill": "web-streams-polyfill@3.2.1"
+        }
+      },
+      "openai@4.55.7": {
+        "integrity": "sha512-I2dpHTINt0Zk+Wlns6KzkKu77MmNW3VfIIQf5qYziEUI6t7WciG1zTobfKqdPzBmZi3TTM+3DtjPumxQdcvzwA==",
+        "dependencies": {
+          "@types/node": "@types/node@18.18.13",
+          "@types/node-fetch": "@types/node-fetch@2.6.9",
+          "abort-controller": "abort-controller@3.0.0",
+          "agentkeepalive": "agentkeepalive@4.5.0",
+          "form-data-encoder": "form-data-encoder@1.7.2",
+          "formdata-node": "formdata-node@4.4.1",
+          "node-fetch": "node-fetch@2.7.0"
         }
       },
       "ora@7.0.1": {

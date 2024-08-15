@@ -1,13 +1,13 @@
 import process from "node:process";
 import ora, { Ora } from "npm:ora@7";
 import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
-import OpenAI from "npm:openai@4";
+import OpenAI from "npm:openai@4.55.7";
 
 import * as log from "./logger.ts";
 import { isDenoDeployment, loadEnv } from "./util.ts";
 
 const chatParamsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
-  model: "gpt-4-turbo-preview",
+  model: "gpt-4o",
   messages: [],
   frequency_penalty: 0,
   logit_bias: {},
@@ -20,6 +20,27 @@ const chatParamsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
   temperature: 0.8,
   top_p: null,
   stream: false,
+};
+
+const costs = {
+  "gpt-4o": { promptCost: 0.005, completionCost: 0.015 },
+  "gpt-4o-2024-08-06": { promptCost: 0.0025, completionCost: 0.01 }, // best
+  "gpt-4o-2024-05-13": { promptCost: 0.005, completionCost: 0.015 },
+
+  "gpt-4o-mini": { promptCost: 0.00015, completionCost: 0.0006 },
+  "gpt-4o-mini-2024-07-18": { promptCost: 0.00015, completionCost: 0.0006 },
+
+  "gpt-4-turbo": { promptCost: 0.01, completionCost: 0.03 },
+  "gpt-4-turbo-preview": { promptCost: 0.01, completionCost: 0.03 },
+  "gpt-4-2024-04-09": { promptCost: 0.01, completionCost: 0.03 },
+  "gpt-4-0125-preview": { promptCost: 0.01, completionCost: 0.03 },
+  "gpt-4-1106-preview": { promptCost: 0.01, completionCost: 0.03 },
+
+  "gpt-4": { promptCost: 0.03, completionCost: 0.06 },
+  "gpt-4-32k": { promptCost: 0.06, completionCost: 0.12 },
+
+  "gpt-3.5-turbo": { promptCost: 0.0005, completionCost: 0.0015 },
+  "gpt-3.5-turbo-0125": { promptCost: 0.0005, completionCost: 0.0015 },
 };
 
 let total_cost = 0;
@@ -93,7 +114,7 @@ export async function gpt(
     const startTime = performance.now();
 
     // make the request to OpenAI
-    const response = await openai.chat.completions.create(chatParams);
+    const response = await openai.beta.chat.completions.parse(chatParams);
 
     // find the elapsed time
     const seconds = (performance.now() - startTime) / 1000;
@@ -125,6 +146,7 @@ export async function gpt(
     }
     // respond
     return response.choices[0].message;
+
     //
   } catch (error) {
     // if there's an error, stop the spinner and print the error message
@@ -153,19 +175,6 @@ function calculateCost(
   prompt_tokens: number,
   completion_tokens: number,
 ) {
-  const costs = {
-    "gpt-4-turbo-preview": { promptCost: 0.01, completionCost: 0.03 },
-    "gpt-4-0125-preview": { promptCost: 0.01, completionCost: 0.03 },
-    "gpt-4-1106-preview": { promptCost: 0.01, completionCost: 0.03 },
-
-    "gpt-4": { promptCost: 0.03, completionCost: 0.06 },
-    "gpt-4-32k": { promptCost: 0.06, completionCost: 0.12 },
-
-    "gpt-3.5-turbo": { promptCost: 0.0005, completionCost: 0.0015 },
-
-    "gpt-3.5-turbo-0125": { promptCost: 0.0005, completionCost: 0.0015 },
-  };
-
   const mc = costs[model as keyof typeof costs] ??
     { promptCost: undefined, completionCost: undefined };
 

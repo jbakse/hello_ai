@@ -4,7 +4,7 @@
 // Edits by Justin Bakse
 
 import dedent from "npm:dedent@1.5.1";
-import { gptPrompt } from "../shared/openai.js";
+import { gptPrompt } from "../shared/openai.ts";
 
 import {
   Confirm,
