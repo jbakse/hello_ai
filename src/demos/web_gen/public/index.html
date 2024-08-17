@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello, Web DALL•E</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-800 text-blue-200 font-sans">
+    <div class="p-4 bg-blue-900">
+      <input
+        id="prompt"
+        type="text"
+        placeholder="prompt"
+        class="block rounded w-full py-2 px-4 text-black"
+      />
+
+      <br />
+      <h2>OpenAI</h2>
+      <button id="openai-dalle3">Dall•e 3</button>
+
+      <br />
+      <br />
+      <h2>fal</h2>
+      <button id="fal-cascade">Cascade</button>
+      <button id="fal-lightning">Lightning</button>
+
+      <br />
+      <br />
+      <h2>Util</h2>
+      <button id="makeprompt" class="mt-4 bg-pink-500 hover:bg-blue-700">
+        Make Prompt
+      </button>
+    </div>
+    <div id="output" class="p-4"></div>
+
+    <style>
+      button {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+        margin-top: 1rem;
+        margin-right: 1rem;
+        border-radius: 0.25rem;
+        font-weight: 700;
+        color: #ffffff;
+        background-color: #3b82f6;
+      }
+      button:hover {
+        background-color: #1d4ed8;
+      }
+    </style>
+
+    <script type="module" src="main.js"></script>
+    <script type="module" src="util.js"></script>
+  </body>
+</html>
