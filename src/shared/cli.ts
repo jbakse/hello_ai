@@ -20,7 +20,7 @@ export function say(text: string, wrap = 80): void {
 }
 
 /**
- * Inspects an object and logs its structure to the console.
+ * Logs an object structure and values to the console.
  * @param obj - The object to inspect.
  */
 export function inspect(obj: unknown): void {

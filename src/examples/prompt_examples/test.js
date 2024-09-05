@@ -15,7 +15,7 @@ async function main() {
   const prompt = "Just say 'yes'";
   say(`Prompt: ${prompt}`);
 
-  const response = await gptPrompt("Just say 'yes'.");
+  const response = await gptPrompt(prompt);
 
   say("");
   say(`Response: ${response}`);

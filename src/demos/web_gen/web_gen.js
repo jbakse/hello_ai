@@ -62,16 +62,11 @@ router.get("/api/fal/cascade", async (ctx) => {
       "second_stage_steps": 10,
       "guidance_scale": 4,
       "image_size": "square_hd",
-      "num_images": 1,
-      "loras": [],
       "enable_safety_checker": true,
+      "num_images": 1,
+      "seed": 1337,
+      "loras": [],
     },
-    logs: true,
-    // onQueueUpdate: (update) => {
-    //   if (update.status === "IN_PROGRESS") {
-    //     // update.logs.map((log) => log.message).forEach(console.log);
-    //   }
-    // },
   });
 
   // return the result
@@ -93,13 +88,50 @@ router.get("/api/fal/lightning", async (ctx) => {
       "num_inference_steps": "4",
       "num_images": 1,
       "enable_safety_checker": true,
+      "seed": 1337,
     },
-    logs: true,
-    // onQueueUpdate: (update) => {
-    //   if (update.status === "IN_PROGRESS") {
-    //     // update.logs.map((log) => log.message).forEach(console.log);
-    //   }
-    // },
+  });
+
+  // return the result
+  console.log("result:", result);
+  ctx.response.body = result.images[0].url;
+});
+
+router.get("/api/fal/aura", async (ctx) => {
+  // clean up input
+  const prompt = ctx.request.url.searchParams.get("prompt");
+  const shortPrompt = prompt.slice(0, 1024);
+  console.log(`/api/fal/aura: ${prompt}`);
+
+  // call the api
+  const result = await fal.subscribe("fal-ai/aura-flow", {
+    input: {
+      "prompt": shortPrompt,
+      "num_images": 1,
+      "enable_safety_checker": true,
+      "seed": 1337,
+    },
+  });
+
+  // return the result
+  console.log("result:", result);
+  ctx.response.body = result.images[0].url;
+});
+
+router.get("/api/fal/flux", async (ctx) => {
+  // clean up input
+  const prompt = ctx.request.url.searchParams.get("prompt");
+  const shortPrompt = prompt.slice(0, 1024);
+  console.log(`/api/fal/flux: ${prompt}`);
+
+  // call the api
+  const result = await fal.subscribe("fal-ai/flux/dev", {
+    input: {
+      "prompt": shortPrompt,
+      "num_images": 1,
+      "enable_safety_checker": true,
+      "seed": 1337,
+    },
   });
 
   // return the result

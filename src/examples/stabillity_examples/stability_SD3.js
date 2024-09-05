@@ -7,6 +7,7 @@ const env = await load({ envPath: `${__dirname}/../../../.env` });
 //await makeImageStability("A painting of a cat in golden armor", { seed: 1 });
 await makeImageStability(
   "a cat dressed as a ninja",
+  // "rough, hand cut paper collage, made by a young child from construction paper and glue, three children. one holds a falcon, one holds a map, one holds a first aid kit",
   { seed: 1 },
 );
 

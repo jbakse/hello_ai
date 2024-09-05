@@ -25,23 +25,49 @@ document.getElementById("fal-cascade").addEventListener("click", () => {
 document.getElementById("fal-lightning").addEventListener("click", () => {
   const prompt = promptElement.value || "no prompt";
   console.log("fal-lightning clicked");
-  fetch(`/api/falfast?prompt=${prompt}`)
+  fetch(`/api/fal/lightning?prompt=${prompt}`)
     .then((response) => response.text())
     .then((url) => {
       addImage(url, prompt, "fal Lightning");
     });
 });
 
-function addImage(url, prompt, model) {
-  const e = document.createElement("div");
+document.getElementById("fal-aura").addEventListener("click", () => {
+  const prompt = promptElement.value || "no prompt";
+  console.log("fal-aura clicked");
+  fetch(`/api/fal/aura?prompt=${prompt}`)
+    .then((response) => response.text())
+    .then((url) => {
+      addImage(url, prompt, "fal aura");
+    });
+});
 
+document.getElementById("fal-flux").addEventListener("click", () => {
+  const prompt = promptElement.value || "no prompt";
+  console.log("fal-flux clicked");
+  fetch(`/api/fal/flux?prompt=${prompt}`)
+    .then((response) => response.text())
+    .then((url) => {
+      addImage(url, prompt, "fal flux");
+    });
+});
+
+function addImage(url, prompt, model) {
+  const e = document.createElement("a");
+
+  e.setAttribute("data-fslightbox", "lightbox");
+  e.setAttribute("data-caption", `<h1>${prompt}</h1>`);
+  e.href = url;
   e.innerHTML = `
-  <div class="mb-4">
+
+  <div class="w-96 mb-4 mr-4">
     <img class="block" src="${url}" />
-    <div class="p-4 bg-gray-500 text-white w-1/2">${prompt}</div>
-    <div class="p-4 bg-red-500 text-white w-1/4">${model}</div>
+    <div class="p-4 bg-gray-500 text-white">${prompt}</div>
+    <div class="p-4 bg-red-500 text-white 2-48">${model}</div>
   </div>
   `;
   const output = document.getElementById("output");
   output.insertBefore(e, output.firstChild);
+
+  refreshFsLightbox();
 }

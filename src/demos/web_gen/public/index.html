@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Hello, Web DALL•E</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fslightbox@3.4.1/index.min.js"></script>
   </head>
   <body class="bg-gray-800 text-blue-200 font-sans">
     <div class="p-4 bg-blue-900">
@@ -23,6 +24,8 @@
       <h2>fal</h2>
       <button id="fal-cascade">Cascade</button>
       <button id="fal-lightning">Lightning</button>
+      <button id="fal-aura">AuraFlow</button>
+      <button id="fal-flux">Flux.1 [dev]</button>
 
       <br />
       <br />
@@ -31,7 +34,7 @@
         Make Prompt
       </button>
     </div>
-    <div id="output" class="p-4"></div>
+    <div id="output" class="p-4 flex flex-wrap"></div>
 
     <style>
       button {
