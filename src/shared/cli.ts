@@ -29,7 +29,7 @@ export function inspect(obj: unknown): void {
       showHidden: true,
       depth: undefined,
       colors: true,
-      compact: true,
+      compact: false,
     }),
   );
 }

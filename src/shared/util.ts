@@ -8,11 +8,7 @@ import * as log from "./logger.ts";
  * @returns {boolean}
  */
 export function isDenoDeployment() {
-  const isDeployed = Deno.env.get("DENO_DEPLOYMENT_ID") ?? false;
-  log.info(
-    `running in ${isDeployed ? "deployed" : "local"} environment`,
-  );
-  return isDeployed;
+  return Deno.env.get("DENO_DEPLOYMENT_ID") ?? false;
 }
 
 /**
@@ -40,11 +36,11 @@ export function loadEnv(name = ".env", path = Deno.cwd()) {
  * Retrieves the directory name of the current module. This function is a Deno
  * replacement for Node.js's __dirname.
  *
- * @returns {string} The absolute directory path of the current module.
+ * @returns {string | false} The absolute directory path of the current module.
  */
-export function getModuleDirectory(): string {
-  return path.dirname(path.fromFileUrl(import.meta.url));
-}
+// export function getModuleDirectory(): string {
+//   return path.dirname(path.fromFileUrl(import.meta.url));
+// }
 
 function findFileUpTree(
   filename: string,

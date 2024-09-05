@@ -262,8 +262,13 @@ function getOpenAIKey() {
 
   // if not found, report and exit
   log.error("OPENAI_API_KEY not found in Deno.env or .env file.");
+  const isDeployed = isDenoDeployment();
+  log.info(
+    `running in ${isDeployed ? "deployed" : "local"} environment`,
+  );
+
+  // Deno.exit is not allowed on deno deploy
   if (!isDenoDeployment()) {
-    // Deno.exit is not allowed on deno deploy
     log.error("exiting");
     Deno.exit(1);
   }
