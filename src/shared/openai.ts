@@ -1,14 +1,21 @@
+// import node:process for node compatibility needed by ora
 import process from "node:process";
+
+// ora is a node library for cli progress spinners
 import ora, { Ora } from "npm:ora@7";
+
+// cliffy is a deno library for writing cli apps. colors is for colorising text
 import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
+
+// this is the openai api library
 import OpenAI from "npm:openai@4.55.7";
 
+// local utilities
 import * as log from "./logger.ts";
 import { isDenoDeployment, loadEnv } from "./util.ts";
 
-let total_cost = 0;
-
 let openai: OpenAI;
+let total_cost = 0;
 
 export function initOpenAI() {
   openai = new OpenAI({ apiKey: getOpenAIKey() });
@@ -38,9 +45,10 @@ export async function gpt(
   params: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
   options: GPTOptions = {},
 ) {
+  // initialize openai if this is the first call
   if (!openai) initOpenAI();
 
-  // apply defaults to the params
+  // apply defaults to the params sent to OpenAI
   // see https://platform.openai.com/docs/api-reference/chat/create
   // for explination of each parameter
   const paramsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
@@ -67,7 +75,7 @@ export async function gpt(
     ...params,
   };
 
-  // apply defaults to the options
+  // apply defaults to the options for local display
   const optionsDefaults: GPTOptions = {
     showSpinner: true,
     showStats: true,
@@ -83,7 +91,7 @@ export async function gpt(
   };
 
   // start the spinner
-  let spinner: Ora | false = false;
+  let spinner: Ora | null = null;
   if (options.showSpinner) {
     spinner = ora({
       text: options.loadingMessage ?? chatParams.model,
@@ -110,11 +118,9 @@ export async function gpt(
     const cost = calculateCost(chatParams.model, p_tokens, c_tokents);
     total_cost += isNaN(cost) ? 0 : cost;
 
-    // stop the spinner and print the success message
     if (spinner) {
-      if (options.successMessage === false) {
-        spinner.stop();
-      } else {
+      if (options.successMessage) {
+        // stop the spinner and print the success message
         let message = options.successMessage ?? "";
         if (options.showStats) {
           message += " " + colors.gray(formatStats(
@@ -127,27 +133,33 @@ export async function gpt(
           ));
         }
         spinner.succeed(message.trim());
+      } else {
+        // stop the spinner with no message
+        spinner.stop();
       }
     }
-    // respond
+
+    // return response
     return response.choices[0].message;
 
     //
   } catch (error) {
-    // if there's an error, stop the spinner and print the error message
+    // if there's an error
     if (spinner) {
-      if (options.errorMessage === false) {
-        spinner.stop();
-      } else {
+      if (options.errorMessage) {
+        // stop the spinner and print the error message
         let message = options.errorMessage ?? "OpenAI API Error:";
         if (options.showError) {
           message += " " + error.message;
         }
         spinner.fail(colors.red(message.trim()));
+      } else {
+        // stop the spinner with no error message
+        spinner.stop();
       }
     }
 
-    // respond
+    // respond with the error message
     return {
       content: error.message,
       role: "assistant",
@@ -162,7 +174,10 @@ function calculateCost(
 ) {
   // cost per 1000 tokens for each model
   // https://openai.com/api/pricing/
-  const model_costs = {
+  const model_costs: Record<
+    string,
+    { promptCost: number; completionCost: number }
+  > = {
     "gpt-4o": { promptCost: 0.005, completionCost: 0.015 },
     "gpt-4o-2024-08-06": { promptCost: 0.0025, completionCost: 0.01 },
     "gpt-4o-2024-05-13": { promptCost: 0.005, completionCost: 0.015 },
@@ -193,9 +208,10 @@ function calculateCost(
     const mc = model_costs[model];
     const prompt_cost = (prompt_tokens / 1000) * mc.promptCost;
     const completion_cost = (completion_tokens / 1000) * mc.completionCost;
-    return prompt_cost + completion_cost;
+    return (prompt_cost + completion_cost);
   } else {
-    throw new Error(`Model ${model} not found in model costs.`);
+    log.warn(`model ${model} not found in model_costs`);
+    return 0;
   }
 }
 
