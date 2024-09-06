@@ -6,43 +6,6 @@ import OpenAI from "npm:openai@4.55.7";
 import * as log from "./logger.ts";
 import { isDenoDeployment, loadEnv } from "./util.ts";
 
-const chatParamsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
-  model: "gpt-4o",
-  messages: [],
-  frequency_penalty: 0,
-  logit_bias: {},
-  max_tokens: 128,
-  n: 1,
-  presence_penalty: 0,
-  response_format: { type: "text" },
-  seed: null,
-  stop: null,
-  temperature: 0.8,
-  top_p: null,
-  stream: false,
-};
-
-const costs = {
-  "gpt-4o": { promptCost: 0.005, completionCost: 0.015 },
-  "gpt-4o-2024-08-06": { promptCost: 0.0025, completionCost: 0.01 }, // best
-  "gpt-4o-2024-05-13": { promptCost: 0.005, completionCost: 0.015 },
-
-  "gpt-4o-mini": { promptCost: 0.00015, completionCost: 0.0006 },
-  "gpt-4o-mini-2024-07-18": { promptCost: 0.00015, completionCost: 0.0006 },
-
-  "gpt-4-turbo": { promptCost: 0.01, completionCost: 0.03 },
-  "gpt-4-turbo-preview": { promptCost: 0.01, completionCost: 0.03 },
-  "gpt-4-2024-04-09": { promptCost: 0.01, completionCost: 0.03 },
-  "gpt-4-0125-preview": { promptCost: 0.01, completionCost: 0.03 },
-  "gpt-4-1106-preview": { promptCost: 0.01, completionCost: 0.03 },
-
-  "gpt-4": { promptCost: 0.03, completionCost: 0.06 },
-  "gpt-4-32k": { promptCost: 0.06, completionCost: 0.12 },
-
-  "gpt-3.5-turbo": { promptCost: 0.0005, completionCost: 0.0015 },
-  "gpt-3.5-turbo-0125": { promptCost: 0.0005, completionCost: 0.0015 },
-};
-
 let total_cost = 0;
 
 let openai: OpenAI;
@@ -61,44 +24,65 @@ interface GPTOptions {
   errorMessage?: string | false;
 }
 
-const gptOptionsDefaults: GPTOptions = {
-  showSpinner: true,
-  showStats: true,
-  showError: true,
-  loadingMessage: undefined,
-  successMessage: undefined,
-  errorMessage: undefined,
-};
-
 export async function gptPrompt(
   prompt: string,
-  c: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
+  params: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
   options: GPTOptions = {},
 ) {
-  c.messages = [{ role: "user", content: prompt }];
-  const message = await gpt(c, options);
+  params.messages = [{ role: "user", content: prompt }];
+  const message = await gpt(params, options);
   return (message.content ?? "").trim();
 }
 
 export async function gpt(
-  c: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
+  params: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
   options: GPTOptions = {},
 ) {
   if (!openai) initOpenAI();
 
-  // apply defaults to the chatParams
+  // apply defaults to the params
+  // see https://platform.openai.com/docs/api-reference/chat/create
+  // for explination of each parameter
+  const paramsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
+    messages: [],
+    model: "gpt-4o",
+    frequency_penalty: 0,
+    logit_bias: {},
+    logprobs: null,
+    top_logprobs: null,
+    max_tokens: 128,
+    n: 1,
+    presence_penalty: 0,
+    response_format: { type: "text" },
+    seed: null,
+    stop: null,
+    stream: false,
+    stream_options: null,
+    temperature: 0.8,
+    top_p: null,
+  };
+
   const chatParams = {
-    ...chatParamsDefaults,
-    ...c,
+    ...paramsDefaults,
+    ...params,
   };
 
   // apply defaults to the options
+  const optionsDefaults: GPTOptions = {
+    showSpinner: true,
+    showStats: true,
+    showError: true,
+    loadingMessage: undefined,
+    successMessage: undefined,
+    errorMessage: undefined,
+  };
+
   options = {
-    ...gptOptionsDefaults,
+    ...optionsDefaults,
     ...options,
   };
 
-  // optionally start the spinner
+  // start the spinner
   let spinner: Ora | false = false;
   if (options.showSpinner) {
     spinner = ora({
@@ -114,6 +98,7 @@ export async function gpt(
     const startTime = performance.now();
 
     // make the request to OpenAI
+    // and wait
     const response = await openai.beta.chat.completions.parse(chatParams);
 
     // find the elapsed time
@@ -175,7 +160,36 @@ function calculateCost(
   prompt_tokens: number,
   completion_tokens: number,
 ) {
-  const mc = costs[model as keyof typeof costs] ??
+  // cost per 1000 tokens for each model
+  // https://openai.com/api/pricing/
+  const model_costs = {
+    "gpt-4o": { promptCost: 0.005, completionCost: 0.015 },
+    "gpt-4o-2024-08-06": { promptCost: 0.0025, completionCost: 0.01 },
+    "gpt-4o-2024-05-13": { promptCost: 0.005, completionCost: 0.015 },
+
+    "gpt-4o-mini": { promptCost: 0.00015, completionCost: 0.0006 },
+    "gpt-4o-mini-2024-07-18": { promptCost: 0.00015, completionCost: 0.0006 },
+
+    "gpt-4-turbo": { promptCost: 0.0100, completionCost: 0.0300 },
+    "gpt-4-turbo-2024-04-09": { promptCost: 0.0100, completionCost: 0.0300 },
+    "gpt-4": { promptCost: 0.0300, completionCost: 0.0600 },
+    "gpt-4-32k": { promptCost: 0.0600, completionCost: 0.1200 },
+    "gpt-4-0125-preview": { promptCost: 0.0100, completionCost: 0.0300 },
+    "gpt-4-1106-preview": { promptCost: 0.0100, completionCost: 0.0300 },
+    "gpt-4-vision-preview": { promptCost: 0.0100, completionCost: 0.0300 },
+
+    "gpt-3.5-turbo-0125": { promptCost: 0.0005, completionCost: 0.0015 },
+    "gpt-3.5-turbo-instruct": { promptCost: 0.0015, completionCost: 0.0020 },
+    "gpt-3.5-turbo-1106": { promptCost: 0.0010, completionCost: 0.0020 },
+    "gpt-3.5-turbo-0613": { promptCost: 0.0015, completionCost: 0.0020 },
+    "gpt-3.5-turbo-16k-0613": { promptCost: 0.0030, completionCost: 0.0040 },
+    "gpt-3.5-turbo-0301": { promptCost: 0.0015, completionCost: 0.0020 },
+
+    "davinci-002": { promptCost: 0.0020, completionCost: 0.0020 },
+    "babbage-002": { promptCost: 0.0004, completionCost: 0.0004 },
+  };
+
+  const mc = model_costs[model as keyof typeof model_costs] ??
     { promptCost: undefined, completionCost: undefined };
 
   const prompt_cost = (prompt_tokens / 1000) * mc.promptCost;
