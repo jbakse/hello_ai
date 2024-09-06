@@ -189,14 +189,14 @@ function calculateCost(
     "babbage-002": { promptCost: 0.0004, completionCost: 0.0004 },
   };
 
-  const mc = model_costs[model as keyof typeof model_costs] ??
-    { promptCost: undefined, completionCost: undefined };
-
-  const prompt_cost = (prompt_tokens / 1000) * mc.promptCost;
-  const completion_cost = (completion_tokens / 1000) * mc.completionCost;
-
-  const cost = prompt_cost + completion_cost ?? 0;
-  return cost;
+  if (model in model_costs) {
+    const mc = model_costs[model];
+    const prompt_cost = (prompt_tokens / 1000) * mc.promptCost;
+    const completion_cost = (completion_tokens / 1000) * mc.completionCost;
+    return prompt_cost + completion_cost;
+  } else {
+    throw new Error(`Model ${model} not found in model costs.`);
+  }
 }
 
 function formatStats(
