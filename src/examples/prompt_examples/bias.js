@@ -10,7 +10,7 @@
  * It is also useful to show that the formating of responses can vary.
  */
 
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 import { ask, say } from "../../shared/cli.ts";
 
 main();
@@ -37,7 +37,7 @@ async function main() {
   You must answer each question. 
   `;
 
-  const response = await gptPrompt(prompt, {
+  const response = await promptGPT(prompt, {
     temperature: 0.2,
     //https://platform.openai.com/tokenizer?view=bpe
     logit_bias: {

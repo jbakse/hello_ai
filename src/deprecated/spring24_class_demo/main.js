@@ -1,7 +1,7 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
 import { createExitSignal, staticServer } from "../../shared/server.ts";
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 
 // change working dirctory to the current file's directory
 Deno.chdir(new URL(".", import.meta.url).pathname);
@@ -17,7 +17,7 @@ router.get("/api/random", (ctx) => {
 });
 
 router.get("/api/nonsense", async (ctx) => {
-  const result = await gptPrompt(
+  const result = await promptGPT(
     `make us a nonsense sentence that looks right but doesn't mean anything.`,
   );
   ctx.response.body = result;

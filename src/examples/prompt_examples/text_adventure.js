@@ -9,7 +9,7 @@
  * outlandish commands.
  */
 
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 import { ask, say } from "../../shared/cli.ts";
 
 main();
@@ -48,7 +48,7 @@ async function main() {
   The player command is '${command}'. 
   `;
 
-    const response = await gptPrompt(prompt, {
+    const response = await promptGPT(prompt, {
       max_tokens: 128,
       temperature: 0.5,
     });

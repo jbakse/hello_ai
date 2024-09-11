@@ -1,5 +1,5 @@
 import { say } from "../../shared/cli.ts";
-import { gptPrompt, makeImage } from "../../shared/openai.ts";
+import { makeImage, promptGPT } from "../../shared/openai.ts";
 
 main();
 
@@ -37,7 +37,7 @@ async function main() {
 
   say(`color: ${color} shape: ${shape} size: ${size}`);
 
-  const result = await gptPrompt(
+  const result = await promptGPT(
     `breifly describe the visual effect of a spell with these properties: ${color}, ${shape}, ${size} \n\n Your writing should complete the sentence "The witch casts..."`,
     { temperature: 0.8 },
   );

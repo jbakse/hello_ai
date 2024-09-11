@@ -31,8 +31,8 @@ export const setLogLevel = (level: LogLevel) => {
  *
  * @param msg - The message to be logged.
  */
-export const debug = (msg: unknown) => _log(4, "bgBlue", "debug", msg);
-export const info = (msg: unknown) => _log(3, "bgBlue", "info ", msg);
+export const debug = (msg: unknown) => _log(5, "bgBlue", "debug", msg);
+export const info = (msg: unknown) => _log(4, "bgBlue", "info ", msg);
 export const log = (msg: unknown) => _log(3, "bgWhite", "log  ", msg);
 export const warn = (msg: unknown) => _log(2, "bgYellow", "warn ", msg);
 export const error = (msg: unknown) => _log(1, "bgRed", "error", msg);
@@ -84,4 +84,4 @@ function formatCaller() {
 }
 
 // set the default log level
-let logLevel = LogLevel.LOG;
+let logLevel = LogLevel.INFO;

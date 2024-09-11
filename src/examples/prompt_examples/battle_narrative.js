@@ -8,7 +8,7 @@
  */
 
 import { say } from "../../shared/cli.ts";
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 
 async function main() {
   const fox = { hp: 10, attack: 12, defense: 6 };
@@ -48,7 +48,7 @@ async function main() {
   Write a short story about a cat and a fox fighting based on the outline below. Use colorful, descriptive language. Don't use any numbers to describe damage or health amounts, use descriptive adjectives instead.
   ${outline}`;
 
-  const response = await gptPrompt(prompt, {
+  const response = await promptGPT(prompt, {
     max_tokens: 1000,
   });
 
@@ -58,7 +58,7 @@ async function main() {
   Summarize following story in four sentences.
   ${response}
   `;
-  const response2 = await gptPrompt(prompt2, { max_tokens: 500 });
+  const response2 = await promptGPT(prompt2, { max_tokens: 500 });
 
   say(`${response2}`);
 }

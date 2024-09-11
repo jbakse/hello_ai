@@ -6,7 +6,7 @@
  * I think the DuckDuckGo API may be unsupported, but it works for now.
  */
 
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 
 if (!Deno.args[0]) {
   console.log("Usage: duck_duck_go.js '<query>'");
@@ -21,7 +21,7 @@ if (!abstract) {
   Deno.exit(1);
 }
 
-const response = await gptPrompt(
+const response = await promptGPT(
   `Read this abstract: ${abstract}\n\nList three facts from the abstract as bullet points. Be extreemly concise. Each bullet point should contain a single fact in less than 10 words.`,
   { temperature: .1 },
 );

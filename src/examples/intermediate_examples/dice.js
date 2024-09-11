@@ -9,7 +9,7 @@ import dedent from "npm:dedent";
 import { DiceRoll } from "https://cdn.skypack.dev/@dice-roller/rpg-dice-roller";
 
 import { ask, say } from "../../shared/cli.ts";
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 
 while (true) {
   const description = await ask("What do you want to roll? ");
@@ -26,7 +26,7 @@ while (true) {
 }
 
 async function descriptionToNotation(description) {
-  const response = await gptPrompt(
+  const response = await promptGPT(
     dedent`
       You are an assistant that helps people write the correct RPG Dice Notation for their dice rolls. You are given a plain language prompt of the dice roll and you must write the correct notation for it. Respond with only the notation, no explinations.
 

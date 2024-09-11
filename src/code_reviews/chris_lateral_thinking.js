@@ -4,7 +4,7 @@
 // Edits by Justin Bakse
 
 import dedent from "npm:dedent@1.5.1";
-import { gptPrompt } from "../shared/openai.ts";
+import { promptGPT } from "../shared/openai.ts";
 
 import {
   Confirm,
@@ -92,7 +92,7 @@ async function playPuzzle({ setup, solution }) {
 
     const prompt = evaluationPrompt(setup, solution, userInput);
 
-    const aiResponse = await gptPrompt(prompt, { temperature: 0.7 });
+    const aiResponse = await promptGPT(prompt, { temperature: 0.7 });
     say(dedent`
         """
         ${aiResponse}

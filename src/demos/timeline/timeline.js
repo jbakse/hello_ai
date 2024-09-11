@@ -4,7 +4,7 @@ import dedent from "npm:dedent";
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
 import { loadEnv } from "../../shared/util.ts";
-import { gptPrompt, initOpenAI } from "../../shared/openai.ts";
+import { initOpenAI, promptGPT } from "../../shared/openai.ts";
 import { createExitSignal, staticServer } from "../../shared/server.ts";
 import * as log from "../../shared/logger.ts";
 
@@ -40,7 +40,7 @@ router.get("/api/cards", async (ctx) => {
   const prompt = ctx.request.url.searchParams.get("prompt");
   const shortPrompt = prompt.slice(0, 128);
   log.info("/api/cards prompt: " + shortPrompt);
-  const result = await gptPrompt(
+  const result = await promptGPT(
     dedent`
       You create cards for a game where people arrange historical events in order.
       Cards contain...

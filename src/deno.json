@@ -1,7 +1,19 @@
 {
   "tasks": {
-    "deploy-woodsprite": "deployctl deploy --prod --project=jbakse-woodsprite ./woodsprite/woodsprite.js",
-    "deploy-reviser": "deployctl deploy --prod --project=jbakse-reviser ./reviser/reviser.js",
-    "deploy-timeline": "deployctl deploy --prod --project=jbakse-timeline ./timeline/timeline.js"
+    "deploy-woodsprite": "deployctl deploy --prod --project=jbakse-woodsprite ./demos/woodsprite/woodsprite.js",
+    "deploy-reviser": "deployctl deploy --prod --project=jbakse-reviser ./demos/reviser/reviser.js",
+    "deploy-timeline": "deployctl deploy --prod --project=jbakse-timeline ./demos/timeline/timeline.js",
+    "deploy-reactbot": "deployctl deploy --project=jbakse-reactbot  --env-file=../.env --prod --include=\"./shared/*.ts\" --include=\"./examples/discord_examples/reactbot.js\" ./examples/discord_examples/reactbot.js"
+  },
+  "deploy": {
+    "project": "a88ac58e-e7ab-47f1-af15-a5877205e257",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [
+      "./shared/*.ts",
+      "./examples/discord_examples/reactbot.js"
+    ],
+    "entrypoint": "examples/discord_examples/reactbot.js"
   }
 }

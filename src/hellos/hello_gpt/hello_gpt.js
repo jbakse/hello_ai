@@ -3,7 +3,7 @@
  */
 
 import { ask, say } from "../../shared/cli.ts";
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 
 main();
 
@@ -12,7 +12,7 @@ async function main() {
 
   const response = await ask("What do you want to ask? ");
 
-  const result = await gptPrompt(response, { temperature: 0.3 });
+  const result = await promptGPT(response, { temperature: 0.3 });
 
   say(`${result}`);
 }

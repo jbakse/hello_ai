@@ -1,5 +1,5 @@
 import { ask, say } from "../../shared/cli.ts";
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 
 const artJsonTemplate = `
 {
@@ -21,7 +21,7 @@ const title = await ask("What is the title of the artwork? ");
 const prompt =
   `Respond with JSON describing ${title}. Return only the json, starting with {. Use this format: ${artJsonTemplate}`;
 
-const jsonResponse = await gptPrompt(prompt, {
+const jsonResponse = await promptGPT(prompt, {
   temperature: 0.3,
   max_tokens: 512,
 });

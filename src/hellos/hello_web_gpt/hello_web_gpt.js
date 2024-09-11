@@ -1,5 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 import { createExitSignal, staticServer } from "../../shared/server.ts";
 
 import { Chalk } from "npm:chalk@5";
@@ -12,7 +12,7 @@ const router = new Router();
 router.get("/api/gpt", async (ctx) => {
   const prompt = ctx.request.url.searchParams.get("prompt");
   const shortPrompt = prompt.slice(0, 128);
-  const result = await gptPrompt(shortPrompt);
+  const result = await promptGPT(shortPrompt);
   ctx.response.body = result;
 });
 

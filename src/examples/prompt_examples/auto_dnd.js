@@ -6,7 +6,7 @@
  * itelf.
  */
 
-import { gptPrompt } from "../../shared/openai.ts";
+import { promptGPT } from "../../shared/openai.ts";
 import { ask, say } from "../../shared/cli.ts";
 
 main();
@@ -42,7 +42,7 @@ async function main() {
 
     let command = "look";
     if (turns > 1) {
-      command = await gptPrompt(player_prompt, {
+      command = await promptGPT(player_prompt, {
         max_tokens: 10,
         temperature: 1.2,
       });
@@ -70,7 +70,7 @@ async function main() {
   The player command is '${command}'. 
   `;
 
-    const response = await gptPrompt(prompt, {
+    const response = await promptGPT(prompt, {
       max_tokens: 128,
       temperature: 1.0,
     });
@@ -84,7 +84,7 @@ async function main() {
     ${history.join(" ")}
     `;
 
-  const summary = await gptPrompt(summary_prompt, {
+  const summary = await promptGPT(summary_prompt, {
     max_tokens: 2048,
     temperature: 0.5,
   });

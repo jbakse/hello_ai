@@ -18,7 +18,7 @@ import {
 } from "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts";
 import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
 
-import { gptPrompt, initOpenAI } from "../../shared/openai.ts";
+import { initOpenAI, promptGPT } from "../../shared/openai.ts";
 
 // init openai quietly
 await initOpenAI(false);
@@ -150,7 +150,7 @@ async function askQuestion(question) {
       response: "the correct answer"
     }
   `;
-  const response = await gptPrompt(prompt, {
+  const response = await promptGPT(prompt, {
     max_tokens: 128,
     temperature: 0.1,
     response_format: { type: "json_object" },
@@ -199,7 +199,7 @@ async function getQuestions(topic, difficulty) {
     }
   `;
 
-  const response = await gptPrompt(prompt, {
+  const response = await promptGPT(prompt, {
     max_tokens: 2048,
     temperature: 0.3,
     response_format: { type: "json_object" },

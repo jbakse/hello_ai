@@ -31,7 +31,7 @@ interface GPTOptions {
   errorMessage?: string | false;
 }
 
-export async function gptPrompt(
+export async function promptGPT(
   prompt: string,
   params: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
   options: GPTOptions = {},
@@ -119,7 +119,7 @@ export async function gpt(
     total_cost += isNaN(cost) ? 0 : cost;
 
     if (spinner) {
-      if (options.successMessage) {
+      if (options.successMessage !== false) {
         // stop the spinner and print the success message
         let message = options.successMessage ?? "";
         if (options.showStats) {
@@ -293,13 +293,12 @@ function getOpenAIKey() {
   // if not found, report and exit
   log.error("OPENAI_API_KEY not found in Deno.env or .env file.");
   const isDeployed = isDenoDeployment();
-  log.info(
-    `running in ${isDeployed ? "deployed" : "local"} environment`,
-  );
 
   // Deno.exit is not allowed on deno deploy
-  if (!isDenoDeployment()) {
-    log.error("exiting");
+  if (isDeployed) {
+    log.error("Running in deno deploy, can not exit.");
+  } else {
+    log.error("Running locally, exiting");
     Deno.exit(1);
   }
 }
