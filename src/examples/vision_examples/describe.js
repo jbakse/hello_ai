@@ -38,7 +38,7 @@ async function pngToBase64DataUrl(imagePath) {
     const imageBuffer = await Deno.readFile(imagePath);
     console.log(imageBuffer);
     const base64Image = btoa(
-        String.fromCharCode(...new Uint8Array(imageBuffer)),
+        new Uint8Array(imageBuffer).reduce((data, byte) => data + String.fromCharCode(byte), '')
     );
     const mimeType = "image/png"; // Change this to the correct MIME type if needed
     return `data:${mimeType};base64,${base64Image}`;
