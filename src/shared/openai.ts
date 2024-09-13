@@ -16,7 +16,7 @@ import { getEnvVariable, roundToDecimalPlaces } from "./util.ts";
 import { calculateCost } from "./costs.ts";
 
 let openai: OpenAI;
-let total_cost = 0;
+let totalCost = 0;
 
 /**
  * Initializes the OpenAI client with the API key from environment variables.
@@ -25,17 +25,24 @@ let total_cost = 0;
  * @throws An error if the API key is not found in the environment variables.
  */
 export function initOpenAI(): OpenAI {
+  // set global openai instance if not already set
   if (!openai) {
     const apiKey = getEnvVariable("OPENAI_API_KEY");
     if (!apiKey) throw new Error("OPENAI_API_KEY not found.");
-    // set global openai instance
+
     openai = new OpenAI({ apiKey });
   }
 
   return openai;
 }
 
-interface GPTOptions {
+type PartialChatGPTParams = Partial<
+  OpenAI.Chat.ChatCompletionCreateParamsNonStreaming
+>;
+
+type ChatGPTParams = OpenAI.Chat.ChatCompletionCreateParamsNonStreaming;
+
+interface SpinnerOptions {
   showSpinner?: boolean;
   showStats?: boolean;
   showError?: boolean;
@@ -46,8 +53,8 @@ interface GPTOptions {
 
 export async function promptGPT(
   prompt: string,
-  params: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
-  options: GPTOptions = {},
+  params: PartialChatGPTParams = {},
+  options: SpinnerOptions = {},
 ) {
   params.messages = [{ role: "user", content: prompt }];
   const message = await gpt(params, options);
@@ -55,8 +62,8 @@ export async function promptGPT(
 }
 
 export async function gpt(
-  params: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
-  options: GPTOptions = {},
+  params: PartialChatGPTParams = {},
+  options: SpinnerOptions = {},
 ): Promise<OpenAI.Chat.Completions.ChatCompletionMessage> {
   // initialize openai if this is the first call
   if (!openai) initOpenAI();
@@ -64,38 +71,38 @@ export async function gpt(
   // apply defaults to the params sent to OpenAI
   // see https://platform.openai.com/docs/api-reference/chat/create
   // for explanation of each parameter
-  const paramsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
+  const paramsDefaults: ChatGPTParams = {
     messages: [],
     model: "gpt-4o-2024-08-06",
-    frequency_penalty: 0,
-    logit_bias: {},
-    logprobs: null,
-    top_logprobs: null,
+    // frequency_penalty: 0,
+    // logit_bias: {},
+    // logprobs: null,
+    // top_logprobs: null,
     max_tokens: 128,
-    n: 1,
-    presence_penalty: 0,
-    response_format: { type: "text" },
-    seed: null,
-    stop: null,
-    stream: false,
-    stream_options: null,
-    temperature: 0.8,
-    top_p: null,
+    // n: 1,
+    // presence_penalty: 0,
+    // response_format: { type: "text" },
+    // seed: null,
+    // stop: null,
+    // stream: false,
+    // stream_options: null,
+    // temperature: 0.8,
+    // top_p: null,
   };
 
-  const chatParams = {
+  const chatParams: ChatGPTParams = {
     ...paramsDefaults,
     ...params,
   };
 
   // apply defaults to the options for local display
-  const optionsDefaults: GPTOptions = {
+  const optionsDefaults: SpinnerOptions = {
     showSpinner: true,
     showStats: true,
     showError: true,
-    loadingMessage: undefined,
-    successMessage: undefined,
-    errorMessage: undefined,
+    // loadingMessage: undefined,
+    // successMessage: undefined,
+    // errorMessage: undefined,
   };
 
   options = {
@@ -133,7 +140,7 @@ export async function gpt(
     const p_tokens = response.usage?.prompt_tokens ?? 0;
     const c_tokens = response.usage?.completion_tokens ?? 0;
     const cost = calculateCost(chatParams.model, p_tokens, c_tokens);
-    total_cost += isNaN(cost) ? 0 : cost;
+    totalCost += cost;
 
     if (spinner) {
       if (options.successMessage !== false) {
@@ -146,7 +153,7 @@ export async function gpt(
             c_tokens,
             seconds,
             cost,
-            total_cost,
+            totalCost,
           ));
         }
         spinner.succeed(message.trim());

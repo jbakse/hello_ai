@@ -606,5 +606,16 @@
     "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/secret.ts": "cece271c7ce01e12b249c31c2f9cea9e53b6e6be7621a478dac902bd8f288b61",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/select.ts": "c10902aeaca02a55d9b846934958dd166ee39c741faebdaa9800689e402186cf",
     "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/toggle.ts": "028f80de31750e7b5479727a64b4878f090ecd783fe3bb0d286e2e1c29f0eee3"
+  },
+  "workspace": {
+    "packageJson": {
+      "dependencies": [
+        "npm:@eslint/js@^9.10.0",
+        "npm:eslint@^9.10.0",
+        "npm:globals@^15.9.0",
+        "npm:typescript-eslint@^8.5.0",
+        "npm:typescript@^5.6.2"
+      ]
+    }
   }
 }

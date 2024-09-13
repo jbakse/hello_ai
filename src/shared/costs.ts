@@ -16,7 +16,7 @@ export function calculateCost(
     model: string,
     prompt_tokens: number,
     completion_tokens: number,
-) {
+): number {
     // 2024-09-13
     // cost in USD per 1000 tokens for each model
     // https://openai.com/api/pricing/
