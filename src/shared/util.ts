@@ -12,6 +12,39 @@ export function isDenoDeployment() {
 }
 
 /**
+ * Clamps a value between a minimum and maximum.
+ * @param value The value to clamp.
+ * @param min The minimum value.
+ * @param max The maximum value.
+ * @returns The clamped value.
+ */
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+/**
+ * Rounds a number to between a minimum and maximum number of decimal places.
+ * @param num The number to round.
+ * @param min The minimum number of decimal places (default: 2).
+ * @param max The maximum number of decimal places (default: min).
+ * @returns The rounded number as a string.
+ */
+export function roundToDecimalPlaces(num: number, min = 2, max = min): string {
+  // Round the number to max decimal places
+  const factor = Math.pow(10, max);
+  const rounded = Math.round(num * factor) / factor;
+
+  // Determine the length of the decimal part of the rounded number
+  const decimalPartLength = (rounded.toString().split(".")[1] || "").length;
+
+  // Clamp the length between the minimum and maximum
+  const decimalPlaces = clamp(max, min, decimalPartLength);
+
+  // Return the rounded number
+  return rounded.toFixed(decimalPlaces);
+}
+
+/**
  * Retrieves the value of an environment variable by name.
  * First checks Deno.env, then falls back to a .env file.
  * @param variableName The name of the environment variable to retrieve.

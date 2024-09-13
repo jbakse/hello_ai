@@ -5,7 +5,7 @@ import * as log from "./logger.ts";
 log.setLogLevel(log.LogLevel.WARN);
 
 Deno.test("gptPrompt returns expected response", async () => {
-  const prompt = "say one word all lowercase: apple";
+  const prompt = "say this one word in all lowercase: apple";
   const response = await promptGPT(prompt);
   assertEquals(response, "apple");
 });

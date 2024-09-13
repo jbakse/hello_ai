@@ -11,8 +11,8 @@ import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
 import OpenAI from "npm:openai@4.60.0";
 
 // local utilities
-import * as log from "./logger.ts";
-import { getEnvVariable } from "./util.ts";
+// import * as log from "./logger.ts";
+import { getEnvVariable, roundToDecimalPlaces } from "./util.ts";
 import { calculateCost } from "./costs.ts";
 
 let openai: OpenAI;
@@ -57,7 +57,7 @@ export async function promptGPT(
 export async function gpt(
   params: Partial<OpenAI.Chat.ChatCompletionCreateParamsNonStreaming> = {},
   options: GPTOptions = {},
-) {
+): Promise<OpenAI.Chat.Completions.ChatCompletionMessage> {
   // initialize openai if this is the first call
   if (!openai) initOpenAI();
 
@@ -157,7 +157,7 @@ export async function gpt(
     }
 
     // return response
-    return response.choices?.[0]?.message ?? { content: "", role: "assistant" };
+    return response.choices[0].message;
 
     //
   } catch (error) {
@@ -192,10 +192,9 @@ function formatStats(
   cost: number,
   t_cost: number,
 ) {
-  // todo: would be nice to round to number of places needed to see something
-  const costF = isNaN(cost) ? "?" : cost.toFixed(4);
-  const t_costF = t_cost.toFixed(4);
-  const secondsF = seconds.toFixed(2);
+  const costF = isNaN(cost) ? "?" : roundToDecimalPlaces(cost, 2, 4);
+  const t_costF = roundToDecimalPlaces(t_cost, 2, 4);
+  const secondsF = roundToDecimalPlaces(seconds, 2);
   return `${m} ${p_tokens}/${c_tokens}t ${secondsF}s $${costF} $${t_costF}`;
 }
 
