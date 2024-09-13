@@ -28,7 +28,14 @@ export function loadEnv(name = ".env", path = Deno.cwd()) {
   }
   log.info(`loading environment variables from '${envPath}'`);
   const env = dotenv.loadSync({ envPath });
-  log.debug(env);
+
+  // debug log the environment variables, eliding sensitive information
+  const elidedEnv = { ...env };
+  for (const key in elidedEnv) {
+    elidedEnv[key] = elide(elidedEnv[key], 3, 5);
+  }
+  log.debug(elidedEnv);
+
   return env;
 }
 
@@ -58,4 +65,16 @@ function findFileUpTree(
     // Check if we've reached the system root
     if (currentPath === oldPath) return false;
   }
+}
+
+/**
+ * Elides a string by replacing the middle with an ellipsis.
+ * @param s - The string to elide.
+ * @param start - The number of characters to keep at the start.
+ * @param end - The number of characters to keep at the end.
+ * @returns The elided string.
+ */
+
+export function elide(s: string, start: number, end: number) {
+  return s.slice(0, start) + "..." + s.slice(-end);
 }

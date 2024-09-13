@@ -1,18 +1,18 @@
-// import node:process for node compatibility needed by ora
-import process from "node:process";
-
-// ora is a node library for cli progress spinners
+// ora: cli progress spinners
 import ora, { Ora } from "npm:ora@7";
 
-// cliffy is a deno library for writing cli apps. colors is for colorising text
+// node:process: node compatibility needed by ora
+import process from "node:process";
+
+// cliffy: library for writing cli apps. colors is for colorising text
 import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
 
-// this is the openai api library
+// openai: openai api library
 import OpenAI from "npm:openai@4.60.0";
 
 // local utilities
 import * as log from "./logger.ts";
-import { isDenoDeployment, loadEnv } from "./util.ts";
+import { elide, isDenoDeployment, loadEnv } from "./util.ts";
 
 let openai: OpenAI;
 let total_cost = 0;
@@ -101,13 +101,16 @@ export async function gpt(
     spinner.start();
   }
 
-  console.log(chatParams);
   try {
     // start a performance timer
     const startTime = performance.now();
 
     // make the request to OpenAI
     // and wait
+
+    // todo: optionally use beta endpoint to allow structured returns?
+    // todo: ^ this might be adding too much to this function.
+
     // const response = await openai.beta.chat.completions.parse(chatParams);
     const response = await openai.chat.completions.create(chatParams);
 
@@ -116,8 +119,8 @@ export async function gpt(
 
     // calculate the cost of the request
     const p_tokens = response.usage?.prompt_tokens ?? 0;
-    const c_tokents = response.usage?.completion_tokens ?? 0;
-    const cost = calculateCost(chatParams.model, p_tokens, c_tokents);
+    const c_tokens = response.usage?.completion_tokens ?? 0;
+    const cost = calculateCost(chatParams.model, p_tokens, c_tokens);
     total_cost += isNaN(cost) ? 0 : cost;
 
     if (spinner) {
@@ -128,7 +131,7 @@ export async function gpt(
           message += " " + colors.gray(formatStats(
             chatParams.model,
             p_tokens,
-            c_tokents,
+            c_tokens,
             seconds,
             cost,
             total_cost,
@@ -220,7 +223,7 @@ function calculateCost(
 function formatStats(
   m: string,
   p_tokens: number,
-  c_tokents: number,
+  c_tokens: number,
   seconds: number,
   cost: number,
   t_cost: number,
@@ -229,7 +232,7 @@ function formatStats(
   const costF = isNaN(cost) ? "?" : cost.toFixed(4);
   const t_costF = t_cost.toFixed(4);
   const secondsF = seconds.toFixed(2);
-  return `${m} ${p_tokens}/${c_tokents}t ${secondsF}s $${costF} $${t_costF}`;
+  return `${m} ${p_tokens}/${c_tokens}t ${secondsF}s $${costF} $${t_costF}`;
 }
 
 export async function makeImage(prompt: string, c = {}) {
@@ -280,27 +283,32 @@ export async function makeImage(prompt: string, c = {}) {
 
 function getOpenAIKey() {
   // look in environment variables first
-  if (Deno.env.get("OPENAI_API_KEY")) {
-    log.info("OPENAI_API_KEY found in Deno.env");
-    return Deno.env.get("OPENAI_API_KEY");
+  let apiKey = Deno.env.get("OPENAI_API_KEY");
+  if (apiKey) {
+    log.info(`OPENAI_API_KEY found in Deno.env: ${elide(apiKey, 3, 5)}`);
+    return apiKey;
   }
 
   // then look in .env file
   const env = loadEnv();
-  if (env.OPENAI_API_KEY) {
-    log.info("OPENAI_API_KEY found in .env file");
+  apiKey = env.OPENAI_API_KEY;
+  if (apiKey) {
+    log.info(`OPENAI_API_KEY found in .env file: ${elide(apiKey, 3, 5)}`);
     return env.OPENAI_API_KEY;
   }
 
-  // if not found, report and exit
-  log.error("OPENAI_API_KEY not found in Deno.env or .env file.");
+  // if not found, report
+  log.error(`OPENAI_API_KEY not found in Deno.env or .env file.
+      cwd: ${Deno.cwd()}
+      script: ${import.meta.url}`);
+
   const isDeployed = isDenoDeployment();
 
-  // Deno.exit is not allowed on deno deploy
+  // exit if possible, Deno.exit is not allowed on deno deploy
   if (isDeployed) {
     log.error("Running in deno deploy, can not exit.");
   } else {
-    log.error("Running locally, exiting");
+    log.error("Running locally, exiting.");
     Deno.exit(1);
   }
 }
