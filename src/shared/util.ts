@@ -12,6 +12,36 @@ export function isDenoDeployment() {
 }
 
 /**
+ * Retrieves the value of an environment variable by name.
+ * First checks Deno.env, then falls back to a .env file.
+ * @param variableName The name of the environment variable to retrieve.
+ * @returns The value of the environment variable, or undefined if not found.
+ */
+export function getEnvVariable(variableName: string): string | undefined {
+  // look in environment variables first
+  let value = Deno.env.get(variableName);
+  if (value) {
+    log.info(`${variableName} found in Deno.env: ${elide(value)}`);
+    return value;
+  }
+
+  // then look in .env file
+  const env = loadEnv();
+  value = env[variableName];
+  if (value) {
+    log.info(`${variableName} found in .env file: ${elide(value)}`);
+    return value;
+  }
+
+  // if not found, report
+  log.warn(`${variableName} not found in Deno.env or .env file.
+      cwd: ${Deno.cwd()}
+      script: ${import.meta.url}`);
+
+  return undefined;
+}
+
+/**
  * Loads environment variables from a specified .env file.
  * Searches up the directory tree starting from the given path.
  * @param name name of the .env file (default: ".env").
@@ -32,7 +62,7 @@ export function loadEnv(name = ".env", path = Deno.cwd()) {
   // debug log the environment variables, eliding sensitive information
   const elidedEnv = { ...env };
   for (const key in elidedEnv) {
-    elidedEnv[key] = elide(elidedEnv[key], 3, 5);
+    elidedEnv[key] = elide(elidedEnv[key]);
   }
   log.debug(elidedEnv);
 
@@ -45,9 +75,16 @@ export function loadEnv(name = ".env", path = Deno.cwd()) {
  *
  * @returns {string | false} The absolute directory path of the current module.
  */
-// export function getModuleDirectory(): string {
-//   return path.dirname(path.fromFileUrl(import.meta.url));
-// }
+export function getModuleDirectory(): string {
+  return path.dirname(path.fromFileUrl(import.meta.url));
+}
+
+/**
+ * Searches up the directory tree for a specified file.
+ * @param filename The name of the file to search for.
+ * @param currentPath The directory to start the search from.
+ * @returns The absolute path to the file, or false if not found.
+ */
 
 function findFileUpTree(
   filename: string,
@@ -75,6 +112,6 @@ function findFileUpTree(
  * @returns The elided string.
  */
 
-export function elide(s: string, start: number, end: number) {
+export function elide(s: string, start = 3, end = 3) {
   return s.slice(0, start) + "..." + s.slice(-end);
 }

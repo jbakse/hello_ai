@@ -12,13 +12,26 @@ import OpenAI from "npm:openai@4.60.0";
 
 // local utilities
 import * as log from "./logger.ts";
-import { elide, isDenoDeployment, loadEnv } from "./util.ts";
+import { getEnvVariable } from "./util.ts";
+import { calculateCost } from "./costs.ts";
 
 let openai: OpenAI;
 let total_cost = 0;
 
-export function initOpenAI() {
-  openai = new OpenAI({ apiKey: getOpenAIKey() });
+/**
+ * Initializes the OpenAI client with the API key from environment variables.
+ * If the client is already initialized, it returns the existing instance.
+ * @returns The initialized OpenAI client instance.
+ * @throws An error if the API key is not found in the environment variables.
+ */
+export function initOpenAI(): OpenAI {
+  if (!openai) {
+    const apiKey = getEnvVariable("OPENAI_API_KEY");
+    if (!apiKey) throw new Error("OPENAI_API_KEY not found.");
+    // set global openai instance
+    openai = new OpenAI({ apiKey });
+  }
+
   return openai;
 }
 
@@ -50,7 +63,7 @@ export async function gpt(
 
   // apply defaults to the params sent to OpenAI
   // see https://platform.openai.com/docs/api-reference/chat/create
-  // for explination of each parameter
+  // for explanation of each parameter
   const paramsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
     messages: [],
     model: "gpt-4o-2024-08-06",
@@ -108,11 +121,10 @@ export async function gpt(
     // make the request to OpenAI
     // and wait
 
-    // todo: optionally use beta endpoint to allow structured returns?
-    // todo: ^ this might be adding too much to this function.
-
     // const response = await openai.beta.chat.completions.parse(chatParams);
     const response = await openai.chat.completions.create(chatParams);
+    // todo: optionally use beta endpoint to allow structured returns?
+    // todo: ^ this might be adding too much to this function.
 
     // find the elapsed time
     const seconds = (performance.now() - startTime) / 1000;
@@ -145,7 +157,7 @@ export async function gpt(
     }
 
     // return response
-    return response.choices[0].message;
+    return response.choices?.[0]?.message ?? { content: "", role: "assistant" };
 
     //
   } catch (error) {
@@ -172,54 +184,6 @@ export async function gpt(
   }
 }
 
-function calculateCost(
-  model: string,
-  prompt_tokens: number,
-  completion_tokens: number,
-) {
-  // cost per 1000 tokens for each model
-  // https://openai.com/api/pricing/
-  const model_costs: Record<
-    string,
-    { promptCost: number; completionCost: number }
-  > = {
-    "gpt-4o": { promptCost: 0.005, completionCost: 0.015 },
-    "gpt-4o-2024-08-06": { promptCost: 0.0025, completionCost: 0.01 },
-    "gpt-4o-2024-05-13": { promptCost: 0.005, completionCost: 0.015 },
-
-    "gpt-4o-mini": { promptCost: 0.00015, completionCost: 0.0006 },
-    "gpt-4o-mini-2024-07-18": { promptCost: 0.00015, completionCost: 0.0006 },
-
-    "gpt-4-turbo": { promptCost: 0.0100, completionCost: 0.0300 },
-    "gpt-4-turbo-2024-04-09": { promptCost: 0.0100, completionCost: 0.0300 },
-    "gpt-4": { promptCost: 0.0300, completionCost: 0.0600 },
-    "gpt-4-32k": { promptCost: 0.0600, completionCost: 0.1200 },
-    "gpt-4-0125-preview": { promptCost: 0.0100, completionCost: 0.0300 },
-    "gpt-4-1106-preview": { promptCost: 0.0100, completionCost: 0.0300 },
-    "gpt-4-vision-preview": { promptCost: 0.0100, completionCost: 0.0300 },
-
-    "gpt-3.5-turbo-0125": { promptCost: 0.0005, completionCost: 0.0015 },
-    "gpt-3.5-turbo-instruct": { promptCost: 0.0015, completionCost: 0.0020 },
-    "gpt-3.5-turbo-1106": { promptCost: 0.0010, completionCost: 0.0020 },
-    "gpt-3.5-turbo-0613": { promptCost: 0.0015, completionCost: 0.0020 },
-    "gpt-3.5-turbo-16k-0613": { promptCost: 0.0030, completionCost: 0.0040 },
-    "gpt-3.5-turbo-0301": { promptCost: 0.0015, completionCost: 0.0020 },
-
-    "davinci-002": { promptCost: 0.0020, completionCost: 0.0020 },
-    "babbage-002": { promptCost: 0.0004, completionCost: 0.0004 },
-  };
-
-  if (model in model_costs) {
-    const mc = model_costs[model];
-    const prompt_cost = (prompt_tokens / 1000) * mc.promptCost;
-    const completion_cost = (completion_tokens / 1000) * mc.completionCost;
-    return (prompt_cost + completion_cost);
-  } else {
-    log.warn(`model ${model} not found in model_costs`);
-    return 0;
-  }
-}
-
 function formatStats(
   m: string,
   p_tokens: number,
@@ -235,80 +199,48 @@ function formatStats(
   return `${m} ${p_tokens}/${c_tokens}t ${secondsF}s $${costF} $${t_costF}`;
 }
 
-export async function makeImage(prompt: string, c = {}) {
-  if (!openai) initOpenAI();
+// export async function makeImage(prompt: string, c = {}) {
+//   if (!openai) initOpenAI();
 
-  const defaults: OpenAI.Images.ImageGenerateParams = {
-    prompt: "",
-    model: "dall-e-3",
-    quality: "standard",
-    response_format: "url",
-    style: "vivid",
-    size: "1024x1024",
-  };
+//   const defaults: OpenAI.Images.ImageGenerateParams = {
+//     prompt: "",
+//     model: "dall-e-3",
+//     quality: "standard",
+//     response_format: "url",
+//     style: "vivid",
+//     size: "1024x1024",
+//   };
 
-  const config = {
-    ...defaults,
-    ...c,
-  };
+//   const config = {
+//     ...defaults,
+//     ...c,
+//   };
 
-  const startTime = performance.now();
+//   const startTime = performance.now();
 
-  const spinner = ora({
-    text: config.model as string,
-    discardStdin: false,
-  }).start();
+//   const spinner = ora({
+//     text: config.model as string,
+//     discardStdin: false,
+//   }).start();
 
-  const image = await openai.images.generate({
-    ...config,
-    prompt,
-    n: 1,
-  });
+//   const image = await openai.images.generate({
+//     ...config,
+//     prompt,
+//     n: 1,
+//   });
 
-  const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
+//   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
-  const hd = config.quality !== "standard";
-  const big = config.size !== "1024x1024";
-  let cost = 0.04;
-  if (hd && !big) cost = 0.08;
-  if (!hd && big) cost = 0.08;
-  if (hd && big) cost = 0.12;
+//   const hd = config.quality !== "standard";
+//   const big = config.size !== "1024x1024";
+//   let cost = 0.04;
+//   if (hd && !big) cost = 0.08;
+//   if (!hd && big) cost = 0.08;
+//   if (hd && big) cost = 0.12;
 
-  spinner.succeed(colors.gray(`${config.model} ${seconds}s $${cost}`));
+//   spinner.succeed(colors.gray(`${config.model} ${seconds}s $${cost}`));
 
-  log.info(image.data[0].revised_prompt);
+//   log.info(image.data[0].revised_prompt);
 
-  return image.data[0].url;
-}
-
-function getOpenAIKey() {
-  // look in environment variables first
-  let apiKey = Deno.env.get("OPENAI_API_KEY");
-  if (apiKey) {
-    log.info(`OPENAI_API_KEY found in Deno.env: ${elide(apiKey, 3, 5)}`);
-    return apiKey;
-  }
-
-  // then look in .env file
-  const env = loadEnv();
-  apiKey = env.OPENAI_API_KEY;
-  if (apiKey) {
-    log.info(`OPENAI_API_KEY found in .env file: ${elide(apiKey, 3, 5)}`);
-    return env.OPENAI_API_KEY;
-  }
-
-  // if not found, report
-  log.error(`OPENAI_API_KEY not found in Deno.env or .env file.
-      cwd: ${Deno.cwd()}
-      script: ${import.meta.url}`);
-
-  const isDeployed = isDenoDeployment();
-
-  // exit if possible, Deno.exit is not allowed on deno deploy
-  if (isDeployed) {
-    log.error("Running in deno deploy, can not exit.");
-  } else {
-    log.error("Running locally, exiting.");
-    Deno.exit(1);
-  }
-}
+//   return image.data[0].url;
+// }
