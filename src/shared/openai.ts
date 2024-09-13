@@ -8,7 +8,7 @@ import ora, { Ora } from "npm:ora@7";
 import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
 
 // this is the openai api library
-import OpenAI from "npm:openai@4.55.7";
+import OpenAI from "npm:openai@4.60.0";
 
 // local utilities
 import * as log from "./logger.ts";
@@ -53,7 +53,7 @@ export async function gpt(
   // for explination of each parameter
   const paramsDefaults: OpenAI.Chat.ChatCompletionCreateParamsNonStreaming = {
     messages: [],
-    model: "gpt-4o",
+    model: "gpt-4o-2024-08-06",
     frequency_penalty: 0,
     logit_bias: {},
     logprobs: null,
@@ -101,13 +101,15 @@ export async function gpt(
     spinner.start();
   }
 
+  console.log(chatParams);
   try {
     // start a performance timer
     const startTime = performance.now();
 
     // make the request to OpenAI
     // and wait
-    const response = await openai.beta.chat.completions.parse(chatParams);
+    // const response = await openai.beta.chat.completions.parse(chatParams);
+    const response = await openai.chat.completions.create(chatParams);
 
     // find the elapsed time
     const seconds = (performance.now() - startTime) / 1000;
@@ -231,7 +233,7 @@ function formatStats(
 }
 
 export async function makeImage(prompt: string, c = {}) {
-  if (!openai) await initOpenAI();
+  if (!openai) initOpenAI();
 
   const defaults: OpenAI.Images.ImageGenerateParams = {
     prompt: "",
