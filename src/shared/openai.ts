@@ -1,8 +1,7 @@
-// ora: cli progress spinners
-import ora, { Ora } from "npm:ora@7";
+import Kia from "https://deno.land/x/kia@0.4.1/mod.ts";
 
 // node:process: node compatibility needed by ora
-import process from "node:process";
+// import process from "node:process";
 
 // cliffy: library for writing cli apps. colors is for colorising text
 import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
@@ -111,12 +110,10 @@ export async function gpt(
   };
 
   // start the spinner
-  let spinner: Ora | null = null;
+  let spinner: Kia | null = null;
   if (options.showSpinner) {
-    spinner = ora({
+    spinner = new Kia({
       text: options.loadingMessage ?? chatParams.model,
-      discardStdin: false,
-      stream: process.stdout,
     });
     spinner.start();
   }
