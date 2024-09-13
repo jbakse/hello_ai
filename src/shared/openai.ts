@@ -153,7 +153,8 @@ export async function gpt(
             totalCost,
           ));
         }
-        spinner.succeed(message.trim());
+        // spinner.succeed(message.trim());
+        spinner.stopWithFlair(message.trim(), colors.green("✔"));
       } else {
         // stop the spinner with no message
         spinner.stop();
@@ -166,6 +167,7 @@ export async function gpt(
     //
   } catch (error) {
     // if there's an error
+
     if (spinner) {
       if (options.errorMessage) {
         // stop the spinner and print the error message
@@ -173,9 +175,12 @@ export async function gpt(
         if (options.showError) {
           message += " " + error.message;
         }
-        spinner.fail(colors.red(message.trim()));
+        // spinner.fail(colors.red(message.trim()));
+
+        spinner.stopWithFlair(colors.red(message.trim()), colors.red("✘"));
       } else {
         // stop the spinner with no error message
+
         spinner.stop();
       }
     }
