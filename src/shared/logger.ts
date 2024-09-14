@@ -31,16 +31,18 @@ export const setLogLevel = (level: LogLevel) => {
  *
  * @param msg - The message to be logged.
  */
-export const debug = (msg: unknown) => _log(5, "bgBlue", "debug", msg);
-export const info = (msg: unknown) => _log(4, "bgBlue", "info ", msg);
-export const log = (msg: unknown) => _log(3, "bgWhite", "log  ", msg);
-export const warn = (msg: unknown) => _log(2, "bgYellow", "warn ", msg);
-export const error = (msg: unknown) => _log(1, "bgRed", "error", msg);
+export const debug = (...msgs: unknown[]) =>
+  _log(5, "bgBlue", "debug", ...msgs);
+export const info = (...msgs: unknown[]) => _log(4, "bgBlue", "info ", ...msgs);
+export const log = (...msgs: unknown[]) => _log(3, "bgWhite", "log  ", ...msgs);
+export const warn = (...msgs: unknown[]) =>
+  _log(2, "bgYellow", "warn ", ...msgs);
+export const error = (...msgs: unknown[]) => _log(1, "bgRed", "error", ...msgs);
 
 // PRIVATE
 // _log() is the internal logging function used by debug, info, etc.
 type Color = "bgWhite" | "bgBlue" | "bgYellow" | "bgRed";
-function _log(level: number, color: Color, label: string, msg: unknown) {
+function _log(level: number, color: Color, label: string, ...msgs: unknown[]) {
   // filter logs below the set level
   if (level > logLevel) return;
 
@@ -50,12 +52,10 @@ function _log(level: number, color: Color, label: string, msg: unknown) {
   // log the calling site
   console.log(colors.gray(formatCaller()));
 
-  // log the [level] tag and the message
-  if (typeof msg === "string") {
+  // log the [level] tag and each message
+  msgs.forEach((msg) => {
     console.log(colors[color](label), msg);
-  } else {
-    console.log(colors[color](label), msg);
-  }
+  });
 }
 
 // PRIVATE

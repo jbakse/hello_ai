@@ -41,5 +41,10 @@ const myObj = {
     name: "Ada",
     age: 209,
     city: "London",
+    country: "UK",
 };
 log.log(myObj);
+
+// can log multiple things at once
+log.log("A", "B", 1, 2);
+log.log("myObj", myObj);
