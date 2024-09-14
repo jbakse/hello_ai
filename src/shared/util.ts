@@ -1,3 +1,5 @@
+import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
+
 import * as fs from "https://deno.land/std@0.214.0/fs/mod.ts";
 import * as path from "https://deno.land/std@0.214.0/path/mod.ts";
 import * as dotenv from "https://deno.land/std@0.214.0/dotenv/mod.ts";
@@ -18,6 +20,7 @@ export function isDenoDeployment() {
  * @param max The maximum value.
  * @returns The clamped value.
  */
+
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
@@ -29,6 +32,7 @@ function clamp(value: number, min: number, max: number): number {
  * @param max The maximum number of decimal places (default: min).
  * @returns The rounded number as a string.
  */
+
 export function roundToDecimalPlaces(num: number, min = 2, max = min): string {
   // Round the number to max decimal places
   const factor = Math.pow(10, max);
@@ -54,7 +58,9 @@ export function getEnvVariable(variableName: string): string | undefined {
   // look in environment variables first
   let value = Deno.env.get(variableName);
   if (value) {
-    log.info(`${variableName} found in Deno.env: ${elide(value)}`);
+    log.info(
+      `${variableName} found in Deno.env: "${colors.green(elide(value))}"`,
+    );
     return value;
   }
 
@@ -62,7 +68,9 @@ export function getEnvVariable(variableName: string): string | undefined {
   const env = loadEnv();
   value = env[variableName];
   if (value) {
-    log.info(`${variableName} found in .env file: ${elide(value)}`);
+    log.info(
+      `${variableName} found in .env file: "${colors.green(elide(value))}"`,
+    );
     return value;
   }
 

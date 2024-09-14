@@ -5,6 +5,8 @@
 
 import { ask, say } from "../../shared/cli.ts";
 import { promptGPT } from "../../shared/openai.ts";
+import { LogLevel, setLogLevel } from "../../shared/logger.ts";
+setLogLevel(LogLevel.LOG);
 
 const response = await ask("What do you want to ask? ");
 
