@@ -1,16 +1,13 @@
+// Kia: library for creating spinners
 import Kia from "https://deno.land/x/kia@0.4.1/mod.ts";
-
-// node:process: node compatibility needed by ora
-// import process from "node:process";
 
 // cliffy: library for writing cli apps. colors is for colorising text
 import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
 
-// openai: openai api library
+// openai: library for openai api
 import OpenAI from "npm:openai@4.60.0";
 
 // local utilities
-// import * as log from "./logger.ts";
 import { getEnvVariable, roundToDecimalPlaces } from "./util.ts";
 import { calculateCost } from "./costs.ts";
 
@@ -35,16 +32,12 @@ export function initOpenAI(): OpenAI {
   return openai;
 }
 
-type PartialChatGPTParams = Partial<
-  OpenAI.Chat.ChatCompletionCreateParamsNonStreaming
->;
-
-type ChatGPTParams = OpenAI.Chat.ChatCompletionCreateParamsNonStreaming;
+type OpenAIChatParams = OpenAI.ChatCompletionCreateParamsNonStreaming;
 
 interface SpinnerOptions {
-  show?: boolean;
-  showStats?: boolean;
-  showError?: boolean;
+  show: boolean;
+  showStats: boolean;
+  showError: boolean;
   loadingMessage?: string;
   successMessage?: string;
   errorMessage?: string;
@@ -52,25 +45,25 @@ interface SpinnerOptions {
 
 export async function promptGPT(
   prompt: string,
-  params: PartialChatGPTParams = {},
-  options: SpinnerOptions = {},
-) {
+  params: Partial<OpenAIChatParams> = {},
+  options: Partial<SpinnerOptions> = {},
+): Promise<string> {
   params.messages = [{ role: "user", content: prompt }];
   const message = await gpt(params, options);
   return (message.content ?? "").trim();
 }
 
 export async function gpt(
-  params: PartialChatGPTParams = {},
-  spinnerOptions: SpinnerOptions = {},
-): Promise<OpenAI.Chat.Completions.ChatCompletionMessage> {
+  params: Partial<OpenAIChatParams> = {},
+  spinnerOptions: Partial<SpinnerOptions> = {},
+): Promise<OpenAI.ChatCompletionMessage> {
   // initialize openai if this is the first call
   if (!openai) initOpenAI();
 
   // apply defaults to the params sent to OpenAI
   // see https://platform.openai.com/docs/api-reference/chat/create
   // for explanation of each parameter
-  const paramsDefaults: ChatGPTParams = {
+  const paramsDefaults: Readonly<OpenAIChatParams> = {
     messages: [],
     model: "gpt-4o-2024-08-06",
     // frequency_penalty: 0,
@@ -89,19 +82,16 @@ export async function gpt(
     // top_p: null,
   };
 
-  const chatParams: ChatGPTParams = {
+  const chatParams: OpenAIChatParams = {
     ...paramsDefaults,
     ...params,
   };
 
   // apply defaults to the options for local display
-  const spinnerDefaults: SpinnerOptions = {
+  const spinnerDefaults: Readonly<SpinnerOptions> = {
     show: true,
     showStats: true,
     showError: true,
-    // loadingMessage: undefined,
-    // successMessage: undefined,
-    // errorMessage: undefined,
   };
 
   spinnerOptions = {
@@ -175,7 +165,7 @@ export async function gpt(
     return {
       content: error.message,
       role: "assistant",
-    } as OpenAI.Chat.Completions.ChatCompletionMessage;
+    } as OpenAI.ChatCompletionMessage;
   }
 }
 
