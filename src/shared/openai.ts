@@ -42,12 +42,12 @@ type PartialChatGPTParams = Partial<
 type ChatGPTParams = OpenAI.Chat.ChatCompletionCreateParamsNonStreaming;
 
 interface SpinnerOptions {
-  showSpinner?: boolean;
+  show?: boolean;
   showStats?: boolean;
   showError?: boolean;
   loadingMessage?: string;
-  successMessage?: string | false;
-  errorMessage?: string | false;
+  successMessage?: string;
+  errorMessage?: string;
 }
 
 export async function promptGPT(
@@ -62,7 +62,7 @@ export async function promptGPT(
 
 export async function gpt(
   params: PartialChatGPTParams = {},
-  options: SpinnerOptions = {},
+  spinnerOptions: SpinnerOptions = {},
 ): Promise<OpenAI.Chat.Completions.ChatCompletionMessage> {
   // initialize openai if this is the first call
   if (!openai) initOpenAI();
@@ -95,8 +95,8 @@ export async function gpt(
   };
 
   // apply defaults to the options for local display
-  const optionsDefaults: SpinnerOptions = {
-    showSpinner: true,
+  const spinnerDefaults: SpinnerOptions = {
+    show: true,
     showStats: true,
     showError: true,
     // loadingMessage: undefined,
@@ -104,16 +104,16 @@ export async function gpt(
     // errorMessage: undefined,
   };
 
-  options = {
-    ...optionsDefaults,
-    ...options,
+  spinnerOptions = {
+    ...spinnerDefaults,
+    ...spinnerOptions,
   };
 
   // start the spinner
-  let spinner: Kia | null = null;
-  if (options.showSpinner) {
+  let spinner: Kia | undefined;
+  if (spinnerOptions.show) {
     spinner = new Kia({
-      text: options.loadingMessage ?? chatParams.model,
+      text: spinnerOptions.loadingMessage ?? chatParams.model,
     });
     spinner.start();
   }
@@ -139,26 +139,20 @@ export async function gpt(
     const cost = calculateCost(chatParams.model, p_tokens, c_tokens);
     totalCost += cost;
 
+    // stop the spinner and print the success message
     if (spinner) {
-      if (options.successMessage !== false) {
-        // stop the spinner and print the success message
-        let message = options.successMessage ?? "";
-        if (options.showStats) {
-          message += " " + colors.gray(formatStats(
-            chatParams.model,
-            p_tokens,
-            c_tokens,
-            seconds,
-            cost,
-            totalCost,
-          ));
-        }
-        // spinner.succeed(message.trim());
-        spinner.stopWithFlair(message.trim(), colors.green("✔"));
-      } else {
-        // stop the spinner with no message
-        spinner.stop();
+      let message = spinnerOptions.successMessage ?? "";
+      if (spinnerOptions.showStats) {
+        message += " " + colors.gray(formatStats(
+          chatParams.model,
+          p_tokens,
+          c_tokens,
+          seconds,
+          cost,
+          totalCost,
+        ));
       }
+      spinner.stopWithFlair(message.trim(), colors.green("✔"));
     }
 
     // return response
@@ -168,21 +162,13 @@ export async function gpt(
   } catch (error) {
     // if there's an error
 
+    // stop the spinner and print the error message
     if (spinner) {
-      if (options.errorMessage) {
-        // stop the spinner and print the error message
-        let message = options.errorMessage ?? "OpenAI API Error:";
-        if (options.showError) {
-          message += " " + error.message;
-        }
-        // spinner.fail(colors.red(message.trim()));
-
-        spinner.stopWithFlair(colors.red(message.trim()), colors.red("✘"));
-      } else {
-        // stop the spinner with no error message
-
-        spinner.stop();
+      let message = spinnerOptions.errorMessage ?? "";
+      if (spinnerOptions.showError) {
+        message += " " + error.message;
       }
+      spinner.stopWithFlair(colors.red(message.trim()), colors.red("✘"));
     }
 
     // respond with the error message
