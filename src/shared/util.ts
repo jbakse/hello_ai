@@ -6,14 +6,6 @@ import * as dotenv from "https://deno.land/std@0.214.0/dotenv/mod.ts";
 import * as log from "./logger.ts";
 
 /**
- * Checks if the code is running in a Deno deployment environment.
- * @returns {boolean}
- */
-export function isDenoDeployment() {
-  return Deno.env.get("DENO_DEPLOYMENT_ID") ?? false;
-}
-
-/**
  * Clamps a value between a minimum and maximum.
  * @param value The value to clamp.
  * @param min The minimum value.
