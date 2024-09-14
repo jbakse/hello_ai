@@ -12,14 +12,37 @@ async function main() {
 
   const response = await gpt({
     model: "gpt-4o-mini",
+    max_tokens: 2048,
     messages: [
       {
         role: "user",
         content: [
           {
             type: "text",
-            text: "Analyze the image and provide structured data.",
+            text:
+              `Analyze the image and provide structured data. The description should be detailed for use as an image prompt.
+              
+              An example:
+              {
+                description: "An overhead photograph of an artistic workspace featuring a blank sketchbook surrounded by colorful art supplies and two decorative cupcakes. The composition has vibrant elements that encourage creativity and inspiration.",
+                subjects: [
+                  "sketchbook",
+                  "cupcakes",
+                  "markers",
+                  "paintbrushes",
+                  "sharpener",
+                  "washi tape",
+                  "eraser"
+                ],
+                materials: [ "paper", "plastic", "ceramic" ],
+                background: "wooden table",
+                mood: "creative",
+                colors: [ "pink", "white", "blue", "brown", "yellow" ]
+              }
+              
+              `,
           },
+
           {
             type: "image_url",
             image_url: {
@@ -36,19 +59,36 @@ async function main() {
         "schema": {
           "type": "object",
           "properties": {
+            "description": {
+              "type": "string",
+            },
             "subjects": {
               "type": "array",
               "items": { "type": "string" },
+            },
+            "materials": {
+              "type": "array",
+              "items": { "type": "string" },
+            },
+            "background": {
+              "type": "string",
+            },
+            "mood": {
+              "type": "string",
             },
             "colors": {
               "type": "array",
               "items": { "type": "string" },
             },
-            "mood": {
-              "type": "string",
-            },
           },
-          "required": ["subjects", "colors", "mood"],
+          "required": [
+            "subjects",
+            "colors",
+            "mood",
+            "background",
+            "description",
+            "materials",
+          ],
           "additionalProperties": false,
         },
         "strict": true,
