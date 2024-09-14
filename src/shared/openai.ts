@@ -115,8 +115,8 @@ export async function gpt(
     // make the request to OpenAI
     // and wait
 
-    // const response = await openai.beta.chat.completions.parse(chatParams);
-    const response = await openai.chat.completions.create(chatParams);
+    const response = await openai.beta.chat.completions.parse(chatParams);
+    // const response = await openai.chat.completions.create(chatParams);
     // todo: optionally use beta endpoint to allow structured returns?
     // todo: ^ this might be adding too much to this function.
 

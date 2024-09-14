@@ -10,6 +10,7 @@ log.setLogLevel(log.LogLevel.DEBUG);
 // Change the current working directory to the directory of this script
 // This is necessary to serve static files with the correct path even
 // when the script is executed from a different directory
+// todo: switch to import.meta.dirname
 Deno.chdir(new URL(".", import.meta.url).pathname);
 // log the current working directory with friendly message
 console.log(`Current working directory: ${Deno.cwd()}`);

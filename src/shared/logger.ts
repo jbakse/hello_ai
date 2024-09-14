@@ -84,4 +84,4 @@ function formatCaller() {
 }
 
 // set the default log level
-let logLevel = LogLevel.INFO;
+let logLevel = LogLevel.LOG;

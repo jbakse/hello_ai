@@ -1,28 +1,22 @@
 /**
  * Describes an image using GPT 4o multi-modal capabilities.
  */
-import * as path from "https://deno.land/std@0.214.0/path/mod.ts";
-import { inspect, say } from "../../shared/cli.ts";
-import { initOpenAI } from "../../shared/openai.ts";
 
-const openai = initOpenAI();
+// set up logging level
+import { LogLevel, setLogLevel } from "../../shared/logger.ts";
+setLogLevel(LogLevel.LOG);
 
-// sent prompt to gpt and relay response
+import { say } from "../../shared/cli.ts";
+import { gpt } from "../../shared/openai.ts";
 
-export function getModuleDirectory() {
-    return path.dirname(path.fromFileUrl(import.meta.url));
-}
+// open file relative to this script, convert to data URL
+const pathname = new URL("./data/ninja_cat_sm.png", import.meta.url).pathname;
+const dataURL = await imageToDataURL(pathname);
+console.log(dataURL.slice(0, 50));
 
-const dir = getModuleDirectory();
-// const data = await encodeImage(dir + "/./data/ninja_cat_sm.png");
-// const dataURL = "data:image/png;base64," + data;
-
-const dataURL = await imageToDataURL(dir + "/./data/ninja_cat_sm.png");
-
-console.log(dataURL.slice(0, 100));
-
-async function main() {
-    const response = await openai.chat.completions.create({
+// send it to gpt for description
+const response = await gpt(
+    {
         model: "gpt-4o-mini",
         messages: [
             {
@@ -36,52 +30,29 @@ async function main() {
                         type: "image_url",
                         image_url: {
                             "url": dataURL,
-                            // "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg",
                         },
                     },
                 ],
             },
         ],
-    });
+    },
+);
 
-    console.log(response.choices[0].message.content);
-}
-main();
+say(response.content);
 
-import { extname } from "https://deno.land/std/path/mod.ts";
-import { contentType } from "https://deno.land/std/media_types/mod.ts";
-import { encodeBase64 } from "https://deno.land/std/encoding/base64.ts";
+/// Library funciton to convert image to data URL
+import { extname } from "https://deno.land/std@0.211.0/path/mod.ts";
+import { contentType } from "https://deno.land/std@0.224.0/media_types/mod.ts";
+import { encodeBase64 } from "https://deno.land/std@0.211.0/encoding/base64.ts";
 
+/**
+ * Converts an image file to a data URL.
+ * @param {string} path - The path to the image file.
+ * @returns {Promise<string>} The data URL.
+ */
 async function imageToDataURL(path) {
     const data = await Deno.readFile(path);
     const mimeType = contentType(extname(path)) || "application/octet-stream";
     const base64Data = encodeBase64(data);
     return `data:${mimeType};base64,${base64Data}`;
 }
-
-/**
- * Encodes an image file to a base64 string.
- * drafted by claude 3.5 sonnet 2024/09/12
- * improved by hand
- * @param {string} imagePath - The file path of the image to encode.
- * @returns {Promise<string>} A promise that resolves to the base64 encoded string.
- */
-/*
-async function encodeImage(imagePath) {
-    // Read the entire file into memory as a Uint8Array
-    // Deno.readFile returns a Promise that resolves to a Uint8Array
-    const imageData = await Deno.readFile(imagePath);
-
-    // Convert the Uint8Array to a base64 encoded string
-    return btoa(
-        imageData
-            // Use reduce to iterate over each byte in the array
-            .reduce(
-                // Convert each byte to its corresponding ASCII character
-                (data, byte) => data + String.fromCharCode(byte),
-                // Start with an empty string as the initial value
-                "",
-            ),
-    );
-}
-    */
