@@ -8,6 +8,7 @@ import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
 import OpenAI from "npm:openai@4.60.0";
 
 // local utilities
+import * as log from "./logger.ts";
 import { getEnvVariable, roundToDecimalPlaces } from "./util.ts";
 import { calculateCost } from "./costs.ts";
 
@@ -183,48 +184,51 @@ function formatStats(
   return `${m} ${p_tokens}/${c_tokens}t ${secondsF}s $${costF} $${t_costF}`;
 }
 
-export async function promptDalle(prompt: string, c = {}) {
+type DalleImageParams = OpenAI.Images.ImageGenerateParams;
+
+export async function promptDalle(
+  prompt: string,
+  params: Partial<DalleImageParams> = {},
+): Promise<OpenAI.Images.Image> {
   if (!openai) initOpenAI();
 
-  const defaults: OpenAI.Images.ImageGenerateParams = {
+  const defaultParams: DalleImageParams = {
     prompt: "",
     model: "dall-e-3",
-    quality: "standard", // or "hd"
-    response_format: "url", // or "b64_json"
-    style: "natural", // or "vivid"
+    quality: "standard", // "standard" or "hd"
+    response_format: "url", // "url" or "b64_json"
+    style: "vivid", // "vivid" or "natural", natural is kinda bad.
     size: "1024x1024",
   };
 
-  const config = {
-    ...defaults,
-    ...c,
+  const dalleParams: DalleImageParams = {
+    ...defaultParams,
+    ...params,
+    prompt,
   };
 
   const startTime = performance.now();
 
-  const spinner = ora({
-    text: config.model as string,
-    discardStdin: false,
-  }).start();
+  const spinner = new Kia({ text: dalleParams.model as string });
+  spinner.start();
 
-  const image = await openai.images.generate({
-    ...config,
-    prompt,
-    n: 1,
-  });
+  const imageResponse = await openai.images.generate(dalleParams);
 
   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
-  const hd = config.quality !== "standard";
-  const big = config.size !== "1024x1024";
+  const hd = dalleParams.quality !== "standard";
+  const big = dalleParams.size !== "1024x1024";
   let cost = 0.04;
   if (hd && !big) cost = 0.08;
   if (!hd && big) cost = 0.08;
   if (hd && big) cost = 0.12;
 
-  spinner.succeed(colors.gray(`${config.model} ${seconds}s $${cost}`));
+  spinner.stopWithFlair(
+    colors.gray(`${dalleParams.model} ${seconds}s $${cost}`),
+    colors.green("✔"),
+  );
 
-  log.info(image.data[0].revised_prompt);
+  log.info(imageResponse.data[0].revised_prompt);
 
-  return image.data[0].url;
+  return imageResponse.data[0];
 }
