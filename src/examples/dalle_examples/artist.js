@@ -1,5 +1,5 @@
 import { say } from "../../shared/cli.ts";
-import { makeImage } from "../../shared/openai.ts";
+import { promptDalle } from "../../shared/openai.ts";
 
 main();
 
@@ -19,8 +19,8 @@ async function main() {
 
   say(prompt);
 
-  const url = await makeImage(prompt);
-  say(url);
+  const imageResponse = await promptDalle(prompt);
+  say(imageResponse.url);
 }
 
 function p(array) {
