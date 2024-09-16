@@ -183,48 +183,48 @@ function formatStats(
   return `${m} ${p_tokens}/${c_tokens}t ${secondsF}s $${costF} $${t_costF}`;
 }
 
-// export async function makeImage(prompt: string, c = {}) {
-//   if (!openai) initOpenAI();
+export async function promptDalle(prompt: string, c = {}) {
+  if (!openai) initOpenAI();
 
-//   const defaults: OpenAI.Images.ImageGenerateParams = {
-//     prompt: "",
-//     model: "dall-e-3",
-//     quality: "standard",
-//     response_format: "url",
-//     style: "vivid",
-//     size: "1024x1024",
-//   };
+  const defaults: OpenAI.Images.ImageGenerateParams = {
+    prompt: "",
+    model: "dall-e-3",
+    quality: "standard", // or "hd"
+    response_format: "url", // or "b64_json"
+    style: "natural", // or "vivid"
+    size: "1024x1024",
+  };
 
-//   const config = {
-//     ...defaults,
-//     ...c,
-//   };
+  const config = {
+    ...defaults,
+    ...c,
+  };
 
-//   const startTime = performance.now();
+  const startTime = performance.now();
 
-//   const spinner = ora({
-//     text: config.model as string,
-//     discardStdin: false,
-//   }).start();
+  const spinner = ora({
+    text: config.model as string,
+    discardStdin: false,
+  }).start();
 
-//   const image = await openai.images.generate({
-//     ...config,
-//     prompt,
-//     n: 1,
-//   });
+  const image = await openai.images.generate({
+    ...config,
+    prompt,
+    n: 1,
+  });
 
-//   const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
+  const seconds = ((performance.now() - startTime) / 1000).toFixed(2);
 
-//   const hd = config.quality !== "standard";
-//   const big = config.size !== "1024x1024";
-//   let cost = 0.04;
-//   if (hd && !big) cost = 0.08;
-//   if (!hd && big) cost = 0.08;
-//   if (hd && big) cost = 0.12;
+  const hd = config.quality !== "standard";
+  const big = config.size !== "1024x1024";
+  let cost = 0.04;
+  if (hd && !big) cost = 0.08;
+  if (!hd && big) cost = 0.08;
+  if (hd && big) cost = 0.12;
 
-//   spinner.succeed(colors.gray(`${config.model} ${seconds}s $${cost}`));
+  spinner.succeed(colors.gray(`${config.model} ${seconds}s $${cost}`));
 
-//   log.info(image.data[0].revised_prompt);
+  log.info(image.data[0].revised_prompt);
 
-//   return image.data[0].url;
-// }
+  return image.data[0].url;
+}
