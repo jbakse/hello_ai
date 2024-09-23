@@ -2,6 +2,15 @@
 // manually setting env variables works
 // https://github.com/denoland/deployctl/issues/311
 
+/// Setting up your bot
+/// Go here https://discord.com/developers/applications
+/// Open your bot.
+/// Go to the OAuth2 tab.
+/// Select the bot scope.
+/// Select the bot permissions.
+/// You need Send Messages and Read Message History permissions.
+/// Copy the URL and paste it in your browser.
+
 // this works but doesn't keep the gateway open
 // the bot sleeps, and can be woken up by trying its url
 // there is no web server part in this demo, so you don't get anything
