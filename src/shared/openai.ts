@@ -147,7 +147,11 @@ export async function gpt(
           totalCost,
         ));
       }
-      spinner.stopWithFlair(message.trim(), colors.green("✔"));
+      if (message.trim() === "") {
+        spinner.stop();
+      } else {
+        spinner.stopWithFlair(message.trim(), colors.green("✔"));
+      }
     }
 
     // return response
