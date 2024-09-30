@@ -15,7 +15,7 @@ const result = await fal.subscribe("fal-ai/fast-lightning-sdxl", {
     input: {
         "prompt": "A dragon knitting a scarf.",
         "image_size": "square_hd",
-        "num_inference_steps": "4",
+        "num_inference_steps": 4,
         "num_images": 1,
         "enable_safety_checker": true,
         "seed": 1337,

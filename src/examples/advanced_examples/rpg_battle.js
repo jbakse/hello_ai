@@ -67,6 +67,7 @@ function sitRep() {
 const tools = [
   {
     type: "function",
+
     function: {
       name: "attack",
       description: "Attack the enemy with a weapon",

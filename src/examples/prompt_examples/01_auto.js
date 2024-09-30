@@ -9,5 +9,5 @@ import { LogLevel, setLogLevel } from "../../shared/logger.ts";
 setLogLevel(LogLevel.Debug);
 
 // sent prompt to gpt and relay response
-const response = await promptGPT("Just say 'yes'");
+const response = await promptGPT("Just say 'yes'", { max_tokens: 5 });
 say(`GPT Response: ${response}`);
