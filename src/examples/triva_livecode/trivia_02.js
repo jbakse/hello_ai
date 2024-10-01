@@ -1,5 +1,5 @@
 /**
- * triva.js
+ * trivia.js
  * Uses GPT to generate trivia questions based on a user-provided topic.
  * Uses GPT to evaluate the answers.
  */
@@ -19,13 +19,13 @@ async function main() {
     // note: this would be a good place to use "structure responses" which we'll
     // talk about later in the course
     const questionsString = await promptGPT(
-        `Generate 4 questions for a triva game. Do not provide answers.
-     Provide the  questions as a javascript array of strings like this:
+        `Generate 4 questions for a trivia game. Do not provide answers.
+     Provide the questions as a javascript array of strings like this:
      ["question 1", "question 2", "question 3", "question 4"]
      Include only the array, start with [ and end with ].
      The topic is ${topic}.
     `,
-        { max_tokens: 1024, temperature: 0.3 },
+        { max_tokens: 1024, temperature: .3 },
     );
 
     // gpt returns a string, we need to parse it to get a usable array
