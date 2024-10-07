@@ -5,8 +5,6 @@
  */
 
 // imports for defining response schema
-import { z } from "https://deno.land/x/zod@v3.23.8/mod.ts";
-import { zodResponseFormat } from "https://deno.land/x/openai@v4.55.1/helpers/zod.ts";
 
 // used for pretty prompting
 import { Input } from "https://deno.land/x/cliffy@v1.0.0-rc.4/prompt/input.ts";
@@ -19,23 +17,44 @@ import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.4/ansi/colors.ts";
 import { ask, say } from "../../shared/cli.ts";
 import { promptGPT } from "../../shared/openai.ts";
 import { LogLevel, setLogLevel } from "../../shared/logger.ts";
-import * as log from "../../shared/logger.ts";
+// import * as log from "../../shared/logger.ts";
 
 // set min level to show DEBUG < INFO < LOG < WARN < ERROR
 setLogLevel(LogLevel.LOG);
 
 async function generateQuestions(topic) {
   // schema for { questions: ["xyz", "xyz"] }
-  const Questions = z.object({
-    questions: z.array(z.string()),
-  });
+
+  // zod version
+  // const Questions = z.object({
+  //   questions: z.array(z.string()),
+  // });
+
+  // json version
+  const question_schema = {
+    name: "questions",
+    schema: {
+      type: "object",
+      properties: {
+        questions: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+        },
+      },
+    },
+  };
 
   const response = await promptGPT(
     `Generate 4 questions for a triva game. Do not provide answers. The topic is ${topic}.`,
     {
       max_tokens: 1024,
       temperature: .3,
-      response_format: zodResponseFormat(Questions, "questions"),
+      response_format: {
+        "type": "json_schema",
+        "json_schema": question_schema,
+      },
     },
     {
       showStats: false,
@@ -49,10 +68,29 @@ async function generateQuestions(topic) {
 
 async function evaluateAnswer(question, answer) {
   // schema for { isCorrect: true, comment: "xyz" }
-  const Evaluation = z.object({
-    isCorrect: z.boolean(),
-    comment: z.string(),
-  });
+
+  // zod version
+  // const Evaluation = z.object({
+  //   isCorrect: z.boolean(),
+  //   comment: z.string(),
+  // });
+
+  // json version
+  const evaluation_schema = {
+    name: "evaluation",
+    schema: {
+      type: "object",
+      properties: {
+        isCorrect: {
+          type: "boolean",
+        },
+        comment: {
+          type: "string",
+        },
+      },
+      required: ["isCorrect", "comment"],
+    },
+  };
 
   const response = await promptGPT(
     `The question was '${question}'.
@@ -64,7 +102,10 @@ async function evaluateAnswer(question, answer) {
     {
       max_tokens: 128,
       temperature: 0.1,
-      response_format: zodResponseFormat(Evaluation, "evaluation"),
+      response_format: {
+        "type": "json_schema",
+        "json_schema": evaluation_schema,
+      },
     },
     {
       showStats: false,
