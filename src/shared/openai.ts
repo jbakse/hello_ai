@@ -51,7 +51,11 @@ export async function promptGPT(
 ): Promise<string> {
   params.messages = [{ role: "user", content: prompt }];
   const message = await gpt(params, options);
-  return (message.content ?? "").trim();
+  if (params.response_format?.type === "json_schema") {
+    return message.parsed;
+  } else {
+    return (message.content ?? "").trim();
+  }
 }
 
 export async function gpt(

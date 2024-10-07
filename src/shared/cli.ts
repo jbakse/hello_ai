@@ -1,4 +1,4 @@
-import { Input } from "https://deno.land/x/cliffy@v1.0.0-rc.3/prompt/mod.ts";
+import { Input } from "https://deno.land/x/cliffy@v1.0.0-rc.4/prompt/input.ts";
 import wrapAnsi from "npm:wrap-ansi@9";
 
 /**
@@ -15,7 +15,8 @@ export async function ask(message = ""): Promise<string> {
  * @param text - The text to output.
  * @param wrap - The column width to wrap the text at.
  */
-export function say(text: string, wrap = 80): void {
+export function say(text: string, wrap?: number): void {
+  wrap = wrap ?? Math.min(Deno.consoleSize(Deno.stdout.rid).columns, 80);
   console.log(wrapAnsi(text, wrap));
 }
 
