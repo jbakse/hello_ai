@@ -4,8 +4,6 @@
  * Uses GPT to evaluate the answers.
  */
 
-// imports for defining response schema
-
 // used for pretty prompting
 import { Input } from "https://deno.land/x/cliffy@v1.0.0-rc.4/prompt/input.ts";
 
@@ -16,11 +14,11 @@ import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.4/ansi/colors.ts";
 // shared utilities
 import { ask, say } from "../../shared/cli.ts";
 import { promptGPT } from "../../shared/openai.ts";
-import { LogLevel, setLogLevel } from "../../shared/logger.ts";
-// import * as log from "../../shared/logger.ts";
 
 // set min level to show DEBUG < INFO < LOG < WARN < ERROR
+import { LogLevel, setLogLevel } from "../../shared/logger.ts";
 setLogLevel(LogLevel.LOG);
+
 
 async function generateQuestions(topic) {
   // schema for { questions: ["xyz", "xyz"] }
@@ -112,7 +110,6 @@ async function main() {
   console.log(
     boxen("Welcome to Trivia!", {
       borderColor: "blue",
-
       borderStyle: "round",
       padding: 1,
     }),
@@ -123,6 +120,7 @@ async function main() {
     message: "What do you want to be quized on?",
     suggestions: ["history", "science", "literature", "art", "music", "sports"],
   });
+  
 
   // generate quiz
   const questions = await generateQuestions(topic);
@@ -131,11 +129,18 @@ async function main() {
   // game loop
   let score = 0;
   for (const [i, question] of questions.entries()) {
+    // show question
     const questionNumber = colors.blue(
       `Question ${i + 1} of ${questions.length}`,
     );
+    
+    // collect answer
     const answer = await ask(`${questionNumber} ${question}`);
+    
+    // ask gpt to evaluate
     const evaluation = await evaluateAnswer(question, answer);
+    
+    // report result
     if (evaluation.isCorrect) {
       say(colors.green("Correct!"));
       score++;
@@ -155,6 +160,18 @@ async function main() {
       padding: 1,
     }),
   );
+
+  // if (score === questions.length) {
+  //   new Deno.Command("say", {args: ["You are a trivia master!"]}).spawn();
+  // }
 }
 
 main();
+
+
+// TODO:
+// [x] Keep track of score.
+// [ ] Make it 5 questions.
+// [ ] Add a difficulty dropdown.
+// [ ] Add a timer to the game loop.
+// [/] Add a flashy easter egg.
