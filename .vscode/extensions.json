@@ -1,11 +1,8 @@
 {
 	"recommendations": [
-		"aaron-bond.better-comments",
+		"jetpack-io.devbox",
 		"denoland.vscode-deno",
-		"fabiospampinato.vscode-todo-plus",
-	],
-	
-	"unwantedRecommendations": [
-		
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode"
 	]
 }

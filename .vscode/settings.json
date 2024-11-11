@@ -2,7 +2,15 @@
   "deno.enable": true,
   "deno.lint": true,
   "editor.formatOnSave": true,
-  // "deno.unstable": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
-  "deno.enablePaths": ["./src"]
+  "deno.enablePaths": [
+    "./src"
+  ],
+  "terminal.integrated.profiles.osx": {
+    "devboxCompatibleShell": {
+      "path": "/bin/zsh",
+      "args": []
+    }
+  },
+  "terminal.integrated.defaultProfile.osx": "devboxCompatibleShell"
 }
