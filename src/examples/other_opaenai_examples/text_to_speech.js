@@ -16,9 +16,9 @@ async function main() {
   });
 
   const buffer = new Uint8Array(await mp3.arrayBuffer());
-  await Deno.writeFile("./out.mp3", buffer);
+  await Deno.writeFile("./out/out.mp3", buffer);
 
-  console.log("Wrote to out.mp3");
+  console.log("Wrote to ./out/out.mp3");
 }
 
 main();
