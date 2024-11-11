@@ -1,7 +1,6 @@
 {
 	"recommendations": [
 		"jetpack-io.devbox",
-		"denoland.vscode-deno",
-		"esbenp.prettier-vscode"
+		"denoland.vscode-deno"
 	]
 }
