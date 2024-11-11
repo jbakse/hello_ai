@@ -3,9 +3,9 @@
   "deno.lint": true,
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "denoland.vscode-deno",
-  "deno.enablePaths": [
-    "./src"
-  ],
+  // "deno.enablePaths": [
+  //   "./src"
+  // ],
   "terminal.integrated.profiles.osx": {
     "devboxCompatibleShell": {
       "path": "/bin/zsh",

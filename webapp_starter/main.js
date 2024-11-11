@@ -8,16 +8,14 @@ import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 import { createExitSignal, staticServer } from "./src/shared/server.ts";
 
 // Import the promptGPT function from the class library
-import { initOpenAI, promptGPT } from "./src/shared/openai.ts";
+import { promptGPT } from "./src/shared/openai.ts";
 
 // tell the shared library code to log as much as possible
 import * as log from "./src/shared/logger.ts";
 log.setLogLevel(log.LogLevel.DEBUG);
 
-console.log("Starting webapp_starter");
-console.log("Deno version:", Deno.version.deno);
-console.log("CWD:", Deno.cwd());
-// initOpenAI();
+log.info("Starting webapp_starter");
+
 
 // Create an instance of the Application and Router classes
 const app = new Application();
@@ -29,7 +27,7 @@ router.get("/api/joke", async (ctx) => {
   const topic = ctx.request.url.searchParams.get("topic");
 
   // Log the request to the terminal
-  console.log("someone made a request to /api/joke", topic);
+  log.log("someone made a request to /api/joke", topic);
 
   // Ask GPT to generate a joke about the topic
   const joke = await promptGPT(`Tell me a brief joke about ${topic}.`);
@@ -46,5 +44,5 @@ app.use(router.allowedMethods());
 app.use(staticServer);
 
 // Everything is set up, let's start the server
-console.log("\nListening on http://localhost:8000");
+log.info("\nListening on http://localhost:8000");
 await app.listen({ port: 8000, signal: createExitSignal() });
