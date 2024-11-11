@@ -62,6 +62,17 @@ kill -9 $(lsof -t -i:8000)
 
 [Deno Deploy](https://deno.com/deploy) is a hosting service from Deno.
 
+1. Log in to https://deno.com/deploy
+2. New Project
+3. Select your organiztion, repo, branch
+4. Thoughtfully name the project
+5. Set the install and build steps (if needed*)
+6. Set root directory (if needed*)
+7. Set the include and exclude files (if needed*)
+8. Set entrypoint
+
+*for a simple project/repo, you won't need to set these
+
 ```bash
 /Users/jbakse/.deno/bin/deployctl -v
 ```
