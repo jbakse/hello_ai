@@ -17,7 +17,7 @@ log.setLogLevel(log.LogLevel.DEBUG);
 console.log("Starting webapp_starter");
 console.log("Deno version:", Deno.version.deno);
 console.log("CWD:", Deno.cwd());
-initOpenAI();
+// initOpenAI();
 
 // Create an instance of the Application and Router classes
 const app = new Application();

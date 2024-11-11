@@ -71,6 +71,11 @@ kill -9 $(lsof -t -i:8000)
 7. Set the include and exclude files (if needed*)
 8. Set entrypoint
 
+Its not going to work yet! You need to set the API key!
+
+1. Go to project settings.
+2. Add an evironment variable: `OPENAI_API_KEY=yourkey`
+
 *for a simple project/repo, you won't need to set these
 
 ```bash
