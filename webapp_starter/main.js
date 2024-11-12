@@ -25,7 +25,7 @@ log.info(`cwd: ${Deno.cwd()} (${entries.join(", ")})`);
 if (isDenoDeployment()) {
   log.info("This is a deno deployment");
   // change to directory webapp_starter
-  deno.chdir("webapp_starter");
+  Deno.chdir("webapp_starter");
   for await (const dirEntry of Deno.readDir(".")) {
     entries.push(dirEntry.name);
   }
