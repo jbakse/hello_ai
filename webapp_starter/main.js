@@ -11,26 +11,25 @@ import { createExitSignal, staticServer } from "./src/shared/server.ts";
 import { promptGPT } from "./src/shared/openai.ts";
 
 import { isDenoDeployment } from "./src/shared/deno.ts";
-// tell the shared library code to log as much as possible
 import * as log from "./src/shared/logger.ts";
+
+// tell the shared library code to log everything
 log.setLogLevel(log.LogLevel.DEBUG);
 log.info("Starting webapp_starter");
 
+// deno deploy uses root of the repo as the current working directory
+// so switch to this directory if needed
+if (isDenoDeployment()) {
+  log.info("deno deploy detcted, cd webapp_starter");
+  Deno.chdir("webapp_starter");
+}
+// log the current working directory and contents
+// this helps with debugging deployments
 const entries = [];
 for await (const dirEntry of Deno.readDir(".")) {
   entries.push(dirEntry.name);
 }
 log.info(`cwd: ${Deno.cwd()} (${entries.join(", ")})`);
-
-if (isDenoDeployment()) {
-  log.info("This is a deno deployment");
-  // change to directory webapp_starter
-  Deno.chdir("webapp_starter");
-  for await (const dirEntry of Deno.readDir(".")) {
-    entries.push(dirEntry.name);
-  }
-  log.info(`new cwd: ${Deno.cwd()} (${entries.join(", ")})`);
-}
 
 // Create an instance of the Application and Router classes
 const app = new Application();
