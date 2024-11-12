@@ -16,6 +16,11 @@ log.setLogLevel(log.LogLevel.DEBUG);
 
 log.info("Starting webapp_starter");
 
+const entries = [];
+for await (const dirEntry of Deno.readDir(".")) {
+  entries.push(dirEntry.name);
+}
+console.error(`cwd: ${Deno.cwd()} (${entries.join(", ")})`);
 
 // Create an instance of the Application and Router classes
 const app = new Application();

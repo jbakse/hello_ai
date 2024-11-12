@@ -8,15 +8,15 @@ export async function staticServer(context: Context, next: Next) {
   try {
     console.log(`staticServer request: ${context.request.url.pathname}`);
     // check if cwd contains public folder
-    // if (!Deno.statSync(`${Deno.cwd()}/public`).isDirectory) {
-    // log.error("Public folder not found");
-    log.log("cwd: ", Deno.cwd());
-    console.log(`cwd: ${Deno.cwd()}`);
-    console.log("cwd contains:");
-    for await (const dirEntry of Deno.readDir(".")) {
-      console.log(dirEntry.name);
+    if (!Deno.statSync(`${Deno.cwd()}/public`).isDirectory) {
+      log.error("Public folder not found");
+
+      const entries: string[] = [];
+      for await (const dirEntry of Deno.readDir(".")) {
+        entries.push(dirEntry.name);
+      }
+      console.error(`cwd: ${Deno.cwd()} (${entries.join(", ")})`);
     }
-    // }
 
     await context.send({
       root: `${Deno.cwd()}/public`,
