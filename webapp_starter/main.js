@@ -10,17 +10,27 @@ import { createExitSignal, staticServer } from "./src/shared/server.ts";
 // Import the promptGPT function from the class library
 import { promptGPT } from "./src/shared/openai.ts";
 
+import { isDenoDeployment } from "./src/shared/deno.ts";
 // tell the shared library code to log as much as possible
 import * as log from "./src/shared/logger.ts";
 log.setLogLevel(log.LogLevel.DEBUG);
-
 log.info("Starting webapp_starter");
 
 const entries = [];
 for await (const dirEntry of Deno.readDir(".")) {
   entries.push(dirEntry.name);
 }
-console.error(`cwd: ${Deno.cwd()} (${entries.join(", ")})`);
+log.info(`cwd: ${Deno.cwd()} (${entries.join(", ")})`);
+
+if (isDenoDeployment()) {
+  log.info("This is a deno deployment");
+  // change to directory webapp_starter
+  deno.chdir("webapp_starter");
+  for await (const dirEntry of Deno.readDir(".")) {
+    entries.push(dirEntry.name);
+  }
+  log.info(`new cwd: ${Deno.cwd()} (${entries.join(", ")})`);
+}
 
 // Create an instance of the Application and Router classes
 const app = new Application();
