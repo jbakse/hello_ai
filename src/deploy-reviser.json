@@ -1,0 +1,13 @@
+{
+    "deploy": {
+        "project": "jbakse-reviser",
+        "exclude": [
+            "**/node_modules"
+        ],
+        "include": [
+            "demos/reviser/**/*",
+            "shared/**/*"
+        ],
+        "entrypoint": "demos/reviser/main.js"
+    }
+}
