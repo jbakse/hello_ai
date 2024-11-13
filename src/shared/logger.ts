@@ -7,6 +7,7 @@ import { colors } from "https://deno.land/x/cliffy@v1.0.0-rc.3/ansi/colors.ts";
 
 // The log levels, in order of severity
 export enum LogLevel {
+  ALL = 5,
   DEBUG = 5,
   INFO = 4,
   LOG = 3,
@@ -47,15 +48,15 @@ function _log(level: number, color: Color, label: string, ...msgs: unknown[]) {
   if (level > logLevel) return;
 
   // blank line
-  console.log();
+  // console.log();
 
-  // log the calling site
-  console.log(colors.gray(formatCaller()));
+  // get the calling site
+  const caller = formatCaller();
 
   // log the [level] tag and each message
-  msgs.forEach((msg) => {
-    console.log(colors[color](label), msg);
-  });
+  // msgs.forEach((msg) => {
+  console.log(colors[color](label), ...msgs, colors.gray(caller));
+  // });
 }
 
 // PRIVATE

@@ -5,16 +5,16 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
 // Import server helper functions from the class library
-import { createExitSignal, staticServer } from "./src/shared/server.ts";
+import { createExitSignal, staticServer } from "../../../shared/server.ts";
 
 // Import the promptGPT function from the class library
-import { promptGPT } from "./src/shared/openai.ts";
+import { promptGPT } from "../../../shared/openai.ts";
 
-import { isDenoDeployment } from "./src/shared/deno.ts";
-import * as log from "./src/shared/logger.ts";
+import { isDenoDeployment } from "../../../shared/deno.ts";
+import * as log from "../../../shared/logger.ts";
 
 // tell the shared library code to log everything
-log.setLogLevel(log.LogLevel.DEBUG);
+log.setLogLevel(log.LogLevel.ALL);
 log.info("Starting webapp_starter");
 
 // deno deploy uses root of the repo as the current working directory
@@ -25,11 +25,11 @@ if (isDenoDeployment()) {
 }
 // log the current working directory and contents
 // this helps with debugging deployments
-const entries = [];
-for await (const dirEntry of Deno.readDir(".")) {
-  entries.push(dirEntry.name);
-}
-log.info(`cwd: ${Deno.cwd()} (${entries.join(", ")})`);
+log.info(
+  `cwd: ${Deno.cwd()} (${
+    Array.from(Deno.readDirSync(".")).map((d) => d.name).join(" ")
+  })`,
+);
 
 // Create an instance of the Application and Router classes
 const app = new Application();

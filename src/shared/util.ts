@@ -148,3 +148,25 @@ function findFileUpTree(
 export function elide(s: string, start = 3, end = 3) {
   return s.slice(0, start) + "..." + s.slice(-end);
 }
+
+/**
+ * Logs the contents of a folder, or error message if doesn't exist.
+ * @param folder The folder to log.
+ * @returns void
+ */
+
+export function logFolder(folder: string): void {
+  try {
+    log.info(
+      `${folder}/ => ${
+        Array.from(Deno.readDirSync(folder)).map((d) => d.name).join(" ")
+      }`,
+    );
+  } catch (e) {
+    if (e instanceof Deno.errors.NotFound) {
+      log.error(`Direcory '${folder}' not found`);
+      return;
+    }
+    throw e;
+  }
+}
