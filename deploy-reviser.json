@@ -5,9 +5,9 @@
             "**/node_modules"
         ],
         "include": [
-            "full_stack/reviser/**/*",
-            "shared/**/*"
+            "src/full_stack/reviser/**/*",
+            "src/shared/**/*"
         ],
-        "entrypoint": "full_stack/reviser/main.js"
+        "entrypoint": "src/full_stack/reviser/main.js"
     }
 }

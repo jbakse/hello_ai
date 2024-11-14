@@ -1,5 +1,0 @@
-{
-  "tasks": {
-    "deploy-reviser": "deployctl deploy --prod --config=deploy-reviser.json"
-  }
-}

@@ -1,4 +1,7 @@
 {
+    "tasks": {
+        "deploy-reviser": "deployctl deploy --prod --config=deploy-reviser.json"
+    },
     "fmt": {
         "indent-width": 2
     }
