@@ -19,7 +19,6 @@ import { promptGPT } from "../../shared/openai.ts";
 import { LogLevel, setLogLevel } from "../../shared/logger.ts";
 setLogLevel(LogLevel.LOG);
 
-
 async function generateQuestions(topic) {
   // schema for { questions: ["xyz", "xyz"] }
 
@@ -120,7 +119,6 @@ async function main() {
     message: "What do you want to be quized on?",
     suggestions: ["history", "science", "literature", "art", "music", "sports"],
   });
-  
 
   // generate quiz
   const questions = await generateQuestions(topic);
@@ -133,13 +131,13 @@ async function main() {
     const questionNumber = colors.blue(
       `Question ${i + 1} of ${questions.length}`,
     );
-    
+
     // collect answer
     const answer = await ask(`${questionNumber} ${question}`);
-    
+
     // ask gpt to evaluate
     const evaluation = await evaluateAnswer(question, answer);
-    
+
     // report result
     if (evaluation.isCorrect) {
       say(colors.green("Correct!"));
@@ -167,7 +165,6 @@ async function main() {
 }
 
 main();
-
 
 // TODO:
 // [x] Keep track of score.

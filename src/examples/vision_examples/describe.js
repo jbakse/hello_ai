@@ -16,26 +16,26 @@ console.log(dataURL.slice(0, 50));
 
 // send it to gpt for description
 const response = await gpt(
-    {
-        model: "gpt-4o-mini",
-        messages: [
-            {
-                role: "user",
-                content: [
-                    {
-                        type: "text",
-                        text: "Describe the background in detail.",
-                    },
-                    {
-                        type: "image_url",
-                        image_url: {
-                            "url": dataURL,
-                        },
-                    },
-                ],
+  {
+    model: "gpt-4o-mini",
+    messages: [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: "Describe the background in detail.",
+          },
+          {
+            type: "image_url",
+            image_url: {
+              "url": dataURL,
             },
+          },
         ],
-    },
+      },
+    ],
+  },
 );
 
 say(response.content);
@@ -51,8 +51,8 @@ import { encodeBase64 } from "https://deno.land/std@0.211.0/encoding/base64.ts";
  * @returns {Promise<string>} The data URL.
  */
 async function imageToDataURL(path) {
-    const data = await Deno.readFile(path);
-    const mimeType = contentType(extname(path)) || "application/octet-stream";
-    const base64Data = encodeBase64(data);
-    return `data:${mimeType};base64,${base64Data}`;
+  const data = await Deno.readFile(path);
+  const mimeType = contentType(extname(path)) || "application/octet-stream";
+  const base64Data = encodeBase64(data);
+  return `data:${mimeType};base64,${base64Data}`;
 }

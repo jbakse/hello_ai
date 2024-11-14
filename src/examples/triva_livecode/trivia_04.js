@@ -70,7 +70,7 @@ async function evaluateAnswer(question, answer) {
 
 async function main() {
   // Hide the cursor
-  
+
   console.clear();
 
   // greet the player
@@ -100,7 +100,7 @@ async function main() {
     if (evaluation.isCorrect) {
       say(colors.green("Correct!"));
     } else {
-        say(colors.red("Incorrect!"));
+      say(colors.red("Incorrect!"));
     }
     say(evaluation.comment);
     say("");

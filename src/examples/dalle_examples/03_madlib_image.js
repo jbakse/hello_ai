@@ -13,7 +13,7 @@ const color = await ask("Choose a color");
 
 // sent prompt to gpt and relay response
 const response = await promptDalle(
-    `A photograph of a ${adj1} ${animal} in a ${color} ${conainer}`,
+  `A photograph of a ${adj1} ${animal} in a ${color} ${conainer}`,
 );
 
 say("");

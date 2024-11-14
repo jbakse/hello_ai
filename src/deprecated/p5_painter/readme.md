@@ -6,4 +6,5 @@ To run this example:
 - navigate to p5_painter
 - you should see the p5 sketch rendering.
 - enter your stability https://platform.stability.ai/ key and hit return
-- stability should create a new image based on the p5 sketch and the prompt in the code
+- stability should create a new image based on the p5 sketch and the prompt in
+  the code

@@ -9,8 +9,8 @@ import { promptGPT } from "../../shared/openai.ts";
 const topic = await ask("What do you want to be quized on?");
 
 const question = await promptGPT(
-    `Generate a question for a triva game. The topic is ${topic}.`,
-    { max_tokens: 1024, temperature: 0.3 },
+  `Generate a question for a triva game. The topic is ${topic}.`,
+  { max_tokens: 1024, temperature: 0.3 },
 );
 
 say(question);
@@ -19,7 +19,7 @@ const answer = await ask("What is the answer?");
 
 // ask gpt to evaluate the answer
 const response = await promptGPT(
-    `The question was '${question}'. The provided answer was '${answer}'. Was the answer correct?`,
+  `The question was '${question}'. The provided answer was '${answer}'. Was the answer correct?`,
 );
 
 say(response);

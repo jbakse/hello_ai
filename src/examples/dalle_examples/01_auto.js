@@ -10,7 +10,7 @@ setLogLevel(LogLevel.Debug);
 
 // sent prompt to gpt and relay response
 const response = await promptDalle(
-    `A cartoon of an gnome in a pointed hat sanding in the woods.
+  `A cartoon of an gnome in a pointed hat sanding in the woods.
     Bright cheery colors.`,
 );
 

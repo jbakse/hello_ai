@@ -18,11 +18,11 @@ log.error("This is a error message");
 
 // should also include the containing function name
 function main() {
-    log.debug("This is a debug message");
-    log.info("This is a info message");
-    log.log("This is a log message");
-    log.warn("This is a warn message");
-    log.error("This is a error message");
+  log.debug("This is a debug message");
+  log.info("This is a info message");
+  log.log("This is a log message");
+  log.warn("This is a warn message");
+  log.error("This is a error message");
 }
 main();
 
@@ -38,10 +38,10 @@ log.error("This is a error message");
 // can log objects too
 log.setLogLevel(log.LogLevel.DEBUG);
 const myObj = {
-    name: "Ada",
-    age: 209,
-    city: "London",
-    country: "UK",
+  name: "Ada",
+  age: 209,
+  city: "London",
+  country: "UK",
 };
 log.log(myObj);
 

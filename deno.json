@@ -2,7 +2,25 @@
     "tasks": {
         "deploy-reviser": "deployctl deploy --prod --config=deploy-reviser.json"
     },
-    "fmt": {
-        "indent-width": 2
+
+    "lint": {
+        "rules": {
+            "tags": ["recommended"],
+            "include": [
+                "camelcase",
+                "default-param-last",
+                "eqeqeq",
+                "explicit-function-return-type",
+                "explicit-module-boundary-types",
+                "no-await-in-loop",
+                "no-const-assign",
+                "no-sparse-arrays",
+                "no-sync-fn-in-async-fn",
+                "no-throw-literal",
+                "no-undef",
+                "single-var-declarator",
+                "verbatim-module-syntax"
+            ]
+        }
     }
 }

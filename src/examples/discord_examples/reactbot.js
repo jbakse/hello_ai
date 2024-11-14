@@ -24,33 +24,33 @@ import { promptGPT } from "../../shared/openai.ts";
 const { DISCORD_TOKEN } = await load();
 
 const client = new Client({
-    intents: [
-        // guildCreate, channelCreate, threadCreate, etc
-        GatewayIntentBits.Guilds,
-        // messageCreate, etc
-        GatewayIntentBits.GuildMessages,
-        // permits app to receive message content
-        GatewayIntentBits.MessageContent,
-    ],
+  intents: [
+    // guildCreate, channelCreate, threadCreate, etc
+    GatewayIntentBits.Guilds,
+    // messageCreate, etc
+    GatewayIntentBits.GuildMessages,
+    // permits app to receive message content
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
 client.on("ready", () => {
-    console.log("event: ready");
-    console.log(`Tag is ${client.user.tag}`);
+  console.log("event: ready");
+  console.log(`Tag is ${client.user.tag}`);
 });
 
 client.on("messageCreate", async (message) => {
-    console.log("event: messageCreate");
+  console.log("event: messageCreate");
 
-    const reaction = await promptGPT(
-        `Read the following message and then reply using a single emoji.
+  const reaction = await promptGPT(
+    `Read the following message and then reply using a single emoji.
             Avoid face emojis. 
             ${message.content}`,
-        { max_tokens: 5 },
-    );
-    message.react(reaction);
+    { max_tokens: 5 },
+  );
+  message.react(reaction);
 
-    console.log(`Reacting with ${reaction}`);
+  console.log(`Reacting with ${reaction}`);
 });
 
 console.log(Deno.env.toObject());
