@@ -1,6 +1,10 @@
 {
     "tasks": {
-        "deploy-reviser": "deployctl deploy --prod --config=deploy-reviser.json"
+        "deploy-hitcounter": "deployctl deploy --prod --config=deploy-hitcounter.json",
+        "deploy-reviser": "deployctl deploy --prod --config=deploy-reviser.json",
+        "deploy-timeline": "deployctl deploy --prod --config=deploy-timeline.json",
+        "deploy-webapp_starter": "deployctl deploy --prod --config=deploy-webapp_starter.json",
+        "deploy-woodsprite": "deployctl deploy --prod --config=deploy-woodsprite.json"
     },
 
     "lint": {

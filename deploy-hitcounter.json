@@ -1,0 +1,13 @@
+{
+    "deploy": {
+        "project": "jbakse-hitcounter",
+        "exclude": [
+            "**/node_modules"
+        ],
+        "include": [
+            "src/full_stack/hitcounter/**/*",
+            "src/shared/**/*"
+        ],
+        "entrypoint": "src/full_stack/hitcounter/main.js"
+    }
+}

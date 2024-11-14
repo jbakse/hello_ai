@@ -4,18 +4,20 @@ import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
 // static server serves files from the public directory
 // exitSignal is used to shut down the server when the process exits (ctrl-c)
-import { createExitSignal, staticServer } from "../../shared/server.ts";
+import { createExitSignal, staticServer } from "shared/server.ts";
 
+/// set working directory
+// set working directory to this script's directory so ./public can be found regardless of where the script is run from
+Deno.chdir(import.meta.dirname);
+
+/// load the key-value store
 const kv = await Deno.openKv();
 
-// create web server and set it up to serve static files from public
+/// create oak web server app and router
 const app = new Application();
 const router = new Router();
 
-router.get("/api/random", (ctx) => {
-  ctx.response.body = Math.random();
-});
-
+/// define api routes
 router.get("/api/randomint", (ctx) => {
   ctx.response.body = Math.floor(Math.random() * 100);
 });
@@ -28,11 +30,10 @@ router.get("/api/hits", async (ctx) => {
   ctx.response.body = hits;
 });
 
+/// configure server
 app.use(router.routes());
 app.use(staticServer);
 
-// tell the user we are about to start
+/// start the server
 console.log("\nListening on http://localhost:8000");
-console.log(`Current Working Directory: ${Deno.cwd()}`);
-// start the web server
 await app.listen({ port: 8000, signal: createExitSignal() });

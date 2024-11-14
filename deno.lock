@@ -878,16 +878,5 @@
     "https://deno.land/x/zod@v3.23.8/locales/en.ts": "a7a25cd23563ccb5e0eed214d9b31846305ddbcdb9c5c8f508b108943366ab4c",
     "https://deno.land/x/zod@v3.23.8/mod.ts": "ec6e2b1255c1a350b80188f97bd0a6bac45801bb46fc48f50b9763aa66046039",
     "https://deno.land/x/zod@v3.23.8/types.ts": "1b172c90782b1eaa837100ebb6abd726d79d6c1ec336350c8e851e0fd706bf5c"
-  },
-  "workspace": {
-    "packageJson": {
-      "dependencies": [
-        "npm:@eslint/js@^9.10.0",
-        "npm:eslint@^9.10.0",
-        "npm:globals@^15.9.0",
-        "npm:typescript-eslint@^8.5.0",
-        "npm:typescript@^5.6.2"
-      ]
-    }
   }
 }

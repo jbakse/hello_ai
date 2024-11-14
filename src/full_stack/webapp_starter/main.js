@@ -5,24 +5,22 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
 // Import server helper functions from the class library
-import { createExitSignal, staticServer } from "../../../shared/server.ts";
+import { createExitSignal, staticServer } from "shared/server.ts";
 
 // Import the promptGPT function from the class library
-import { promptGPT } from "../../../shared/openai.ts";
+import { promptGPT } from "shared/openai.ts";
 
-import { isDenoDeployment } from "../../../shared/deno.ts";
-import * as log from "../../../shared/logger.ts";
+import { isDenoDeployment } from "shared/deno.ts";
+import * as log from "shared/logger.ts";
 
 // tell the shared library code to log everything
 log.setLogLevel(log.LogLevel.ALL);
 log.info("Starting webapp_starter");
 
-// deno deploy uses root of the repo as the current working directory
-// so switch to this directory if needed
-if (isDenoDeployment()) {
-  log.info("deno deploy detcted, cd webapp_starter");
-  Deno.chdir("webapp_starter");
-}
+/// set working directory
+// set working directory to this script's directory so ./public can be found regardless of where the script is run from
+Deno.chdir(import.meta.dirname);
+
 // log the current working directory and contents
 // this helps with debugging deployments
 log.info(

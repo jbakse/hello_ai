@@ -1,0 +1,13 @@
+{
+    "deploy": {
+        "project": "e7bc0989-519d-4b4f-94d7-b8884b56277e",
+        "exclude": [
+            "**/node_modules"
+        ],
+        "include": [
+            "src/full_stack/webapp_starter/**/*",
+            "src/shared/**/*"
+        ],
+        "entrypoint": "src/full_stack/webapp_starter/main.js"
+    }
+}

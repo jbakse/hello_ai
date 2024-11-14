@@ -1,5 +1,5 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
-import { createExitSignal, staticServer } from "../../shared/server.ts";
+import { createExitSignal, staticServer } from "shared/server.ts";
 import { spriteChat } from "./spriteChat.js";
 
 // Change the current working directory to the directory of this script

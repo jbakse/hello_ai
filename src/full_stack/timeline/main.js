@@ -3,16 +3,17 @@ import dedent from "npm:dedent";
 
 import { Application, Router } from "https://deno.land/x/oak@v12.6.1/mod.ts";
 
-import { loadEnv } from "../../shared/util.ts";
-import { initOpenAI, promptGPT } from "../../shared/openai.ts";
-import { createExitSignal, staticServer } from "../../shared/server.ts";
-import * as log from "../../shared/logger.ts";
+import { loadEnv } from "shared/util.ts";
+import { initOpenAI, promptGPT } from "shared/openai.ts";
+import { createExitSignal, staticServer } from "shared/server.ts";
+import * as log from "shared/logger.ts";
 
 /// Configure Logging
 log.setLogLevel(log.LogLevel.INFO);
 
-/// Set Working Directory
-Deno.chdir(new URL(".", import.meta.url).pathname);
+/// set working directory
+// set working directory to this script's directory so ./public can be found regardless of where the script is run from
+Deno.chdir(import.meta.dirname);
 
 /// Init FAL API
 const env = loadEnv();

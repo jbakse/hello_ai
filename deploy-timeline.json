@@ -1,0 +1,13 @@
+{
+    "deploy": {
+        "project": "jbakse-timeline",
+        "exclude": [
+            "**/node_modules"
+        ],
+        "include": [
+            "src/full_stack/timeline/**/*",
+            "src/shared/**/*"
+        ],
+        "entrypoint": "src/full_stack/timeline/main.js"
+    }
+}

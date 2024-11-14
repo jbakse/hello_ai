@@ -1,6 +1,9 @@
 {
+  "imports": {
+    "shared/": "../../shared/"
+  },
   "tasks": {
-    "start": "deno run --allow-env --allow-net --allow-read=../../.. timeline.js",
-    "dev": "deno run --allow-env --allow-net --allow-read=../../.. --watch --no-clear-screen timeline.js"
+    "start": "deno run --allow-env --allow-net --allow-read main.js",
+    "dev": "deno run --watch --allow-env --allow-net --allow-read main.js"
   }
 }
