@@ -5,7 +5,7 @@
  * features including a diffuculty setting. It also uses the GPT API
  * response_format option to request structured responses.
  */
-
+// deno-lint-ignore-file no-await-in-loop
 // import and configure dependencies
 
 import figlet from "npm:figlet@1.6.0";

@@ -33,6 +33,6 @@ try {
   const artist = data.artist;
   const year = data.year;
   say(`The artist is ${artist} and the year is ${year}`);
-} catch (e) {
+} catch (_e) {
   console.log("the json did not parse");
 }

@@ -4,6 +4,7 @@
 // try: "roll two six-sided dice and keep the highest result"
 // try: "ten exploding tenners"
 // try: "un dé à 20 faces et un dé à six faces"
+// deno-lint-ignore-file no-await-in-loop
 
 import dedent from "npm:dedent";
 import { DiceRoll } from "https://cdn.skypack.dev/@dice-roller/rpg-dice-roller";

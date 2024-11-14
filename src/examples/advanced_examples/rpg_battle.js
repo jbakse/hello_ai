@@ -6,7 +6,7 @@
  * Demonstrates GPT's function calling capabilities.
  * https://platform.openai.com/docs/guides/function-calling
  */
-
+// deno-lint-ignore-file no-await-in-loop
 import { Chalk } from "npm:chalk@5";
 
 const chalk = new Chalk({ level: 1 });
@@ -19,15 +19,15 @@ import { gpt } from "../../shared/openai.ts";
 /////////////////////////////////////////////////////////////////
 /// GAME CODE
 
-const game_data = {
-  player_hp: 10,
-  player_mp: 1,
-  enemy_hp: 10,
+const gameData = {
+  playerHP: 10,
+  playerMP: 1,
+  enemyHP: 10,
 };
 
 function attack() {
   const damage = randomInt(0, 3);
-  game_data.enemy_hp -= damage;
+  gameData.enemyHP -= damage;
   let summary = `Player attacks: ${damage}/3 damage. `;
   summary += counter();
   summary += sitRep();
@@ -35,12 +35,12 @@ function attack() {
 }
 
 function magic() {
-  if (game_data.player_mp < 1) {
+  if (gameData.playerMP < 1) {
     return "no mana. ";
   }
   const damage = randomInt(3, 5);
-  game_data.enemy_hp -= damage;
-  game_data.player_mp -= 1;
+  gameData.enemyHP -= damage;
+  gameData.playerMP -= 1;
   let summary = `Player attacks: ${damage}/3 magical damage. `;
   summary += counter();
   summary += sitRep();
@@ -48,17 +48,17 @@ function magic() {
 }
 
 function counter() {
-  if (game_data.enemy_hp <= 0) {
+  if (gameData.enemyHP <= 0) {
     return "Enemy is killed! ";
   }
   const damage = randomInt(0, 3);
-  game_data.player_hp -= damage;
+  gameData.playerHP -= damage;
   const summary = `Enemy attacks: ${damage}/3 damage. `;
   return summary;
 }
 
 function sitRep() {
-  return JSON.stringify(game_data);
+  return JSON.stringify(gameData);
 }
 
 /////////////////////////////////////////////////////////////////
@@ -141,9 +141,9 @@ async function game() {
   say(`\n${introText}`);
 
   // the main game loop
-  while (game_data.player_hp > 0 && game_data.enemy_hp > 0) {
+  while (gameData.playerHP > 0 && gameData.enemyHP > 0) {
     // show the current game state
-    console.log(game_data);
+    console.log(gameData);
 
     // ask the user for their next command
     const command = await ask();
@@ -172,13 +172,13 @@ async function game() {
   }
 }
 
-function handleToolCalls(tool_calls) {
-  for (const tool_call of tool_calls) {
-    const functionName = tool_call.function.name;
+function handleToolCalls(toolCalls) {
+  for (const toolCall of toolCalls) {
+    const functionName = toolCall.function.name;
     const response = availableFunctions[functionName]?.() || "unknown function";
     say(chalk.blue(`${functionName}()`));
     messages.push({
-      tool_call_id: tool_call.id,
+      tool_call_id: toolCall.id,
       role: "tool",
       name: functionName,
       content: response,

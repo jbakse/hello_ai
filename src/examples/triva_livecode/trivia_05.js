@@ -3,7 +3,7 @@
  * Uses GPT to generate trivia questions based on a user-provided topic.
  * Uses GPT to evaluate the answers.
  */
-
+// deno-lint-ignore-file no-await-in-loop
 // used for pretty prompting
 import { Input } from "https://deno.land/x/cliffy@v1.0.0-rc.4/prompt/input.ts";
 
@@ -23,7 +23,7 @@ async function generateQuestions(topic) {
   // schema for { questions: ["xyz", "xyz"] }
 
   // json version
-  const question_schema = {
+  const questionSchema = {
     name: "questions",
     schema: {
       type: "object",
@@ -45,7 +45,7 @@ async function generateQuestions(topic) {
       temperature: .3,
       response_format: {
         "type": "json_schema",
-        "json_schema": question_schema,
+        "json_schema": questionSchema,
       },
     },
     {
@@ -62,7 +62,7 @@ async function evaluateAnswer(question, answer) {
   // schema for { isCorrect: true, comment: "xyz" }
 
   // json version
-  const evaluation_schema = {
+  const evaluationSchema = {
     name: "evaluation",
     schema: {
       type: "object",
@@ -90,7 +90,7 @@ async function evaluateAnswer(question, answer) {
       temperature: 0.1,
       response_format: {
         "type": "json_schema",
-        "json_schema": evaluation_schema,
+        "json_schema": evaluationSchema,
       },
     },
     {

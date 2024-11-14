@@ -3,6 +3,8 @@
  * Uses GPT to generate trivia questions based on a user-provided topic.
  * Uses GPT to evaluate the answers.
  */
+// deno-lint-ignore-file no-await-in-loop
+
 import { ask, say } from "../../shared/cli.ts";
 import { promptGPT } from "../../shared/openai.ts";
 
@@ -30,7 +32,7 @@ async function main() {
     questions = JSON.parse(questionsString);
   } catch (_e) {
     say(`Error parsing questions string: "${questionsString}"`);
-    end();
+
     return;
   }
 

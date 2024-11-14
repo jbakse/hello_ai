@@ -3,7 +3,6 @@
  * 'subject' keywords, 'colors', and a 'mood' string.
  */
 
-import { say } from "../../shared/cli.ts";
 import { gpt } from "../../shared/openai.ts";
 
 async function main() {

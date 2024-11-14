@@ -39,7 +39,7 @@ export async function makeImageStability(prompt, c = {}) {
 
   const arrayBuffer = await response.arrayBuffer();
 
-  Deno.writeFileSync(
+  await Deno.writeFile(
     `${__dirname}/out/stability_sd3.png`,
     new Uint8Array(arrayBuffer),
     {

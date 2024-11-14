@@ -24,9 +24,9 @@ export async function makeImageStability(prompt, c = {}) {
     width: 1024,
     height: 1024,
     seed: 1,
-    cfg_scale: 5,
+    "cfg_scale": 5,
     samples: 1,
-    text_prompts: [
+    "text_prompts": [
       {
         text: prompt,
         weight: 1,

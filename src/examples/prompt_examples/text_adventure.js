@@ -9,6 +9,8 @@
  * outlandish commands.
  */
 
+// deno-lint-ignore-file no-await-in-loop
+
 import { promptGPT } from "../../shared/openai.ts";
 import { ask, say } from "../../shared/cli.ts";
 
@@ -28,7 +30,7 @@ async function main() {
 
   while (playing) {
     const command = await ask("What do you want to do?");
-    if (command == "quit") {
+    if (command === "quit") {
       playing = false;
     }
 

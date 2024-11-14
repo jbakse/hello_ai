@@ -3,16 +3,20 @@
  * about cats before answering.
  */
 
+// deno-lint-ignore-file no-await-in-loop
+
 import { ask, say } from "../../shared/cli.ts";
 import { promptGPT } from "../../shared/openai.ts";
 
 console.log("Exit with ctrl-c");
 
 // keep repeating until the user exits
+
 while (true) {
   const userQuestion = await ask("What do you want to ask? ");
 
   // reject question if it is not about cats
+
   if (!await isAboutCats(userQuestion)) {
     say("");
     say("I'm sorry, I can only answer questions about cats.");
@@ -20,6 +24,7 @@ while (true) {
   }
 
   // answer the question
+
   const answer = await promptGPT(
     `Answer the following question breifly. Constrain your answer to the subject of cats. Be concise, answer in a single phrase or sentence. ${userQuestion}`,
     {

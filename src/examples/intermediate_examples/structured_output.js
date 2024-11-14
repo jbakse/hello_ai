@@ -2,7 +2,7 @@
  * This is a basic example of sending a prompt to GPT and showing the results.
  */
 
-import { ask, say } from "../../shared/cli.ts";
+import { say } from "../../shared/cli.ts";
 import { gpt, initOpenAI } from "../../shared/openai.ts";
 
 main();

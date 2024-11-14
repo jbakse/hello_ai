@@ -6,6 +6,8 @@
  * itelf.
  */
 
+// deno-lint-ignore-file no-await-in-loop
+
 import { promptGPT } from "../../shared/openai.ts";
 import { ask, say } from "../../shared/cli.ts";
 
@@ -26,7 +28,7 @@ async function main() {
 
   let turns = 0;
   while (turns++ < 10) {
-    const player_prompt = `
+    const playerPrompt = `
     You are playing a text adventure.
     You are a ${player.class} named ${player.name}.
     You can issue commands in the form <verb> <noun>.
@@ -42,7 +44,7 @@ async function main() {
 
     let command = "look";
     if (turns > 1) {
-      command = await promptGPT(player_prompt, {
+      command = await promptGPT(playerPrompt, {
         max_tokens: 10,
         temperature: 1.2,
       });
@@ -78,13 +80,13 @@ async function main() {
     say(`\n${response}\n`);
   }
 
-  const summary_prompt = `
+  const summaryPrompt = `
     Rewrite and summarize this text adventrue transcript as an excerpt from a pulp novel. Improve the writing and make it easy to read. Use the third person. Use a lot of description and adjectives. Embelish. Include and expand dialog.
     The hero is a ${player.class} named ${player.name}.
     ${history.join(" ")}
     `;
 
-  const summary = await promptGPT(summary_prompt, {
+  const summary = await promptGPT(summaryPrompt, {
     max_tokens: 2048,
     temperature: 0.5,
   });
