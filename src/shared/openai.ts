@@ -52,7 +52,9 @@ export async function promptGPT(
   params.messages = [{ role: "user", content: prompt }];
   const message = await gpt(params, options);
   if (params.response_format?.type === "json_schema") {
-    return message.parsed;
+    // i'm using the beta completion endpoint that includes
+    // the parsed field in the response, tell TypeScript about it
+    return (message as unknown as { parsed: string }).parsed;
   } else {
     return (message.content ?? "").trim();
   }
@@ -75,7 +77,7 @@ export async function gpt(
     // logit_bias: {},
     // logprobs: null,
     // top_logprobs: null,
-    max_tokens: 128,
+    "max_tokens": 128,
     // n: 1,
     // presence_penalty: 0,
     // response_format: { type: "text" },
@@ -118,24 +120,17 @@ export async function gpt(
     const startTime = performance.now();
 
     // make the request to OpenAI
-    // and wait
-
-    // const response = await openai.beta.chat.completions.parse(chatParams);
-
     const response = chatParams.response_format?.type === "json_schema"
       ? (await openai.beta.chat.completions.parse(chatParams))
       : (await openai.chat.completions.create(chatParams));
-
-    // todo: optionally use beta endpoint to allow structured returns?
-    // todo: ^ this might be adding too much to this function.
 
     // find the elapsed time
     const seconds = (performance.now() - startTime) / 1000;
 
     // calculate the cost of the request
-    const p_tokens = response.usage?.prompt_tokens ?? 0;
-    const c_tokens = response.usage?.completion_tokens ?? 0;
-    const cost = calculateCost(chatParams.model, p_tokens, c_tokens);
+    const pTokens = response.usage?.prompt_tokens ?? 0;
+    const cTokens = response.usage?.completion_tokens ?? 0;
+    const cost = calculateCost(chatParams.model, pTokens, cTokens);
     totalCost += cost;
 
     // stop the spinner and print the success message
@@ -144,8 +139,8 @@ export async function gpt(
       if (spinnerOptions.showStats) {
         message += " " + colors.gray(formatStats(
           chatParams.model,
-          p_tokens,
-          c_tokens,
+          pTokens,
+          cTokens,
           seconds,
           cost,
           totalCost,
@@ -164,19 +159,22 @@ export async function gpt(
     //
   } catch (error) {
     // if there's an error
+    const errorMessage = error instanceof Error
+      ? error.message
+      : "Unknown error";
 
     // stop the spinner and print the error message
     if (spinner) {
       let message = spinnerOptions.errorMessage ?? "";
       if (spinnerOptions.showError) {
-        message += " " + error.message;
+        message += " " + errorMessage;
       }
       spinner.stopWithFlair(colors.red(message.trim()), colors.red("✘"));
     }
 
     // respond with the error message
     return {
-      content: error.message,
+      content: errorMessage,
       role: "assistant",
     } as OpenAI.ChatCompletionMessage;
   }
@@ -184,16 +182,16 @@ export async function gpt(
 
 function formatStats(
   m: string,
-  p_tokens: number,
-  c_tokens: number,
+  pTokens: number,
+  cTokens: number,
   seconds: number,
   cost: number,
-  t_cost: number,
-) {
+  tCost: number,
+): string {
   const costF = isNaN(cost) ? "?" : roundToDecimalPlaces(cost, 2, 4);
-  const t_costF = roundToDecimalPlaces(t_cost, 2, 4);
+  const tCostF = roundToDecimalPlaces(tCost, 2, 4);
   const secondsF = roundToDecimalPlaces(seconds, 2);
-  return `${m} ${p_tokens}/${c_tokens}t ${secondsF}s $${costF} $${t_costF}`;
+  return `${m} ${pTokens}/${cTokens}t ${secondsF}s $${costF} $${tCostF}`;
 }
 
 type DalleImageParams = OpenAI.Images.ImageGenerateParams;
@@ -208,7 +206,7 @@ export async function promptDalle(
     prompt: "",
     model: "dall-e-3",
     quality: "standard", // "standard" or "hd"
-    response_format: "url", // "url" or "b64_json"
+    "response_format": "url", // "url" or "b64_json"
     style: "vivid", // "vivid" or "natural", natural is kinda bad.
     size: "1024x1024",
   };

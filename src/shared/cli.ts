@@ -16,7 +16,7 @@ export async function ask(message = ""): Promise<string> {
  * @param wrap - The column width to wrap the text at.
  */
 export function say(text: string, wrap?: number): void {
-  wrap = wrap ?? Math.min(Deno.consoleSize(Deno.stdout.rid).columns, 80);
+  wrap = wrap ?? Math.min(Deno.consoleSize().columns, 80);
   console.log(wrapAnsi(text, wrap));
 }
 

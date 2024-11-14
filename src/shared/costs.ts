@@ -8,19 +8,19 @@ type ModelCostsRecord = Record<
 /**
  * Calculate the cost of a prompt and completion based on the model
  * @param model The model to calculate the cost for
- * @param prompt_tokens The number of tokens in the prompt
- * @param completion_tokens The number of tokens in the completion
+ * @param promptTokens The number of tokens in the prompt
+ * @param completionTokens The number of tokens in the completion
  * @returns The cost of the prompt and completion in USD
  */
 export function calculateCost(
   model: string,
-  prompt_tokens: number,
-  completion_tokens: number,
+  promptTokens: number,
+  completionTokens: number,
 ): number {
   // 2024-09-13
   // cost in USD per 1000 tokens for each model
   // https://openai.com/api/pricing/
-  const model_costs: ModelCostsRecord = {
+  const modelCosts: ModelCostsRecord = {
     "gpt-4o": { promptCost: 0.005, completionCost: 0.015 },
     "gpt-4o-2024-08-06": { promptCost: 0.0025, completionCost: 0.01 },
     "gpt-4o-2024-05-13": { promptCost: 0.005, completionCost: 0.015 },
@@ -59,11 +59,11 @@ export function calculateCost(
     "babbage-002": { promptCost: 0.0004, completionCost: 0.0004 },
   };
 
-  if (model in model_costs) {
-    const mc = model_costs[model];
-    const prompt_cost = (prompt_tokens / 1000) * mc.promptCost;
-    const completion_cost = (completion_tokens / 1000) * mc.completionCost;
-    return (prompt_cost + completion_cost);
+  if (model in modelCosts) {
+    const mc = modelCosts[model];
+    const promptCost = (promptTokens / 1000) * mc.promptCost;
+    const completionCost = (completionTokens / 1000) * mc.completionCost;
+    return (promptCost + completionCost);
   } else {
     log.warn(`model ${model} not found in model_costs`);
     return 0;

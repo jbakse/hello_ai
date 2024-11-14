@@ -82,7 +82,10 @@ export function getEnvVariable(variableName: string): string | undefined {
  * @returns An object containing the loaded environment variables.
  */
 
-export function loadEnv(name = ".env", path = Deno.cwd()) {
+export function loadEnv(
+  name = ".env",
+  path = Deno.cwd(),
+): Record<string, string> {
   const envPath = findFileUpTree(name, path);
   if (!envPath) {
     log.warn(".env file not found");
@@ -145,7 +148,7 @@ function findFileUpTree(
  * @returns The elided string.
  */
 
-export function elide(s: string, start = 3, end = 3) {
+export function elide(s: string, start = 3, end = 3): string {
   return s.slice(0, start) + "..." + s.slice(-end);
 }
 
