@@ -8,6 +8,7 @@
     },
 
     "lint": {
+        "exclude": ["**/public/**/*"],
         "rules": {
             "tags": ["recommended"],
             "include": [

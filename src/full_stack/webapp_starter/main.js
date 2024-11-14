@@ -10,7 +10,6 @@ import { createExitSignal, staticServer } from "shared/server.ts";
 // Import the promptGPT function from the class library
 import { promptGPT } from "shared/openai.ts";
 
-import { isDenoDeployment } from "shared/deno.ts";
 import * as log from "shared/logger.ts";
 
 // tell the shared library code to log everything
