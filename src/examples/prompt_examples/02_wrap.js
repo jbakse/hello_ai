@@ -1,6 +1,6 @@
 /**
  * This example collects a prompt from the user, sends it to GPT
- * and relays the response.
+ * and prints the response.
  */
 
 import { ask, say } from "../../shared/cli.ts";

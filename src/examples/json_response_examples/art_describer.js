@@ -19,11 +19,12 @@ const artJsonTemplate = `
 const title = await ask("What is the title of the artwork? ");
 
 const prompt =
-  `Respond with JSON describing ${title}. Return only the json, starting with {. Use this format: ${artJsonTemplate}`;
+  `Respond with JSON describing ${title}. Return json using this format: ${artJsonTemplate}`;
 
 const jsonResponse = await promptGPT(prompt, {
   temperature: 0.3,
   max_tokens: 512,
+  response_format: { type: "json_object" },
 });
 
 say(jsonResponse);

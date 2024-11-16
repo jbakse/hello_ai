@@ -11,7 +11,7 @@ const name = await ask("What is your name?");
 const town = await ask("Where are you from?");
 
 // output a blank line
-say("");
+say();
 
 // prepare the prompt and send to GPT
 const prompt =

@@ -45,6 +45,6 @@ async function isAboutCats(userQuestion) {
   );
 
   // remove leading or trailing whitespace and convert to lowercase
-  // returns true iff the result is then "yes"
+  // returns true if the result is then "yes"
   return result.trim().toLowerCase() === "yes";
 }

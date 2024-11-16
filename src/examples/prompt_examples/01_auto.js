@@ -6,6 +6,5 @@
 import { say } from "../../shared/cli.ts";
 import { promptGPT } from "../../shared/openai.ts";
 
-// sent prompt to gpt and relay response
 const response = await promptGPT("Just say 'yes'", { max_tokens: 5 });
 say(`GPT Response: ${response}`);
