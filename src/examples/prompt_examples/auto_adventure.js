@@ -44,7 +44,6 @@ async function getAIPlayerCommand(context) {
 
 async function getNarratorResponse(
   context,
-  command,
 ) {
   const prompt = `
   This is a ${context.theme} themed text adventure game.
@@ -58,7 +57,7 @@ async function getNarratorResponse(
   When describing locations mention places the player might go and people present.
   Keep your response breif. Do not write more than a three sentences.
 
-  The player command is '${command}'. 
+  The player command is '${context.history[context.history.length - 1]}'. 
   `;
 
   return await promptGPT(prompt, {
@@ -82,34 +81,18 @@ async function main() {
   context.player.name = await ask("What is your name?");
   context.player.class = await ask("What is your class?");
 
-  /// Main Game Loop
-  for (let turn = 0; turn < 10; turn++) {
-    // Get AI player's command
-    let command;
-    if (turn === 0) {
-      command = "look";
-    } else {
-      command = await getAIPlayerCommand(context);
-    }
-    context.history.push(command);
-    say(`${turn}> ${command}`);
+  context.history.push("look");
 
+  /// Main Game Loop
+  for (let turn = 0; turn < 5; turn++) {
     // Get narrator's response
-    const narration = await getNarratorResponse(context, command);
+    const narration = await getNarratorResponse(context);
     context.history.push(narration);
     say(`${narration}`);
+
+    // Get AI player's command
+    const command = await getAIPlayerCommand(context);
+    context.history.push(command);
+    say(`${turn}> ${command}`);
   }
-
-  /// Generate Story Summary
-  const summaryPrompt = `
-    Rewrite and summarize this text adventrue transcript as an excerpt from a pulp novel. Improve the writing and make it easy to read. Use the third person. Use a lot of description and adjectives. Embelish. Include and expand dialog.
-    The hero is a ${context.player.class} named ${context.player.name}.
-    ${context.history.join(" ")}
-    `;
-
-  const summary = await promptGPT(summaryPrompt, {
-    max_tokens: 2048,
-    temperature: 0.5,
-  });
-  say(`\nsummary:\n${summary}\n`);
 }

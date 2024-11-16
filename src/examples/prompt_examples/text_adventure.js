@@ -2,7 +2,7 @@
  * This program "fakes" a text adventure game using Javascript and GPT.
  * It provides a basic loop which prompts the user for commands and then prompts
  * GPT with some high level instructions, the last few GPT responses
- * for context, and the users command.
+ * for context, and the user's command.
  *
  * If the user "plays along" the experience is suprisingly similar to a true
  * text adventure game. But the user can easily "break" the game by issuing
@@ -17,29 +17,28 @@ import { ask, say } from "../../shared/cli.ts";
 main();
 
 async function main() {
-  say("Hello, Player!");
+  const context = {
+    history: [],
+    location: "woods",
+    player: {},
+  };
 
-  const context = [];
-  let playing = true;
-  const location = "woods";
-  const player = {};
-  player.name = await ask("What is your name?");
-  player.class = await ask("What is your class?");
+  say("Hello, Player!");
+  context.player.name = await ask("What is your name?");
+  context.player.class = await ask("What is your class?");
 
   say("");
 
-  while (playing) {
+  while (true) {
     const command = await ask("What do you want to do?");
-    if (command === "quit") {
-      playing = false;
-    }
+    if (command === "quit") break;
 
     const prompt = `
   This is a text adventure game.
-  The player is a ${player.class} named ${player.name}.
-  The current setting is ${location}.
+  The player is a ${context.player.class} named ${context.player.name}.
+  The current setting is ${context.location}.
  
-  Recently: ${context.slice(-3).join(" ")}
+  Recently: ${context.history.slice(-3).join(" ")}
 
   Respond in second person.
   Be breif, and avoid narating actions not taken by the player via commands.
@@ -54,7 +53,7 @@ async function main() {
       max_tokens: 128,
       temperature: 0.5,
     });
-    context.push(response);
+    context.history.push(response);
     say(`\n${response}\n`);
   }
 }
