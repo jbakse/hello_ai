@@ -49,7 +49,7 @@ async function generateQuestions(topic) {
       },
     },
     {
-      showStats: false,
+      showStats: true,
       loadingMessage: "Generating questions...",
       successMessage: "Questions generated.",
     },
@@ -94,7 +94,7 @@ async function evaluateAnswer(question, answer) {
       },
     },
     {
-      showStats: false,
+      showStats: true,
       loadingMessage: "Evaluating...",
       successMessage: "",
     },
